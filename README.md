@@ -18,9 +18,9 @@ If you want install new package, you have to re-run docker-compose after install
 
 DB_ROOT, DB_PASSWORD things will be added later
 
-<!-- - MONGO_ROOT_USERNAME
+- MONGO_ROOT_USERNAME
   - `string`
   - Username of mongodb root
 - MONGO_ROOT_PASSWORD
   - `string`
-  - Password of mongodb root -->
+  - Password of mongodb root

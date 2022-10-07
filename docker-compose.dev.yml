@@ -17,6 +17,9 @@ services:
     build:
       context: .
       dockerfile: ./server/dockerfile.dev
+    environment:
+      - MONGO_ROOT_USERNAME=${MONGO_ROOT_USERNAME}
+      - MONGO_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
     ports:
       - "3000:3000"
     volumes:
@@ -24,8 +27,8 @@ services:
       - ./server/package-lock.json:/server/package-lock.json
       - ./server/package.json:/server/package.json
       - ./server/tsconfig.json:/server/tsconfig.json
-    # depends_on:
-    #   - db
+    depends_on:
+      - db
     #   - storage
 
   nginx:
@@ -54,13 +57,13 @@ services:
   #   volumes:
   #     - ./data/minio:/data
 
-  # db:
-  #   image: mongo:6.0.1
-  #   restart: always
-  #   environment:
-  #     - MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME}
-  #     - MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
-  #   ports:
-  #     - 8081:8081
-  #   volumes:
-  #     - ./data/mongodb:/data/db
+  db:
+    image: mongo:6.0.1
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
+    ports:
+      - 27017:27017
+    volumes:
+      - ./data/mongodb:/data/db
