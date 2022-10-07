@@ -30,7 +30,12 @@ export class User {
   isBanned!: boolean;
 
   @Prop({ required: true, enum: ["OB", "YB"] })
-  section!: string;
+  section!: Section;
+}
+
+export enum Section {
+  OB = "OB",
+  YB = "YB",
 }
 
 export const CatSchema = SchemaFactory.createForClass(User);
