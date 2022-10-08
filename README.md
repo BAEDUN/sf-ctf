@@ -4,7 +4,7 @@ Capture the flag site of https://securityfirst.co.kr/
 
 # Developing
 
-Type `docker-compose -f docker-compose.dev.yml up`.
+Type `docker-compose -f docker-compose.dev.yml up` or `./run-dev.sh`.
 Then nginx will listen `80`.
 `localhost:80/api` will be redirect to server. Other will be redirect to client.
 
