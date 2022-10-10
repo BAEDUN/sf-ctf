@@ -24,3 +24,6 @@ DB_ROOT, DB_PASSWORD things will be added later
 - MONGO_ROOT_PASSWORD
   - `string`
   - Password of mongodb root
+- JWT_SECRET
+  - `string`
+  - Secret key for jwt
