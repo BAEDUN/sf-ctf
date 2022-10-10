@@ -1,8 +1,9 @@
-import { Model } from "mongoose";
+import { FilterQuery, Model } from "mongoose";
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { User, UserDocument } from "./schemas/user.schema";
-import { CreateUserDto } from "./dto/create-user.dto";
+import { RegisterRequestDto } from "./dto/register.dto";
+import hashPassword from "../auth/util/hashPassword";
 
 @Injectable()
 export class UsersService {
@@ -10,12 +11,20 @@ export class UsersService {
     @InjectModel(User.name) private readonly userModel: Model<UserDocument>
   ) {}
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
-    const createdCat = new this.userModel(createUserDto);
+  public async create(createUserDto: RegisterRequestDto): Promise<User> {
+    const hashedPassword = await hashPassword(createUserDto.password);
+    const createdCat = new this.userModel({
+      ...createUserDto,
+      hashedPassword,
+    });
     return createdCat.save();
   }
 
-  async findAll(): Promise<User[]> {
-    return this.userModel.find().exec();
+  async findAll(query: FilterQuery<UserDocument>): Promise<User[]> {
+    return this.userModel.find(query).exec();
+  }
+
+  async findOne(query: FilterQuery<UserDocument>): Promise<User | null> {
+    return this.userModel.findOne(query);
   }
 }
