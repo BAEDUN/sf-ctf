@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import { Config } from "../../config";
-import { User } from "../../users/schemas/user.schema";
+import { User } from "../schemas/user.schema";
 
 export default async function issueToken(user: User) {
   const payload = {
