@@ -1,4 +1,4 @@
-.Login {
+.Register {
   background-color: #212529;
   height: 100%;
   width: 100%;
@@ -15,14 +15,24 @@
   margin-top: 2%;
 }
 
-.LoginForm {
+.RegForm {
   margin-top: 5%;
   margin-left: 40%;
   width: 20%;
   font-weight: bold;
 }
 
-.LoginBtn {
+.select-label {
+  width: 100%;
+  text-align: center;
+  border-radius: 5px;
+  background-color: #212529;
+  color: #fff;
+  border-color: #fff;
+  font-weight: bold;
+}
+
+.RegBtn {
   width: 100%;
   font-family: "Lato-Bold";
 }
