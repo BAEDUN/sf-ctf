@@ -16,7 +16,9 @@ If you want install new package, you have to re-run docker-compose after install
 
 # Environment Variables
 
-DB_ROOT, DB_PASSWORD things will be added later
+`.env` file at repository root folder supported
+
+## Variables
 
 - MONGO_ROOT_USERNAME
   - `string`
@@ -27,3 +29,9 @@ DB_ROOT, DB_PASSWORD things will be added later
 - JWT_SECRET
   - `string`
   - Secret key for jwt
+
+## Example `.env` File
+
+MONGO_ROOT_USERNAME=bigfood
+MONGO_ROOT_PASSWORD=password
+JWT_SECRET=anySecretKey
