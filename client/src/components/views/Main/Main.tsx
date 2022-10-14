@@ -25,7 +25,7 @@ const Main = () => {
         particlesInit={particlesInit}
         particlesLoaded={particlesLoaded}
       />
-      <div className="Logo">대회 이름sex 자리</div>
+      <div className="Logo">대회 이름 자리</div>
       <div className="Logo">대회 이름 자리</div>
     </div>
   );
@@ -41,10 +41,6 @@ const Particle = (props: {
     loaded={props.particlesLoaded}
     options={{
       fps_limit: 120,
-      //   background: {
-      //     color: "#212529",
-      //     position: "absolute"
-      //   },
       interactivity: {
         events: {
           onclick: { enable: true, mode: "push" },
