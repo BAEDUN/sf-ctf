@@ -1,15 +1,19 @@
+.MainNavBar {
+  /* border-bottom: 1px #e0e0e0 solid !important; */
+}
+
 .MainTitle {
-    font-family: "Lato-Black";
+  font-family: "Lato-Black";
 }
 
 .MenuList {
-    font-family: "Lato-Regular";
+  font-family: "Lato-Regular";
 }
 
 .faIcon {
-    margin: 0.25rem;
+  margin: 0.25rem;
 }
 
 ::-webkit-scrollbar {
-    display: none;
-    }
+  display: none;
+}
