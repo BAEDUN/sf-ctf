@@ -1,0 +1,46 @@
+services:
+  server:
+    build:
+      context: .
+      dockerfile: ./server/dockerfile.dev
+    environment:
+      - MONGO_ROOT_USERNAME=${MONGO_ROOT_USERNAME}
+      - MONGO_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
+      - JWT_SECRET=${JWT_SECRET}
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./server/src:/server/src
+      - ./server/package-lock.json:/server/package-lock.json
+      - ./server/package.json:/server/package.json
+      - ./server/tsconfig.json:/server/tsconfig.json
+    healthcheck:
+      test: wget -q --spider http://localhost:3000/swagger-json
+      interval: 5s
+      timeout: 5s
+      retries: 100
+    depends_on:
+      - db
+
+  db:
+    image: mongo:6.0.1
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
+    volumes:
+      - ./data/mongodb:/data/db
+
+  generator:
+    image: openapitools/openapi-generator-cli
+    volumes:
+      - ./client/src/api:/local/out/api
+    command: >
+      generate
+      -i http://server:3000/swagger-json
+      -g typescript-axios
+      -o /local/out/api
+      --skip-validate-spec
+    depends_on:
+      server:
+        condition: service_healthy
