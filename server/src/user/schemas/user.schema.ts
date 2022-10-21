@@ -6,7 +6,7 @@ export type UserDocument = User & Document;
 @Schema()
 export class User {
   @Prop({ required: true, index: true, unique: true })
-  id!: string;
+  username!: string;
 
   @Prop({ required: true, unique: true })
   email!: string;
@@ -17,25 +17,20 @@ export class User {
   @Prop({ required: true })
   nickname!: string;
 
-  @Prop()
-  studentIdNumber!: string;
-
-  @Prop({ required: true })
-  realName!: string;
-
   @Prop({ required: true, type: Boolean })
   isAdmin!: boolean;
 
   @Prop({ required: true, type: Boolean })
   isBanned!: boolean;
 
-  @Prop({ required: true, enum: ["OB", "YB"] })
+  @Prop({ required: true, enum: ["Security", "Software", "SecurityFirst"] })
   section!: Section;
 }
 
 export enum Section {
-  OB = "OB",
-  YB = "YB",
+  Security = "Security",
+  Software = "Software",
+  SecurityFirst = "SecurityFirst",
 }
 
 export const CatSchema = SchemaFactory.createForClass(User);

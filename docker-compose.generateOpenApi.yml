@@ -1,0 +1,22 @@
+services:
+  server:
+    build:
+      context: .
+      dockerfile: ./server/dockerfile.dev
+    environment:
+      - MONGO_ROOT_USERNAME=${MONGO_ROOT_USERNAME}
+      - MONGO_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
+      - JWT_SECRET=${JWT_SECRET}
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./server/src:/server/src
+      - ./server/package-lock.json:/server/package-lock.json
+      - ./server/package.json:/server/package.json
+      - ./server/tsconfig.json:/server/tsconfig.json
+
+  generator:
+    image: openapitools/openapi-generator-cli
+    command: bash -c 'while [[ "$(curl -s -o /dev/null -w ''http://db:3000/swagger-json'')" != "200" ]]; do sleep 5; '
+    depends_on:
+      - server
