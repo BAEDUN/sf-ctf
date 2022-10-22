@@ -14,7 +14,7 @@ export class RegisterRequestDto {
   @ApiProperty()
   readonly isBanned!: boolean;
   @ApiProperty({
-    enum: ["정보보호학과", "컴퓨터소프트웨어학과", "SecurityFirst"],
+    enum: ["Security", "Software", "SecurityFirst"],
   })
   readonly section!: string;
 }

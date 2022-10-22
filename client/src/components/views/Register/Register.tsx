@@ -142,7 +142,7 @@ export default function Register() {
                                 label='Username'
                                 name='username'
                                 type='text'
-                                ref={userRef}
+                                inputRef={userRef}
                                 onChange={(e) => setUser(e.target.value)}
                                 value={user}
                                 autoComplete="off"

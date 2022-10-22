@@ -78,7 +78,7 @@ export default function Login() {
                         <MDBInput
                             label='Username'
                             type='text'
-                            ref={userRef}
+                            inputRef={userRef}
                             autoComplete="off"
                             onChange={(e) => setUser(e.target.value)}
                             value={user}
