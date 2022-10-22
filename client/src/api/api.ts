@@ -24,6 +24,125 @@ import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } fr
 /**
  * 
  * @export
+ * @interface CreateChallengeRequestDto
+ */
+export interface CreateChallengeRequestDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateChallengeRequestDto
+     */
+    'accessToken': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateChallengeRequestDto
+     */
+    'title': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateChallengeRequestDto
+     */
+    'description': string;
+    /**
+     * 
+     * @type {Array<CreateChallengeRequestDtoFileListInner>}
+     * @memberof CreateChallengeRequestDto
+     */
+    'fileList': Array<CreateChallengeRequestDtoFileListInner>;
+    /**
+     * 
+     * @type {CreateChallengeRequestDtoGrading}
+     * @memberof CreateChallengeRequestDto
+     */
+    'grading': CreateChallengeRequestDtoGrading;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateChallengeRequestDto
+     */
+    'flag': string;
+}
+/**
+ * 
+ * @export
+ * @interface CreateChallengeRequestDtoFileListInner
+ */
+export interface CreateChallengeRequestDtoFileListInner {
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateChallengeRequestDtoFileListInner
+     */
+    'fileName'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateChallengeRequestDtoFileListInner
+     */
+    'fileId'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface CreateChallengeRequestDtoGrading
+ */
+export interface CreateChallengeRequestDtoGrading {
+    /**
+     * 
+     * @type {number}
+     * @memberof CreateChallengeRequestDtoGrading
+     */
+    'minimumScore'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CreateChallengeRequestDtoGrading
+     */
+    'maximumScore'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CreateChallengeRequestDtoGrading
+     */
+    'maximumSolvedUserCount'?: number;
+}
+/**
+ * 
+ * @export
+ * @interface GetAllChallengesRequestDto
+ */
+export interface GetAllChallengesRequestDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof GetAllChallengesRequestDto
+     */
+    'accessToken': string;
+}
+/**
+ * 
+ * @export
+ * @interface GetChallengeRequestDto
+ */
+export interface GetChallengeRequestDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof GetChallengeRequestDto
+     */
+    'accessToken': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetChallengeRequestDto
+     */
+    'title': string;
+}
+/**
+ * 
+ * @export
  * @interface GetRequestDto
  */
 export interface GetRequestDto {
@@ -174,6 +293,239 @@ export const RegisterRequestDtoSectionEnum = {
 } as const;
 
 export type RegisterRequestDtoSectionEnum = typeof RegisterRequestDtoSectionEnum[keyof typeof RegisterRequestDtoSectionEnum];
+
+
+/**
+ * ChallengeApi - axios parameter creator
+ * @export
+ */
+export const ChallengeApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @param {CreateChallengeRequestDto} createChallengeRequestDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        challengeControllerCreate: async (createChallengeRequestDto: CreateChallengeRequestDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'createChallengeRequestDto' is not null or undefined
+            assertParamExists('challengeControllerCreate', 'createChallengeRequestDto', createChallengeRequestDto)
+            const localVarPath = `/api/challenge/create`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(createChallengeRequestDto, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {GetChallengeRequestDto} getChallengeRequestDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        challengeControllerGet: async (getChallengeRequestDto: GetChallengeRequestDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'getChallengeRequestDto' is not null or undefined
+            assertParamExists('challengeControllerGet', 'getChallengeRequestDto', getChallengeRequestDto)
+            const localVarPath = `/api/challenge/get`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(getChallengeRequestDto, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {GetAllChallengesRequestDto} getAllChallengesRequestDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        challengeControllerGetAll: async (getAllChallengesRequestDto: GetAllChallengesRequestDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'getAllChallengesRequestDto' is not null or undefined
+            assertParamExists('challengeControllerGetAll', 'getAllChallengesRequestDto', getAllChallengesRequestDto)
+            const localVarPath = `/api/challenge/getAll`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(getAllChallengesRequestDto, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * ChallengeApi - functional programming interface
+ * @export
+ */
+export const ChallengeApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = ChallengeApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @param {CreateChallengeRequestDto} createChallengeRequestDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async challengeControllerCreate(createChallengeRequestDto: CreateChallengeRequestDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.challengeControllerCreate(createChallengeRequestDto, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {GetChallengeRequestDto} getChallengeRequestDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async challengeControllerGet(getChallengeRequestDto: GetChallengeRequestDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.challengeControllerGet(getChallengeRequestDto, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {GetAllChallengesRequestDto} getAllChallengesRequestDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async challengeControllerGetAll(getAllChallengesRequestDto: GetAllChallengesRequestDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.challengeControllerGetAll(getAllChallengesRequestDto, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+    }
+};
+
+/**
+ * ChallengeApi - factory interface
+ * @export
+ */
+export const ChallengeApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = ChallengeApiFp(configuration)
+    return {
+        /**
+         * 
+         * @param {CreateChallengeRequestDto} createChallengeRequestDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        challengeControllerCreate(createChallengeRequestDto: CreateChallengeRequestDto, options?: any): AxiosPromise<void> {
+            return localVarFp.challengeControllerCreate(createChallengeRequestDto, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {GetChallengeRequestDto} getChallengeRequestDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        challengeControllerGet(getChallengeRequestDto: GetChallengeRequestDto, options?: any): AxiosPromise<void> {
+            return localVarFp.challengeControllerGet(getChallengeRequestDto, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {GetAllChallengesRequestDto} getAllChallengesRequestDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        challengeControllerGetAll(getAllChallengesRequestDto: GetAllChallengesRequestDto, options?: any): AxiosPromise<void> {
+            return localVarFp.challengeControllerGetAll(getAllChallengesRequestDto, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * ChallengeApi - object-oriented interface
+ * @export
+ * @class ChallengeApi
+ * @extends {BaseAPI}
+ */
+export class ChallengeApi extends BaseAPI {
+    /**
+     * 
+     * @param {CreateChallengeRequestDto} createChallengeRequestDto 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ChallengeApi
+     */
+    public challengeControllerCreate(createChallengeRequestDto: CreateChallengeRequestDto, options?: AxiosRequestConfig) {
+        return ChallengeApiFp(this.configuration).challengeControllerCreate(createChallengeRequestDto, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {GetChallengeRequestDto} getChallengeRequestDto 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ChallengeApi
+     */
+    public challengeControllerGet(getChallengeRequestDto: GetChallengeRequestDto, options?: AxiosRequestConfig) {
+        return ChallengeApiFp(this.configuration).challengeControllerGet(getChallengeRequestDto, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {GetAllChallengesRequestDto} getAllChallengesRequestDto 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ChallengeApi
+     */
+    public challengeControllerGetAll(getAllChallengesRequestDto: GetAllChallengesRequestDto, options?: AxiosRequestConfig) {
+        return ChallengeApiFp(this.configuration).challengeControllerGetAll(getAllChallengesRequestDto, options).then((request) => request(this.axios, this.basePath));
+    }
+}
 
 
 /**
