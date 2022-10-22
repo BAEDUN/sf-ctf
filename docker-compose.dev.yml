@@ -21,6 +21,8 @@ services:
       - MONGO_ROOT_USERNAME=${MONGO_ROOT_USERNAME}
       - MONGO_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
       - JWT_SECRET=${JWT_SECRET}
+      - MINIO_ROOT_USER=${MINIO_ROOT_USER}
+      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
     ports:
       - "3000:3000"
     volumes:
@@ -30,7 +32,7 @@ services:
       - ./server/tsconfig.json:/server/tsconfig.json
     depends_on:
       - db
-    #   - storage
+      - storage
 
   nginx:
     image: nginx:1.23.1-alpine
@@ -45,18 +47,28 @@ services:
       - client
       - server
 
-  # storage:
-  #   image: minio:RELEASE.2022-09-22T18-57-27Z
-  #   restart: always
-  #   environment:
-  #     -
-  #     - MINIO_ROOT_USER: ${MINIO_ROOT_USER}
-  #     - MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
-  #   ports:
-  #     - 9000:9000
-  #     - 9001:9001
-  #   volumes:
-  #     - ./data/minio:/data
+  storage:
+    image: minio/minio:RELEASE.2022-09-22T18-57-27Z
+    restart: always
+    environment:
+      - MINIO_ROOT_USER=${MINIO_ROOT_USER}
+      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
+    ports:
+      - 9000:9000
+      - 9001:9001
+    volumes:
+      - ./data/minio:/data
+    command: server /data
+
+  initStorage:
+    image: minio/mc:RELEASE.2022-10-09T21-10-59Z
+    depends_on:
+      - storage
+    entrypoint: >
+      /bin/sh -c "
+      /usr/bin/mc config host add storage http://storage:9000 ${MINIO_ROOT_USER} ${MINIO_ROOT_PASSWORD};
+      /usr/bin/mc mb storage/file --ignore-existing;
+      "
 
   db:
     image: mongo:6.0.1

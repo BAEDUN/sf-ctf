@@ -4,6 +4,8 @@ export const Config = {
   PASSWORD_SALT_ROUNDS: 4,
   ACCESS_TOKEN_EXPIRES_IN: "1h",
   JWT_SECRET: stringEnv("JWT_SECRET"),
+  MINIO_ROOT_USER: stringEnv("MINIO_ROOT_USER"),
+  MINIO_ROOT_PASSWORD: stringEnv("MINIO_ROOT_PASSWORD"),
 };
 
 function stringEnv(name: string): string {
