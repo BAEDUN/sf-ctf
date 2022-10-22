@@ -14,6 +14,10 @@ Hot-reload will also be works for client.
 **[notice]**
 If you want install new package, you have to re-run docker-compose after install.
 
+## Generate Api
+
+`./gen-api.sh` will make api files to `client/src/api`
+
 # Environment Variables
 
 `.env` file at repository root folder supported
