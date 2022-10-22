@@ -64,7 +64,7 @@ export interface LoginRequestDto {
      * @type {string}
      * @memberof LoginRequestDto
      */
-    'id': string;
+    'username': string;
     /**
      * 
      * @type {string}
@@ -128,7 +128,7 @@ export interface RegisterRequestDto {
      * @type {string}
      * @memberof RegisterRequestDto
      */
-    'id': string;
+    'username': string;
     /**
      * 
      * @type {string}
@@ -147,18 +147,6 @@ export interface RegisterRequestDto {
      * @memberof RegisterRequestDto
      */
     'nickname': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof RegisterRequestDto
-     */
-    'studentIdNumber': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof RegisterRequestDto
-     */
-    'realName': string;
     /**
      * 
      * @type {boolean}
@@ -180,8 +168,9 @@ export interface RegisterRequestDto {
 }
 
 export const RegisterRequestDtoSectionEnum = {
-    Ob: 'OB',
-    Yb: 'YB'
+    Security: 'Security',
+    Software: 'Software',
+    SecurityFirst: 'SecurityFirst'
 } as const;
 
 export type RegisterRequestDtoSectionEnum = typeof RegisterRequestDtoSectionEnum[keyof typeof RegisterRequestDtoSectionEnum];

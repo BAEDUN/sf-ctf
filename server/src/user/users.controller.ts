@@ -31,7 +31,7 @@ export class UsersController {
   async register(@Body() createUserDto: RegisterRequestDto) {
     console.log("User 1");
     const idDuplicatedUsers = await this.usersService.findAll({
-      id: createUserDto.id,
+      username: createUserDto.username,
     });
     if (idDuplicatedUsers.length > 0) {
       throw new HttpException("Duplicated id", HttpStatus.CONFLICT);
@@ -61,7 +61,7 @@ export class UsersController {
   @Post("login")
   async login(@Body() request: LoginRequestDto) {
     const user = await this.usersService.findOne({
-      id: request.id,
+      username: request.username,
     });
     if (!user) {
       throw new HttpException(

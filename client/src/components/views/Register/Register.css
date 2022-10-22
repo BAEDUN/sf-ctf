@@ -7,10 +7,10 @@
   left: 0;
 }
 
-.Title {
+.Title h1 {
   color: #fff;
   font-family: "Lato-BoldItalic";
-  font-size: 600%;
+  font-size: 100%;
   text-align: center;
   margin-top: 2%;
 }
@@ -19,7 +19,7 @@
   margin-top: 5%;
   margin-left: 40%;
   width: 20%;
-  font-weight: bold;
+  opacity: 0.8;
 }
 
 .select-label {
@@ -29,10 +29,72 @@
   background-color: #212529;
   color: #fff;
   border-color: #fff;
-  font-weight: bold;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding: 0.2em 0.75em;
 }
 
 .RegBtn {
   width: 100%;
   font-family: "Lato-Bold";
+}
+
+.errmsg {
+  background-color: lightpink;
+  font-family: "Lato-Bold";
+  color: firebrick;
+  font-weight: bold;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.offscreen {
+  position: absolute;
+  left: -9999px;
+}
+
+.instructions {
+  font-size: 0.75rem;
+  border-radius: 0.5rem;
+  background: #000;
+  color: #fff;
+  padding: 0.25rem;
+  position: relative;
+  bottom: -10px;
+}
+
+.instructions > svg {
+  margin-right: 0.25rem;
+}
+
+.hide {
+  display: none;
+}
+
+.userForm,
+.pwdForm,
+.confirmPwdForm,
+.emailForm,
+.nickForm,
+.belongForm {
+  position: relative;
+}
+
+.valid {
+  color: limegreen;
+  margin-right: 0.5rem;
+  margin-top: 0.5rem;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.invalid {
+  color: red;
+  margin-right: 0.7rem;
+  margin-top: 0.5rem;
+  position: absolute;
+  top: 0;
+  right: 0;
 }
