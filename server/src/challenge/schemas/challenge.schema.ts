@@ -4,6 +4,14 @@ import { User } from "../../user/schemas/user.schema";
 
 export type ChallengeDocument = Challenge & Document;
 
+export enum Category {
+  Web = "Web",
+  Forensic = "Forensic",
+  Pwnable = "Pwnable",
+  Reversing = "Reversing",
+  Misc = "Misc",
+}
+
 @Schema()
 export class Challenge {
   @Prop({ required: true, index: true, unique: true })
@@ -11,6 +19,18 @@ export class Challenge {
 
   @Prop({ required: true })
   description!: string;
+
+  @Prop({
+    required: true,
+    enum: [
+      Category.Web,
+      Category.Forensic,
+      Category.Pwnable,
+      Category.Reversing,
+      Category.Misc,
+    ],
+  })
+  category!: Category;
 
   @Prop({ default: [] })
   fileList!: {

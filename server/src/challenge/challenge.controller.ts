@@ -90,11 +90,12 @@ export class ChallengeController {
       throw new HttpException("Not Found", HttpStatus.NOT_FOUND);
     }
 
-    const { title, description, fileList } = challenge;
+    const { title, description, category, fileList } = challenge;
     const score = calculateChallengeScore(challenge);
     return {
       title,
       description,
+      category,
       fileList,
       score,
     } as GetChallengeResponseDto;
@@ -123,11 +124,12 @@ export class ChallengeController {
     let challenges = await this.challengeService.getAll();
     return {
       challenges: challenges.map((challenge) => {
-        const { title, description } = challenge;
+        const { title, description, category } = challenge;
         const score = calculateChallengeScore(challenge);
         return {
           title,
           description,
+          category,
           score,
         };
       }),
