@@ -1,5 +1,6 @@
 services:
   client:
+    user: ${USER_ID}
     build:
       context: .
       dockerfile: ./client/dockerfile.dev
@@ -10,10 +11,12 @@ services:
       - ./client/tsconfig.json:/client/tsconfig.json
       - ./client/package.json:/client/package.json
       - ./client/package-lock.json:/client/package-lock.json
+      - ./client/node_modules:/client/node_modules
     depends_on:
       - server
 
   server:
+    user: ${USER_ID}
     build:
       context: .
       dockerfile: ./server/dockerfile.dev
@@ -30,11 +33,13 @@ services:
       - ./server/package-lock.json:/server/package-lock.json
       - ./server/package.json:/server/package.json
       - ./server/tsconfig.json:/server/tsconfig.json
+      - ./server/node_modules:/server/node_modules
     depends_on:
       - db
       - storage
 
   nginx:
+    user: ${USER_ID}
     image: nginx:1.23.1-alpine
     restart: always
     ports:
@@ -48,6 +53,7 @@ services:
       - server
 
   storage:
+    user: ${USER_ID}
     image: minio/minio:RELEASE.2022-09-22T18-57-27Z
     restart: always
     environment:
@@ -61,6 +67,7 @@ services:
     command: server /data
 
   initStorage:
+    user: ${USER_ID}
     image: minio/mc:RELEASE.2022-10-09T21-10-59Z
     depends_on:
       - storage
@@ -71,6 +78,7 @@ services:
       "
 
   db:
+    user: ${USER_ID}
     image: mongo:6.0.1
     restart: always
     environment:
