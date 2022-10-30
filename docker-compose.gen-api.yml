@@ -1,5 +1,6 @@
 services:
   server:
+    user: ${USER_ID}
     build:
       context: .
       dockerfile: ./server/dockerfile.dev
@@ -16,6 +17,7 @@ services:
       - ./server/package-lock.json:/server/package-lock.json
       - ./server/package.json:/server/package.json
       - ./server/tsconfig.json:/server/tsconfig.json
+      - ./server/node_modules:/server/node_modules
     healthcheck:
       test: wget -q --spider http://localhost:3000/swagger-json
       interval: 5s
@@ -25,6 +27,7 @@ services:
       - db
 
   db:
+    user: ${USER_ID}
     image: mongo:6.0.1
     restart: always
     environment:
@@ -34,6 +37,7 @@ services:
       - ./data/mongodb:/data/db
 
   generator:
+    user: ${USER_ID}
     image: openapitools/openapi-generator-cli
     volumes:
       - ./client/src/api:/local/out/api
