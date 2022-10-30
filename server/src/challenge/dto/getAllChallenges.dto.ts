@@ -15,6 +15,7 @@ export class GetAllChallengesResponseDto {
         title: { type: "string" },
         description: { type: "string" },
         category: {
+          type: "enum",
           enum: [
             Category.Web,
             Category.Forensic,

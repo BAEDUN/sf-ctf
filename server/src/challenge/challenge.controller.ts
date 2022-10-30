@@ -76,6 +76,7 @@ export class ChallengeController {
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: "Successful",
+    type: GetChallengeResponseDto,
   })
   @Post("get")
   async get(@Body() request: GetChallengeRequestDto) {
@@ -112,6 +113,7 @@ export class ChallengeController {
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: "Successful",
+    type: GetAllChallengesResponseDto,
   })
   @Post("getAll")
   async getAll(@Body() request: GetAllChallengesRequestDto) {
