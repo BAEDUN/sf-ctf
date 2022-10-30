@@ -5,11 +5,6 @@
     "editor.defaultFormatter": "ms-azuretools.vscode-docker"
   },
   "cSpell.words": [
-    "bigfood",
-    "codepaths",
-    "minio",
-    "nestjs",
-    "preact",
-    "tsbuildinfo"
+    "nestjs"
   ]
 }

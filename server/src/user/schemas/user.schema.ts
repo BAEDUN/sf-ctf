@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { Document } from "mongoose";
+import mongoose, { Document } from "mongoose";
+import { Challenge } from "../../challenge/schemas/challenge.schema";
 
 export type UserDocument = User & Document;
 
@@ -25,6 +26,15 @@ export class User {
 
   @Prop({ required: true, enum: ["Security", "Software", "SecurityFirst"] })
   section!: Section;
+
+  @Prop({
+    type: [{ type: mongoose.Types.ObjectId, ref: "Challenge" }],
+    default: [],
+  })
+  solvedChallengeList!: Challenge[];
+
+  @Prop({ default: 0 })
+  score!: number;
 }
 
 export enum Section {
