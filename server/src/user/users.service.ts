@@ -13,7 +13,6 @@ export class UsersService {
   ) {}
 
   public async create(createUserDto: RegisterRequestDto): Promise<User> {
-    console.log(createUserDto);
     const hashedPassword = await hashPassword(createUserDto.password);
     const createdCat = new this.userModel({
       ...createUserDto,
@@ -36,6 +35,6 @@ export class UsersService {
       return null;
     }
 
-    return await this.findOne({ id: userId });
+    return await this.findOne({ username: userId });
   }
 }
