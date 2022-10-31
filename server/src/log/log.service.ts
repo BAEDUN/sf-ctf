@@ -45,4 +45,14 @@ export class LogService {
     });
     return await createdLog.save();
   }
+
+  public async log_download(ip: string, username: string, filename: string) {
+    const createdLog = new this.logModel({
+      ip,
+      username,
+      type: LogType.Download,
+      filename,
+    });
+    return await createdLog.save();
+  }
 }
