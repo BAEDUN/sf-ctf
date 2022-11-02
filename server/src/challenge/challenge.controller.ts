@@ -76,6 +76,7 @@ export class ChallengeController {
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: "Successful",
+    type: GetChallengeResponseDto,
   })
   @Post("get")
   async get(@Body() request: GetChallengeRequestDto) {
@@ -90,11 +91,12 @@ export class ChallengeController {
       throw new HttpException("Not Found", HttpStatus.NOT_FOUND);
     }
 
-    const { title, description, fileList } = challenge;
+    const { title, description, category, fileList } = challenge;
     const score = calculateChallengeScore(challenge);
     return {
       title,
       description,
+      category,
       fileList,
       score,
     } as GetChallengeResponseDto;
@@ -111,6 +113,7 @@ export class ChallengeController {
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: "Successful",
+    type: GetAllChallengesResponseDto,
   })
   @Post("getAll")
   async getAll(@Body() request: GetAllChallengesRequestDto) {
@@ -123,11 +126,12 @@ export class ChallengeController {
     let challenges = await this.challengeService.getAll();
     return {
       challenges: challenges.map((challenge) => {
-        const { title, description } = challenge;
+        const { title, description, category } = challenge;
         const score = calculateChallengeScore(challenge);
         return {
           title,
           description,
+          category,
           score,
         };
       }),

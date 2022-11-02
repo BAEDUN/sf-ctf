@@ -1,4 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
+import { Category } from "../schemas/challenge.schema";
 
 export class CreateChallengeRequestDto {
   @ApiProperty()
@@ -9,6 +10,17 @@ export class CreateChallengeRequestDto {
 
   @ApiProperty()
   readonly description!: string;
+
+  @ApiProperty({
+    enum: [
+      Category.Web,
+      Category.Forensic,
+      Category.Pwnable,
+      Category.Reversing,
+      Category.Misc,
+    ],
+  })
+  category!: Category;
 
   @ApiProperty({
     type: "array",
