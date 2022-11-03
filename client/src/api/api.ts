@@ -47,10 +47,16 @@ export interface CreateChallengeRequestDto {
     'description': string;
     /**
      * 
-     * @type {Array<CreateChallengeRequestDtoFileListInner>}
+     * @type {string}
      * @memberof CreateChallengeRequestDto
      */
-    'fileList': Array<CreateChallengeRequestDtoFileListInner>;
+    'category': CreateChallengeRequestDtoCategoryEnum;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof CreateChallengeRequestDto
+     */
+    'fileList': Array<string>;
     /**
      * 
      * @type {CreateChallengeRequestDtoGrading}
@@ -64,25 +70,17 @@ export interface CreateChallengeRequestDto {
      */
     'flag': string;
 }
-/**
- * 
- * @export
- * @interface CreateChallengeRequestDtoFileListInner
- */
-export interface CreateChallengeRequestDtoFileListInner {
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateChallengeRequestDtoFileListInner
-     */
-    'fileName'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateChallengeRequestDtoFileListInner
-     */
-    'fileId'?: string;
-}
+
+export const CreateChallengeRequestDtoCategoryEnum = {
+    Web: 'Web',
+    Forensic: 'Forensic',
+    Pwnable: 'Pwnable',
+    Reversing: 'Reversing',
+    Misc: 'Misc'
+} as const;
+
+export type CreateChallengeRequestDtoCategoryEnum = typeof CreateChallengeRequestDtoCategoryEnum[keyof typeof CreateChallengeRequestDtoCategoryEnum];
+
 /**
  * 
  * @export
@@ -124,22 +122,64 @@ export interface GetAllChallengesRequestDto {
 /**
  * 
  * @export
- * @interface GetChallengeRequestDto
+ * @interface GetAllChallengesResponseDto
  */
-export interface GetChallengeRequestDto {
+export interface GetAllChallengesResponseDto {
     /**
      * 
-     * @type {string}
-     * @memberof GetChallengeRequestDto
+     * @type {Array<GetAllChallengesResponseDtoChallengesInner>}
+     * @memberof GetAllChallengesResponseDto
      */
-    'accessToken': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetChallengeRequestDto
-     */
-    'title': string;
+    'challenges': Array<GetAllChallengesResponseDtoChallengesInner>;
 }
+/**
+ * 
+ * @export
+ * @interface GetAllChallengesResponseDtoChallengesInner
+ */
+export interface GetAllChallengesResponseDtoChallengesInner {
+    /**
+     * 
+     * @type {string}
+     * @memberof GetAllChallengesResponseDtoChallengesInner
+     */
+    'title'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetAllChallengesResponseDtoChallengesInner
+     */
+    'description'?: string;
+    /**
+     * 
+     * @type {Enum}
+     * @memberof GetAllChallengesResponseDtoChallengesInner
+     */
+    'category'?: GetAllChallengesResponseDtoChallengesInnerCategoryEnum;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof GetAllChallengesResponseDtoChallengesInner
+     */
+    'fileList'?: Array<string>;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetAllChallengesResponseDtoChallengesInner
+     */
+    'score'?: number;
+}
+
+export const GetAllChallengesResponseDtoChallengesInnerCategoryEnum = {
+    Web: 'Web',
+    Forensic: 'Forensic',
+    Pwnable: 'Pwnable',
+    Reversing: 'Reversing',
+    Misc: 'Misc'
+} as const;
+
+export type GetAllChallengesResponseDtoChallengesInnerCategoryEnum = typeof GetAllChallengesResponseDtoChallengesInnerCategoryEnum[keyof typeof GetAllChallengesResponseDtoChallengesInnerCategoryEnum];
+
 /**
  * 
  * @export
@@ -265,7 +305,7 @@ export interface GetRequestDto {
      * @type {string}
      * @memberof GetRequestDto
      */
-    'fileId': string;
+    'filename': string;
 }
 /**
  * 
@@ -324,6 +364,12 @@ export interface PutRequestDto {
      * @memberof PutRequestDto
      */
     'accessToken': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PutRequestDto
+     */
+    'filename': string;
 }
 /**
  * 
@@ -331,12 +377,6 @@ export interface PutRequestDto {
  * @interface PutResponseDto
  */
 export interface PutResponseDto {
-    /**
-     * 
-     * @type {string}
-     * @memberof PutResponseDto
-     */
-    'fileId': string;
     /**
      * 
      * @type {string}
@@ -446,41 +486,6 @@ export const ChallengeApiAxiosParamCreator = function (configuration?: Configura
         },
         /**
          * 
-         * @param {GetChallengeRequestDto} getChallengeRequestDto 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        challengeControllerGet: async (getChallengeRequestDto: GetChallengeRequestDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'getChallengeRequestDto' is not null or undefined
-            assertParamExists('challengeControllerGet', 'getChallengeRequestDto', getChallengeRequestDto)
-            const localVarPath = `/api/challenge/get`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(getChallengeRequestDto, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
          * @param {GetAllChallengesRequestDto} getAllChallengesRequestDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -536,21 +541,11 @@ export const ChallengeApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @param {GetChallengeRequestDto} getChallengeRequestDto 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async challengeControllerGet(getChallengeRequestDto: GetChallengeRequestDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.challengeControllerGet(getChallengeRequestDto, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
          * @param {GetAllChallengesRequestDto} getAllChallengesRequestDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async challengeControllerGetAll(getAllChallengesRequestDto: GetAllChallengesRequestDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async challengeControllerGetAll(getAllChallengesRequestDto: GetAllChallengesRequestDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAllChallengesResponseDto>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.challengeControllerGetAll(getAllChallengesRequestDto, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -575,20 +570,11 @@ export const ChallengeApiFactory = function (configuration?: Configuration, base
         },
         /**
          * 
-         * @param {GetChallengeRequestDto} getChallengeRequestDto 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        challengeControllerGet(getChallengeRequestDto: GetChallengeRequestDto, options?: any): AxiosPromise<void> {
-            return localVarFp.challengeControllerGet(getChallengeRequestDto, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
          * @param {GetAllChallengesRequestDto} getAllChallengesRequestDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        challengeControllerGetAll(getAllChallengesRequestDto: GetAllChallengesRequestDto, options?: any): AxiosPromise<void> {
+        challengeControllerGetAll(getAllChallengesRequestDto: GetAllChallengesRequestDto, options?: any): AxiosPromise<GetAllChallengesResponseDto> {
             return localVarFp.challengeControllerGetAll(getAllChallengesRequestDto, options).then((request) => request(axios, basePath));
         },
     };
@@ -610,17 +596,6 @@ export class ChallengeApi extends BaseAPI {
      */
     public challengeControllerCreate(createChallengeRequestDto: CreateChallengeRequestDto, options?: AxiosRequestConfig) {
         return ChallengeApiFp(this.configuration).challengeControllerCreate(createChallengeRequestDto, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @param {GetChallengeRequestDto} getChallengeRequestDto 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof ChallengeApi
-     */
-    public challengeControllerGet(getChallengeRequestDto: GetChallengeRequestDto, options?: AxiosRequestConfig) {
-        return ChallengeApiFp(this.configuration).challengeControllerGet(getChallengeRequestDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

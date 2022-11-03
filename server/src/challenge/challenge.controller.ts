@@ -9,10 +9,6 @@ import { CreateChallengeRequestDto } from "./dto/createChallenge.dto";
 import { ApiResponse, ApiTags } from "@nestjs/swagger";
 import { ChallengeService } from "./challenge.service";
 import { UsersService } from "../user/users.service";
-import {
-  GetChallengeRequestDto,
-  GetChallengeResponseDto,
-} from "./dto/getChallenge.dto";
 import calculateChallengeScore from "./util/calculateChallengeScore";
 import {
   GetAllChallengesRequestDto,
@@ -70,47 +66,6 @@ export class ChallengeController {
     description: "Unauthorized",
   })
   @ApiResponse({
-    status: HttpStatus.NOT_FOUND,
-    description: "Not Found",
-  })
-  @ApiResponse({
-    status: HttpStatus.CREATED,
-    description: "Successful",
-    type: GetChallengeResponseDto,
-  })
-  @Post("get")
-  async get(@Body() request: GetChallengeRequestDto) {
-    const user = await this.userService.getUserFromToken(request.accessToken);
-
-    if (!user) {
-      throw new HttpException("Unauthorized", HttpStatus.UNAUTHORIZED);
-    }
-
-    let challenge = await this.challengeService.get(request.title);
-    if (!challenge) {
-      throw new HttpException("Not Found", HttpStatus.NOT_FOUND);
-    }
-
-    const { title, description, category, fileList } = challenge;
-    const score = calculateChallengeScore(challenge);
-    return {
-      title,
-      description,
-      category,
-      fileList,
-      score,
-    } as GetChallengeResponseDto;
-  }
-
-  @ApiResponse({
-    status: HttpStatus.UNAUTHORIZED,
-    description: "Unauthorized",
-  })
-  @ApiResponse({
-    status: HttpStatus.NOT_FOUND,
-    description: "Not Found",
-  })
-  @ApiResponse({
     status: HttpStatus.CREATED,
     description: "Successful",
     type: GetAllChallengesResponseDto,
@@ -126,12 +81,13 @@ export class ChallengeController {
     let challenges = await this.challengeService.getAll();
     return {
       challenges: challenges.map((challenge) => {
-        const { title, description, category } = challenge;
+        const { title, description, category, fileList } = challenge;
         const score = calculateChallengeScore(challenge);
         return {
           title,
           description,
           category,
+          fileList,
           score,
         };
       }),
