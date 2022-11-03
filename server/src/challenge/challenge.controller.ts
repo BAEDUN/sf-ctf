@@ -132,12 +132,7 @@ export class ChallengeController {
     const ip = request.header("x-real-ip") || request.ip;
     const flagMatched = challenge.flag === body.flag;
     if (!flagMatched) {
-      await this.logService.log_submit_flag(
-        ip,
-        user.username,
-        body.flag,
-        false
-      );
+      await this.logService.logSubmitFlag(ip, user.username, body.flag, false);
       return {
         success: false,
       } as SubmitResponseDto;
@@ -156,7 +151,7 @@ export class ChallengeController {
         }
       });
 
-    await this.logService.log_submit_flag(ip, user.username, body.flag, true);
+    await this.logService.logSubmitFlag(ip, user.username, body.flag, true);
 
     return {
       success: true,
