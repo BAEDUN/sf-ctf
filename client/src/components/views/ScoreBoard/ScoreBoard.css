@@ -1,0 +1,37 @@
+.row {
+  background-color: #111;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -5;
+  padding-top: 3rem;
+}
+
+.frame {
+  padding-bottom: 1.5em;
+  padding-top: 2.125em;
+  background: #222;
+}
+
+.tableFrame {
+  padding-top: 1.5em;
+}
+
+.frame__subtitle {
+  color: #fff;
+}
+
+.table {
+  table-layout: fixed;
+}
+
+.table tr {
+  color: #fff;
+}
+
+.table td {
+  overflow: hidden;
+  white-space: nowrap;
+}
