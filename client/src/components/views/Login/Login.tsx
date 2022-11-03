@@ -31,7 +31,7 @@ export default function Login() {
         e.preventDefault();
 
         try {
-            const userApi = new UserApi();
+            const userApi = new UserApi(undefined, "http://" + location.host);
             const response = await userApi.usersControllerLogin({
                 username: user,
                 password: pwd
@@ -69,7 +69,7 @@ export default function Login() {
                     </p>
                 </section>
             ) : (
-                <form className='Login mt-5' onSubmit={handleSubmit}>
+                <form className='Login mt-3' onSubmit={handleSubmit}>
                     <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
                     <div className="Title">
                         <h1>LOGIN</h1>

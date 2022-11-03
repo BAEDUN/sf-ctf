@@ -129,7 +129,7 @@ export default function Register() {
                     </p>
                 </section>
             ) : (
-                <form className='Register mt-5' onSubmit={handleSubmit}>
+                <form className='Register mt-3' onSubmit={handleSubmit}>
                     <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
                     <div className="Title">
                         <h1>REGISTER</h1>

@@ -1,12 +1,75 @@
 .Challenge {
-  background-color: #212529;
+  background-color: #111;
   height: 100%;
   width: 100%;
   position: absolute;
   top: 0;
   left: 0;
+  z-index: -5;
+  padding-top: 3rem;
+  justify-content: center;
+  padding: 0.5rem;
+  flex: 1;
+  flex-wrap: wrap;
 }
-.ChallForm {
+
+.ChallWrap {
+  float: left;
   width: 100%;
-  height: 100%;
+  padding-top: 4.5rem;
+}
+
+.ChallFrame {
+  margin-bottom: 1em;
+  padding-bottom: 0.625em;
+  background-color: #222;
+  flex-direction: column;
+  display: flex;
+  border-radius: 3px;
+  box-shadow: 0 0.05rem 0.2rem rgb(69 77 93 / 30%);
+}
+.frameBody {
+  padding: 0 1.5rem;
+  overflow-y: auto;
+}
+
+.frameTitle {
+  color: #fff;
+  padding-top: 0.625rem;
+  padding-bottom: 0.625rem;
+}
+
+.showSolved {
+  margin-bottom: 0.625em;
+}
+
+.formCheck,
+.categoryCheck {
+  display: block;
+  min-height: 1.15rem;
+  padding-left: 1.15rem;
+  position: relative;
+}
+
+input[type="checkbox"] {
+  margin-right: 0.625em;
+  width: 17px;
+  height: 17px;
+  background: #fff;
+  appearance: none;
+  border-radius: 5px;
+  border: 1px solid #999;
+}
+
+input[type="checkbox"]:checked {
+  background: #76ff03;
+}
+
+input[type="checkbox"] + label {
+  margin-bottom: 0;
+  position: relative;
+  display: inline-block;
+  margin: 0.215rem 0;
+  cursor: default;
+  color: #fff;
 }

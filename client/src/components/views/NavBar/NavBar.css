@@ -1,5 +1,5 @@
 .MainNavBar {
-  /* border-bottom: 1px #e0e0e0 solid !important; */
+  z-index: 1;
 }
 
 .MainTitle {
