@@ -14,6 +14,7 @@ import {
   GetAllChallengesRequestDto,
   GetAllChallengesResponseDto,
 } from "./dto/getAllChallenges.dto";
+import { SubmitRequestDto, SubmitResponseDto } from "./dto/submitFlag.dto";
 
 @ApiTags("challenge")
 @Controller("challenge")
@@ -92,5 +93,60 @@ export class ChallengeController {
         };
       }),
     } as GetAllChallengesResponseDto;
+  }
+
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: "Unauthorized",
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: "Challenge Not Found",
+  })
+  @ApiResponse({
+    status: HttpStatus.CONFLICT,
+    description: "Already Solved",
+  })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: "Successful",
+    type: SubmitResponseDto,
+  })
+  @Post("submitFlag")
+  async submitFlag(@Body() body: SubmitRequestDto) {
+    const user = await this.userService.getUserFromToken(body.accessToken);
+
+    if (!user) {
+      throw new HttpException("Unauthorized", HttpStatus.UNAUTHORIZED);
+    }
+
+    const challenge = await this.challengeService.get(body.title);
+    if (!challenge) {
+      throw new HttpException("Challenge Not Found", HttpStatus.NOT_FOUND);
+    }
+
+    const flagMatched = challenge.flag === body.flag;
+    if (!flagMatched) {
+      return {
+        success: false,
+      } as SubmitResponseDto;
+    }
+
+    await this.challengeService
+      .addSolvedUser(user, challenge)
+      .catch((error) => {
+        switch (error.message) {
+          case "Already Solved": {
+            throw new HttpException("Already Solved", HttpStatus.CONFLICT);
+          }
+          default: {
+            throw error;
+          }
+        }
+      });
+
+    return {
+      success: true,
+    } as SubmitResponseDto;
   }
 }

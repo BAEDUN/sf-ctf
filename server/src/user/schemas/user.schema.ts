@@ -43,4 +43,4 @@ export enum Section {
   SecurityFirst = "SecurityFirst",
 }
 
-export const CatSchema = SchemaFactory.createForClass(User);
+export const UserSchema = SchemaFactory.createForClass(User);
