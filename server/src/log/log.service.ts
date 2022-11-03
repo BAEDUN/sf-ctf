@@ -37,7 +37,7 @@ export class LogService {
     };
   }
 
-  public async log_login(ip: string, username: string) {
+  public async logLogin(ip: string, username: string) {
     const createdLog = new this.logModel({
       ip,
       username,
@@ -46,12 +46,28 @@ export class LogService {
     return await createdLog.save();
   }
 
-  public async log_download(ip: string, username: string, filename: string) {
+  public async logDownload(ip: string, username: string, filename: string) {
     const createdLog = new this.logModel({
       ip,
       username,
       type: LogType.Download,
       filename,
+    });
+    return await createdLog.save();
+  }
+
+  public async logSubmitFlag(
+    ip: string,
+    username: string,
+    flag: string,
+    solved: boolean
+  ) {
+    const createdLog = new this.logModel({
+      ip,
+      username,
+      type: LogType.Submit,
+      flag,
+      solved,
     });
     return await createdLog.save();
   }

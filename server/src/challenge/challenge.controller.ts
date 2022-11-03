@@ -4,6 +4,7 @@ import {
   HttpException,
   HttpStatus,
   Post,
+  Req,
 } from "@nestjs/common";
 import { CreateChallengeRequestDto } from "./dto/createChallenge.dto";
 import { ApiResponse, ApiTags } from "@nestjs/swagger";
@@ -14,13 +15,17 @@ import {
   GetAllChallengesRequestDto,
   GetAllChallengesResponseDto,
 } from "./dto/getAllChallenges.dto";
+import { SubmitRequestDto, SubmitResponseDto } from "./dto/submitFlag.dto";
+import { LogService } from "../log/log.service";
+import { Request } from "express";
 
 @ApiTags("challenge")
 @Controller("challenge")
 export class ChallengeController {
   constructor(
     private readonly challengeService: ChallengeService,
-    private readonly userService: UsersService
+    private readonly userService: UsersService,
+    private readonly logService: LogService
   ) {}
 
   @ApiResponse({
@@ -92,5 +97,64 @@ export class ChallengeController {
         };
       }),
     } as GetAllChallengesResponseDto;
+  }
+
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: "Unauthorized",
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: "Challenge Not Found",
+  })
+  @ApiResponse({
+    status: HttpStatus.CONFLICT,
+    description: "Already Solved",
+  })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: "Successful",
+    type: SubmitResponseDto,
+  })
+  @Post("submitFlag")
+  async submitFlag(@Req() request: Request, @Body() body: SubmitRequestDto) {
+    const user = await this.userService.getUserFromToken(body.accessToken);
+
+    if (!user) {
+      throw new HttpException("Unauthorized", HttpStatus.UNAUTHORIZED);
+    }
+
+    const challenge = await this.challengeService.get(body.title);
+    if (!challenge) {
+      throw new HttpException("Challenge Not Found", HttpStatus.NOT_FOUND);
+    }
+
+    const ip = request.header("x-real-ip") || request.ip;
+    const flagMatched = challenge.flag === body.flag;
+    if (!flagMatched) {
+      await this.logService.logSubmitFlag(ip, user.username, body.flag, false);
+      return {
+        success: false,
+      } as SubmitResponseDto;
+    }
+
+    await this.challengeService
+      .addSolvedUser(user, challenge)
+      .catch((error) => {
+        switch (error.message) {
+          case "Already Solved": {
+            throw new HttpException("Already Solved", HttpStatus.CONFLICT);
+          }
+          default: {
+            throw error;
+          }
+        }
+      });
+
+    await this.logService.logSubmitFlag(ip, user.username, body.flag, true);
+
+    return {
+      success: true,
+    } as SubmitResponseDto;
   }
 }
