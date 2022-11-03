@@ -143,6 +143,114 @@ export interface GetChallengeRequestDto {
 /**
  * 
  * @export
+ * @interface GetLogRequestDto
+ */
+export interface GetLogRequestDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof GetLogRequestDto
+     */
+    'accessToken': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetLogRequestDto
+     */
+    'username'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetLogRequestDto
+     */
+    'ip'?: string;
+    /**
+     * Zero based page index. 25 logs per page
+     * @type {number}
+     * @memberof GetLogRequestDto
+     */
+    'page': number;
+}
+/**
+ * 
+ * @export
+ * @interface GetLogResponseDto
+ */
+export interface GetLogResponseDto {
+    /**
+     * 
+     * @type {Array<GetLogResponseDtoLogsInner>}
+     * @memberof GetLogResponseDto
+     */
+    'logs': Array<GetLogResponseDtoLogsInner>;
+    /**
+     * Total pages for submitted query
+     * @type {number}
+     * @memberof GetLogResponseDto
+     */
+    'pages': number;
+}
+/**
+ * 
+ * @export
+ * @interface GetLogResponseDtoLogsInner
+ */
+export interface GetLogResponseDtoLogsInner {
+    /**
+     * 
+     * @type {string}
+     * @memberof GetLogResponseDtoLogsInner
+     */
+    'createdAt'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetLogResponseDtoLogsInner
+     */
+    'ip'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetLogResponseDtoLogsInner
+     */
+    'username'?: string;
+    /**
+     * 
+     * @type {Enum}
+     * @memberof GetLogResponseDtoLogsInner
+     */
+    'type'?: GetLogResponseDtoLogsInnerTypeEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetLogResponseDtoLogsInner
+     */
+    'filename'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetLogResponseDtoLogsInner
+     */
+    'flag'?: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetLogResponseDtoLogsInner
+     */
+    'solved'?: boolean;
+}
+
+export const GetLogResponseDtoLogsInnerTypeEnum = {
+    Login: 'Login',
+    Download: 'Download',
+    Submit: 'Submit'
+} as const;
+
+export type GetLogResponseDtoLogsInnerTypeEnum = typeof GetLogResponseDtoLogsInnerTypeEnum[keyof typeof GetLogResponseDtoLogsInnerTypeEnum];
+
+/**
+ * 
+ * @export
  * @interface GetRequestDto
  */
 export interface GetRequestDto {
@@ -692,6 +800,109 @@ export class FileApi extends BaseAPI {
      */
     public fileControllerPut(putRequestDto: PutRequestDto, options?: AxiosRequestConfig) {
         return FileApiFp(this.configuration).fileControllerPut(putRequestDto, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+/**
+ * LogApi - axios parameter creator
+ * @export
+ */
+export const LogApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @param {GetLogRequestDto} getLogRequestDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        logControllerGet: async (getLogRequestDto: GetLogRequestDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'getLogRequestDto' is not null or undefined
+            assertParamExists('logControllerGet', 'getLogRequestDto', getLogRequestDto)
+            const localVarPath = `/api/log/get`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(getLogRequestDto, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * LogApi - functional programming interface
+ * @export
+ */
+export const LogApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = LogApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @param {GetLogRequestDto} getLogRequestDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async logControllerGet(getLogRequestDto: GetLogRequestDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetLogResponseDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.logControllerGet(getLogRequestDto, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+    }
+};
+
+/**
+ * LogApi - factory interface
+ * @export
+ */
+export const LogApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = LogApiFp(configuration)
+    return {
+        /**
+         * 
+         * @param {GetLogRequestDto} getLogRequestDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        logControllerGet(getLogRequestDto: GetLogRequestDto, options?: any): AxiosPromise<GetLogResponseDto> {
+            return localVarFp.logControllerGet(getLogRequestDto, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * LogApi - object-oriented interface
+ * @export
+ * @class LogApi
+ * @extends {BaseAPI}
+ */
+export class LogApi extends BaseAPI {
+    /**
+     * 
+     * @param {GetLogRequestDto} getLogRequestDto 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof LogApi
+     */
+    public logControllerGet(getLogRequestDto: GetLogRequestDto, options?: AxiosRequestConfig) {
+        return LogApiFp(this.configuration).logControllerGet(getLogRequestDto, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

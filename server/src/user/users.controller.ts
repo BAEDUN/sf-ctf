@@ -1,10 +1,13 @@
 import {
   Body,
   Controller,
+  forwardRef,
   Get,
   HttpException,
   HttpStatus,
+  Inject,
   Post,
+  Req,
 } from "@nestjs/common";
 import { RegisterRequestDto } from "./dto/register.dto";
 import { User } from "./schemas/user.schema";
@@ -13,11 +16,17 @@ import { ApiResponse, ApiTags } from "@nestjs/swagger";
 import { LoginRequestDto, LoginResponseDto } from "./dto/login.dto";
 import comparePassword from "./util/comparePassword";
 import issueToken from "./util/issueToken";
+import { LogService } from "../log/log.service";
+import { Request } from "express";
 
 @ApiTags("user")
 @Controller("user")
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    @Inject(forwardRef(() => LogService))
+    private readonly logService: LogService
+  ) {}
 
   @ApiResponse({
     status: HttpStatus.CREATED,
@@ -29,7 +38,6 @@ export class UsersController {
   })
   @Post("register")
   async register(@Body() createUserDto: RegisterRequestDto) {
-    console.log("User 1");
     const idDuplicatedUsers = await this.usersService.findAll({
       username: createUserDto.username,
     });
@@ -37,7 +45,6 @@ export class UsersController {
       throw new HttpException("Duplicated id", HttpStatus.CONFLICT);
     }
 
-    console.log("User 2");
     const emailDuplicatedUsers = await this.usersService.findAll({
       email: createUserDto.email,
     });
@@ -46,7 +53,6 @@ export class UsersController {
     }
 
     await this.usersService.create(createUserDto);
-    console.log("User created");
   }
 
   @ApiResponse({
@@ -59,9 +65,9 @@ export class UsersController {
     description: "Invalid id or password",
   })
   @Post("login")
-  async login(@Body() request: LoginRequestDto) {
+  async login(@Req() request: Request, @Body() body: LoginRequestDto) {
     const user = await this.usersService.findOne({
-      username: request.username,
+      username: body.username,
     });
     if (!user) {
       throw new HttpException(
@@ -71,7 +77,7 @@ export class UsersController {
     }
 
     const passwordMatched = await comparePassword(
-      request.password,
+      body.password,
       user.hashedPassword
     );
     if (!passwordMatched) {
@@ -80,6 +86,9 @@ export class UsersController {
         HttpStatus.UNAUTHORIZED
       );
     }
+
+    const ip = request.header("x-real-ip") || request.ip;
+    await this.logService.log_login(ip, user.username);
 
     const accessToken = await issueToken(user);
 

@@ -33,10 +33,7 @@ export class Challenge {
   category!: Category;
 
   @Prop({ default: [] })
-  fileList!: {
-    fileName: string;
-    fileId: string;
-  }[];
+  fileList!: String[];
 
   @Prop({
     type: {

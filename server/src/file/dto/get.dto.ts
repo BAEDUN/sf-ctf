@@ -5,7 +5,7 @@ export class GetRequestDto {
   readonly accessToken!: string;
 
   @ApiProperty()
-  readonly fileId!: string;
+  readonly filename!: string;
 }
 
 export class GetResponseDto {
