@@ -24,6 +24,10 @@ export class GetAllChallengesResponseDto {
             Category.Misc,
           ],
         },
+        fileList: {
+          type: "array",
+          items: { type: "string" },
+        },
         score: { type: "number" },
       },
     },
@@ -32,6 +36,7 @@ export class GetAllChallengesResponseDto {
     title: string;
     description: string;
     category: Category;
+    fileList: string[];
     score: number;
   }[];
 }
