@@ -1,20 +1,4 @@
 services:
-  admin:
-    build:
-      context: .
-      dockerfile: ./admin/dockerfile.dev
-    ports:
-      - 8001:1234
-    volumes:
-      - ./admin/public:/admin/public
-      - ./admin/src:/admin/src
-      # - ./admin/tsconfig.json:/admin/tsconfig.json
-      - ./admin/yarn.lock:/admin/yarn.lock
-      - ./admin/package.json:/admin/package.json
-      - ./admin/package-lock.json:/admin/package-lock.json
-    depends_on:
-      - server
-
   client:
     user: ${USER_ID}
     build:
