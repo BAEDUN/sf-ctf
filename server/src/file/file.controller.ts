@@ -33,15 +33,17 @@ export class FileController {
     description: "Forbidden",
   })
   @ApiResponse({
+    status: HttpStatus.CONFLICT,
+    description: "File Already Exist",
+  })
+  @ApiResponse({
     status: HttpStatus.CREATED,
     description: "Successful",
     type: PutResponseDto,
   })
   @Post("put")
-  async put(@Body() putRequestDto: PutRequestDto) {
-    const user = await this.userService.getUserFromToken(
-      putRequestDto.accessToken
-    );
+  async put(@Body() body: PutRequestDto) {
+    const user = await this.userService.getUserFromToken(body.accessToken);
 
     if (!user) {
       throw new HttpException("Unauthorized", HttpStatus.UNAUTHORIZED);
@@ -51,10 +53,19 @@ export class FileController {
       throw new HttpException("Forbidden", HttpStatus.FORBIDDEN);
     }
 
-    const fileId = uuid();
-    const presignedUrl = await this.fileService.presignedPutUrl(fileId);
+    const presignedUrl = await this.fileService
+      .presignedPutUrl(body.filename)
+      .catch((error) => {
+        switch (error.message) {
+          case "FileAlreadyExist": {
+            throw new HttpException("File Already Exist", HttpStatus.CONFLICT);
+          }
+          default: {
+            throw error;
+          }
+        }
+      });
     return {
-      fileId,
       presignedUrl,
     } as PutResponseDto;
   }
@@ -80,15 +91,14 @@ export class FileController {
       throw new HttpException("Unauthorized", HttpStatus.UNAUTHORIZED);
     }
 
-    if (!body.fileId) {
+    if (!body.filename) {
       throw new HttpException("Bad Request", HttpStatus.BAD_REQUEST);
     }
 
-    const presignedUrl = await this.fileService.presignedGetUrl(body.fileId);
+    const presignedUrl = await this.fileService.presignedGetUrl(body.filename);
 
     const ip = request.header("x-real-ip") || request.ip;
-    // TODO: Use fileId or filename?
-    this.logService.log_download(ip, user.username, body.fileId);
+    this.logService.log_download(ip, user.username, body.filename);
     return {
       presignedUrl,
     } as GetResponseDto;

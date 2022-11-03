@@ -27,17 +27,8 @@ export class GetChallengeResponseDto {
   })
   category!: Category;
 
-  @ApiProperty({
-    type: "array",
-    items: {
-      type: "object",
-      properties: {
-        fileName: { type: "string" },
-        fileId: { type: "string" },
-      },
-    },
-  })
-  readonly fileList!: { fileName: string; fileId: string }[];
+  @ApiProperty()
+  readonly fileList!: string[];
 
   @ApiProperty()
   readonly score!: number;

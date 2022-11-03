@@ -3,7 +3,6 @@ import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { CreateChallengeRequestDto } from "./dto/createChallenge.dto";
 import { Challenge, ChallengeDocument } from "./schemas/challenge.schema";
-import { GetChallengeRequestDto } from "./dto/getChallenge.dto";
 
 @Injectable()
 export class ChallengeService {
