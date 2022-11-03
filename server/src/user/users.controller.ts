@@ -34,25 +34,33 @@ export class UsersController {
   })
   @ApiResponse({
     status: HttpStatus.CONFLICT,
-    description: JSON.stringify(["Duplicated id", "Duplicated email"]),
+    description: JSON.stringify(["Duplicated username", "Duplicated email"]),
   })
   @Post("register")
-  async register(@Body() createUserDto: RegisterRequestDto) {
+  async register(@Body() body: RegisterRequestDto) {
+    const { username, email, password, nickname, section } = body;
     const idDuplicatedUsers = await this.usersService.findAll({
-      username: createUserDto.username,
+      username: body.username,
     });
     if (idDuplicatedUsers.length > 0) {
-      throw new HttpException("Duplicated id", HttpStatus.CONFLICT);
+      throw new HttpException("Duplicated username", HttpStatus.CONFLICT);
     }
 
     const emailDuplicatedUsers = await this.usersService.findAll({
-      email: createUserDto.email,
+      email: body.email,
     });
     if (emailDuplicatedUsers.length > 0) {
       throw new HttpException("Duplicated email", HttpStatus.CONFLICT);
     }
 
-    await this.usersService.create(createUserDto);
+    await this.usersService.create({
+      username,
+      email,
+      password,
+      nickname,
+      section,
+      isAdmin: false,
+    });
   }
 
   @ApiResponse({
