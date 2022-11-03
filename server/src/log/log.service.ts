@@ -55,4 +55,20 @@ export class LogService {
     });
     return await createdLog.save();
   }
+
+  public async log_submit_flag(
+    ip: string,
+    username: string,
+    flag: string,
+    solved: boolean
+  ) {
+    const createdLog = new this.logModel({
+      ip,
+      username,
+      type: LogType.Submit,
+      flag,
+      solved,
+    });
+    return await createdLog.save();
+  }
 }

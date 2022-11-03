@@ -1,5 +1,6 @@
 import { Module } from "@nestjs/common";
 import { MongooseModule } from "@nestjs/mongoose";
+import { LogModule } from "../log/log.module";
 import { UserSchema, User } from "../user/schemas/user.schema";
 import { UsersModule } from "../user/users.module";
 import { ChallengeController } from "./challenge.controller";
@@ -13,6 +14,7 @@ import { Challenge, ChallengeSchema } from "./schemas/challenge.schema";
       { name: User.name, schema: UserSchema },
     ]),
     UsersModule,
+    LogModule,
   ],
   controllers: [ChallengeController],
   providers: [ChallengeService],

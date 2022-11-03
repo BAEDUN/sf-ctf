@@ -4,6 +4,7 @@ import {
   HttpException,
   HttpStatus,
   Post,
+  Req,
 } from "@nestjs/common";
 import { CreateChallengeRequestDto } from "./dto/createChallenge.dto";
 import { ApiResponse, ApiTags } from "@nestjs/swagger";
@@ -15,13 +16,16 @@ import {
   GetAllChallengesResponseDto,
 } from "./dto/getAllChallenges.dto";
 import { SubmitRequestDto, SubmitResponseDto } from "./dto/submitFlag.dto";
+import { LogService } from "../log/log.service";
+import { Request } from "express";
 
 @ApiTags("challenge")
 @Controller("challenge")
 export class ChallengeController {
   constructor(
     private readonly challengeService: ChallengeService,
-    private readonly userService: UsersService
+    private readonly userService: UsersService,
+    private readonly logService: LogService
   ) {}
 
   @ApiResponse({
@@ -113,7 +117,7 @@ export class ChallengeController {
     type: SubmitResponseDto,
   })
   @Post("submitFlag")
-  async submitFlag(@Body() body: SubmitRequestDto) {
+  async submitFlag(@Req() request: Request, @Body() body: SubmitRequestDto) {
     const user = await this.userService.getUserFromToken(body.accessToken);
 
     if (!user) {
@@ -125,8 +129,15 @@ export class ChallengeController {
       throw new HttpException("Challenge Not Found", HttpStatus.NOT_FOUND);
     }
 
+    const ip = request.header("x-real-ip") || request.ip;
     const flagMatched = challenge.flag === body.flag;
     if (!flagMatched) {
+      await this.logService.log_submit_flag(
+        ip,
+        user.username,
+        body.flag,
+        false
+      );
       return {
         success: false,
       } as SubmitResponseDto;
@@ -144,6 +155,8 @@ export class ChallengeController {
           }
         }
       });
+
+    await this.logService.log_submit_flag(ip, user.username, body.flag, true);
 
     return {
       success: true,
