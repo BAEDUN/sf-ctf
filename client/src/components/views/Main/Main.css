@@ -12,10 +12,11 @@
 }
 
 .Logo {
-  background-color: #222;
+  /* background-color: #222; */
   padding: 7%;
   width: 30%;
   margin-left: 35%;
   margin-top: 5%;
-  border-radius: 10px;
+  /* border-radius: 10px; */
+  /* background-image: url("../../../../public/logo.png"); */
 }

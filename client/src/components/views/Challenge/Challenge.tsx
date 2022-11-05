@@ -1,205 +1,127 @@
-import React, { useState, useMemo, useEffect, useCallback } from 'react';
-import { MDBInput } from 'mdb-react-ui-kit';
+import React, { useState, useCallback, useRef } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
-import "./Challenge.css";
 
-const loadStates = {
-    pending: 0,
-    notStarted: 1,
-    loaded: 2
-}
+export default function Challenge({ challenge, solved, setSolved }) {
+    const hasDownloads = challenge.fileList.length !== 0;
 
-export default function Challenge() {
-    const challengePageState = useMemo(() => JSON.parse(localStorage.getItem('challengePageState') || '{}'), [])
-    const [problems, setProblems] = useState(null)
-    const [categories, setCategories] = useState(challengePageState.categories || {})
-    const [showSolved, setShowSolved] = useState(challengePageState.showSolved || false)
-    const [solveIDs, setSolveIDs] = useState([])
-    const [loadState, setLoadState] = useState(loadStates.pending)
+    const [error, setError] = useState(undefined);
+    const hasError = error !== undefined;
 
-    const setSolved = useCallback((id: any) => {
-        setSolveIDs(solveIDs => {
-            if (!solveIDs.includes(id)) {
-                return [...solveIDs, id]
-            }
-            return solveIDs
-        })
-    }, [])
+    const [value, setValue] = useState('');
+    const handleInputChange = useCallback((e: any) => setValue(e.target.value), []);
 
-    const handleShowSolvedChange = useCallback(e => {
-        setShowSolved(e.target.checked)
-    }, [])
-    const handleCategoryCheckedChange = useCallback(e => {
-        setCategories((categories: any) => ({
-            ...categories,
-            [e.target.dataset.category]: e.target.checked
-        }))
-    }, [])
+    const handleSubmit = useCallback((e: any) => {
+        e.preventDefault();
 
-    useEffect(() => {
-        const action = async () => {
-            if (problems !== null) {
-                return
-            }
-            const { data, error, notStarted } = await getChallenges()
-            if (error) {
-                toast({ body: error, type: 'error' })
-                return
-            }
 
-            setLoadState(notStarted ? loadStates.notStarted : loadStates.loaded)
-            if (notStarted) {
-                return
-            }
+        submitFlag(challenge.title, value.trim())
+            .then(({ error }) => {
+                if (error === undefined) {
+                    toast.success('플래그가 제출되었습니다!', {
+                        position: "top-center",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                    });
 
-            const newCategories = { ...categories }
-            data.forEach(problem => {
-                if (newCategories[problem.category] === undefined) {
-                    newCategories[problem.category] = false
+                    setSolved(challenge.id)
+                } else {
+                    toast.error('플래그가 제출되지 않았습니다!', {
+                        position: "top-center",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                    });
+                    setError(error);
                 }
             })
+    }, [toast, setSolved, challenge, value]);
 
-            setProblems(data)
-            setCategories(newCategories)
-        }
-        action()
-    }, [toast, categories, problems])
+    const [solves, setSolves] = useState(null)
+    const [solvesPending, setSolvesPending] = useState(false)
+    const [solvesPage, setSolvesPage] = useState(1)
+    const modalBodyRef = useRef(null)
 
-    useEffect(() => {
-        const action = async () => {
-            const { data, error } = await getPrivateSolves()
-            if (error) {
-                toast({ body: error, type: 'error' })
-                return
-            }
-
-            setSolveIDs(data.map(solve => solve.id))
-        }
-        action()
-    }, [toast])
-
-    useEffect(() => {
-        localStorage.challPageState = JSON.stringify({ categories, showSolved })
-    }, [categories, showSolved])
-
-    const problemsToDisplay = useMemo(() => {
-        if (problems === null) {
-            return []
-        }
-        let filtered = problems
-        if (!showSolved) {
-            filtered = filtered.filter(problem => !solveIDs.includes(problem.id))
-        }
-        let filterCategories = false
-        Object.values(categories).forEach(displayCategory => {
-            if (displayCategory) filterCategories = true
+    const handleSetSolvesPage = useCallback(async (newPage: any) => {
+        const { kind, message, data } = await getSolves({
+            challId: problem.id,
+            limit: solvesPageSize,
+            offset: (newPage - 1) * solvesPageSize
         })
-        if (filterCategories) {
-            Object.keys(categories).forEach(category => {
-                if (categories[category] === false) {
-                    // Do not display this category
-                    filtered = filtered.filter(problem => problem.category !== category)
-                }
-            })
+        if (kind !== 'goodChallengeSolves') {
+            toast({ body: message, type: 'error' })
+            return
         }
+        setSolves(data.solves)
+        setSolvesPage(newPage)
+        modalBodyRef.current.scrollTop = 0
+    }, [problem.id, toast])
 
-        filtered.sort((a, b) => {
-            if (a.points === b.points) {
-                if (a.solves === b.solves) {
-                    const aWeight = a.sortWeight || 0
-                    const bWeight = b.sortWeight || 0
-
-                    return bWeight - aWeight
-                }
-                return b.solves - a.solves
-            }
-            return a.points - b.points
+    const onSolvesClick = useCallback(async (e) => {
+        e.preventDefault()
+        if (solvesPending) {
+            return
+        }
+        setSolvesPending(true)
+        const { kind, message, data } = await getSolves({
+            challId: problem.id,
+            limit: solvesPageSize,
+            offset: 0
         })
-
-        return filtered
-    }, [problems, categories, showSolved, solveIDs])
-
-    const { categoryCounts, solvedCount } = useMemo(() => {
-        const categoryCounts = new Map()
-        let solvedCount = 0
-        if (problems !== null) {
-            for (const problem of problems) {
-                if (!categoryCounts.has(problem.category)) {
-                    categoryCounts.set(problem.category, {
-                        total: 0,
-                        solved: 0
-                    })
-                }
-
-                const solved = solveIDs.includes(problem.id)
-                categoryCounts.get(problem.category).total += 1
-                if (solved) {
-                    categoryCounts.get(problem.category).solved += 1
-                }
-
-                if (solved) {
-                    solvedCount += 1
-                }
-            }
+        setSolvesPending(false)
+        if (kind !== 'goodChallengeSolves') {
+            toast({ body: message, type: 'error' })
+            return
         }
-        return { categoryCounts, solvedCount }
-    }, [problems, solveIDs])
-
-    if (loadState === loadStates.pending) {
-        return null
-    }
-
-    if (loadState === loadStates.notStarted) {
-        return <NotStarted />
-    }
-
+        setSolves(data.solves)
+        setSolvesPage(1)
+    }, [challenge.title, toast, solvesPending]);
+    const onSolvesClose = useCallback(() => setSolves(null), []);
     return (
-        <div className='Challenge'>
-            <div className="ChallWrap">
-                <div className="ChallFrame">
-                    <div className="frameBody">
-                        <div className="frameTitle">Filter</div>
-                        <div className="showSolved">
-                            <div className="formCheck">
-                                <input type="checkbox" id="show_solved" className='formInput' />
-                                <label htmlFor="show_solved" className='formLabel'>Show Solved (1/1 solved)</label>
-                            </div>
-                        </div>
+        <div className="ChallFrame">
+            <div className='frameBody'>
+                <div className='row u-no-padding'>
+                    <div className='col-6 u-no-padding'>
+                        <div className='frameTitle'>{challenge.category}/{challenge.title}</div>
+                        <div className='frameSubTitle u-no-margin'>{challenge.author}</div>
+                    </div>
+                    <div className='col-6 u-no-padding u-text-right'>
+                        <a
+                            className={`points ${solvesPending ? solvesPending : ''}`}
+                            onClick={onSolvesClick}>
+                            {challenge.solves}
+                            {challenge.solves === 1 ? ' solve / ' : ' solves / '}
+                            {challenge.points}
+                            {challenge.points === 1 ? ' point' : ' points'}
+                        </a>
                     </div>
                 </div>
-                <div className="ChallFrame">
-                    <div className="frameBody">
-                        <div className="frameTitle">Categories</div>
-                        <div className="categoryCheck">
-                            <div className="webCheck">
-                                <input type="checkbox" id="category_web" data-category="web" className='formInput' />
-                                <label htmlFor="category_web" className='formLabel'>web (1/1 solved)</label>
-                            </div>
-                            <div className="revCheck">
-                                <input type="checkbox" id="category_rev" data-category="rev" className='formInput' />
-                                <label htmlFor="category_rev" className='formLabel'>rev (1/1 solved)</label>
-                            </div>
-                            <div className="pwnCheck">
-                                <input type="checkbox" id="category_pwn" data-category="pwn" className='formInput' />
-                                <label htmlFor="category_pwn" className='formLabel'>pwn (1/1 solved)</label>
-                            </div>
-                            <div className="forCheck">
-                                <input type="checkbox" id="category_for" data-category="for" className='formInput' />
-                                <label htmlFor="category_for" className='formLabel'>for (1/1 solved)</label>
-                            </div>
-                            <div className="miscCheck">
-                                <input type="checkbox" id="category_misc" data-category="misc" className='formInput' />
-                                <label htmlFor="category_misc" className='formLabel'>misc (1/1 solved)</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="ChallFrame">
-                    <div className="frameBody">
 
-                    </div>
+                <div className='content-no-padding u-center'><div className="divider" /></div>
+
+                <div className="description frameSubTitle">
+                    <Markdown content={challenge.description} components={markdownComponents} />
                 </div>
-            </div>
-        </div >
-    );
+                <form className='form-section' onSubmit={handleSubmit}>
+                    <div className='form-group'>
+                        <input
+                            autoComplete='off'
+                            autoCorrect='off'
+                            className={`form-group-input input-small ${classNamees.input} ${hasError ? 'input-error' : ''} ${solved ? 'input-success' : ''}`}
+                            placeholder={`Flag${solved ? ' (solved)' : ''}`}
+                            value={value}
+                            onChange={handleInputChange}
+                        />
+                        <button className={`form-group-btn btn-small ${classes.submit}`}>Submit</button>
+                    </div>
+                </form>
+                );
 }

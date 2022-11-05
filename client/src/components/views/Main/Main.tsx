@@ -4,17 +4,15 @@ import "./Main.css";
 import Particles from "react-tsparticles";
 import type { Container, Engine } from "tsparticles-engine";
 import { loadFull } from "tsparticles";
+import logo from "../../../assets/images/logo.png";
 
 const Main = () => {
   const particlesInit = useCallback(async (engine: Engine) => {
-    console.log(engine);
-
     await loadFull(engine);
   }, []);
 
   const particlesLoaded = useCallback(
     async (container: Container | undefined) => {
-      await console.log(container);
     },
     []
   );
@@ -25,7 +23,7 @@ const Main = () => {
         particlesInit={particlesInit}
         particlesLoaded={particlesLoaded}
       />
-      <div className="Logo">대회 이름 자리</div>
+      <div className="Logo"><img src={logo} /></div>
       <div className="Logo">대회 이름 자리</div>
     </div>
   );
