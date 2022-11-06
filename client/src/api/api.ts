@@ -180,6 +180,12 @@ export interface GetAllChallengesResponseDtoChallengesInner {
      * @memberof GetAllChallengesResponseDtoChallengesInner
      */
     'authorUsername'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetAllChallengesResponseDtoChallengesInner
+     */
+    'solverCount'?: number;
 }
 
 export const GetAllChallengesResponseDtoChallengesInnerCategoryEnum = {
@@ -337,6 +343,69 @@ export interface GetResponseDto {
      * @memberof GetResponseDto
      */
     'presignedUrl': string;
+}
+/**
+ * 
+ * @export
+ * @interface GetSolversRequestDto
+ */
+export interface GetSolversRequestDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof GetSolversRequestDto
+     */
+    'accessToken': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetSolversRequestDto
+     */
+    'challengeTitle': string;
+    /**
+     * Zero based page index. 10 per page
+     * @type {number}
+     * @memberof GetSolversRequestDto
+     */
+    'page': number;
+}
+/**
+ * 
+ * @export
+ * @interface GetSolversResponseDto
+ */
+export interface GetSolversResponseDto {
+    /**
+     * 
+     * @type {Array<GetSolversResponseDtoSolversInner>}
+     * @memberof GetSolversResponseDto
+     */
+    'solvers': Array<GetSolversResponseDtoSolversInner>;
+    /**
+     * Total pages for submitted query
+     * @type {number}
+     * @memberof GetSolversResponseDto
+     */
+    'pages': number;
+}
+/**
+ * 
+ * @export
+ * @interface GetSolversResponseDtoSolversInner
+ */
+export interface GetSolversResponseDtoSolversInner {
+    /**
+     * 
+     * @type {string}
+     * @memberof GetSolversResponseDtoSolversInner
+     */
+    'solvedAt'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetSolversResponseDtoSolversInner
+     */
+    'username'?: string;
 }
 /**
  * 
@@ -967,6 +1036,41 @@ export const LogApiAxiosParamCreator = function (configuration?: Configuration) 
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @param {GetSolversRequestDto} getSolversRequestDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        logControllerGetSolvers: async (getSolversRequestDto: GetSolversRequestDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'getSolversRequestDto' is not null or undefined
+            assertParamExists('logControllerGetSolvers', 'getSolversRequestDto', getSolversRequestDto)
+            const localVarPath = `/api/log/getSolvers`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(getSolversRequestDto, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -985,6 +1089,16 @@ export const LogApiFp = function(configuration?: Configuration) {
          */
         async logControllerGet(getLogRequestDto: GetLogRequestDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetLogResponseDto>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.logControllerGet(getLogRequestDto, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {GetSolversRequestDto} getSolversRequestDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async logControllerGetSolvers(getSolversRequestDto: GetSolversRequestDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetSolversResponseDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.logControllerGetSolvers(getSolversRequestDto, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -1006,6 +1120,15 @@ export const LogApiFactory = function (configuration?: Configuration, basePath?:
         logControllerGet(getLogRequestDto: GetLogRequestDto, options?: any): AxiosPromise<GetLogResponseDto> {
             return localVarFp.logControllerGet(getLogRequestDto, options).then((request) => request(axios, basePath));
         },
+        /**
+         * 
+         * @param {GetSolversRequestDto} getSolversRequestDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        logControllerGetSolvers(getSolversRequestDto: GetSolversRequestDto, options?: any): AxiosPromise<GetSolversResponseDto> {
+            return localVarFp.logControllerGetSolvers(getSolversRequestDto, options).then((request) => request(axios, basePath));
+        },
     };
 };
 
@@ -1025,6 +1148,17 @@ export class LogApi extends BaseAPI {
      */
     public logControllerGet(getLogRequestDto: GetLogRequestDto, options?: AxiosRequestConfig) {
         return LogApiFp(this.configuration).logControllerGet(getLogRequestDto, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {GetSolversRequestDto} getSolversRequestDto 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof LogApi
+     */
+    public logControllerGetSolvers(getSolversRequestDto: GetSolversRequestDto, options?: AxiosRequestConfig) {
+        return LogApiFp(this.configuration).logControllerGetSolvers(getSolversRequestDto, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

@@ -31,6 +31,7 @@ export class GetAllChallengesResponseDto {
         score: { type: "number" },
         solved: { type: "boolean" },
         authorUsername: { type: "string" },
+        solverCount: { type: "number" },
       },
     },
   })
@@ -42,5 +43,6 @@ export class GetAllChallengesResponseDto {
     score: number;
     solved: boolean;
     authorUsername: string;
+    solverCount: number;
   }[];
 }
