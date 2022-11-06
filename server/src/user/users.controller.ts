@@ -111,10 +111,6 @@ export class UsersController {
     description: "Unauthorized",
   })
   @ApiResponse({
-    status: HttpStatus.FORBIDDEN,
-    description: "Forbidden",
-  })
-  @ApiResponse({
     status: HttpStatus.CREATED,
     description: "Successful",
     type: StatusResponseDto,
