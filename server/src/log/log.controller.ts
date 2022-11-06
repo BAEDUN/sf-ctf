@@ -50,6 +50,7 @@ export class LogController {
     return {
       logs: result.logs.map((log) => {
         return {
+          id: log._id,
           createdAt: log.createdAt,
           ip: log.ip,
           username: log.username,

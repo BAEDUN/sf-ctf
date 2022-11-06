@@ -128,8 +128,7 @@ function createRow(log: GetLogResponseDtoLogsInner) {
   const ipString = log.ip!;
   const username = log.username!;
   const type = log.type!;
-  // TODO: Use log._id as key
-  const key = Math.random();
+  const key = log.id!;
   switch (log.type!) {
     case GetLogResponseDtoLogsInnerTypeEnum.Login: {
       return (

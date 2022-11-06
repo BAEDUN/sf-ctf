@@ -241,6 +241,12 @@ export interface GetLogResponseDtoLogsInner {
      * @type {string}
      * @memberof GetLogResponseDtoLogsInner
      */
+    'id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetLogResponseDtoLogsInner
+     */
     'createdAt'?: string;
     /**
      * 
