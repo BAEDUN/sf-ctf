@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Log, LogDocument, LogType } from "./schemas/log.schema";
 import { Model } from "mongoose";
+import { query } from "express";
 
 const docPerPage = 25;
 
@@ -18,8 +19,8 @@ export class LogService {
     page: number = 0
   ) {
     const query = {
-      ...(username ? { $regex: username } : {}),
-      ...(ip ? { $regex: ip } : {}),
+      ...(username ? { username: { $regex: username } } : {}),
+      ...(ip ? { ip: { $regex: ip } } : {}),
     };
 
     const [count, logs] = await Promise.all([

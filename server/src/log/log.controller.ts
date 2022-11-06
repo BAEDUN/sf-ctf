@@ -8,7 +8,7 @@ import {
   Post,
 } from "@nestjs/common";
 import { ApiResponse, ApiTags } from "@nestjs/swagger";
-import { UsersService } from "../user/users.service";
+import { UserService } from "../user/users.service";
 import { GetLogRequestDto, GetLogResponseDto } from "./dto/getLog.dto";
 import { LogService } from "./log.service";
 
@@ -17,8 +17,8 @@ import { LogService } from "./log.service";
 export class LogController {
   constructor(
     private readonly logService: LogService,
-    @Inject(forwardRef(() => UsersService))
-    private readonly userService: UsersService
+    @Inject(forwardRef(() => UserService))
+    private readonly userService: UserService
   ) {}
 
   @ApiResponse({
@@ -50,6 +50,7 @@ export class LogController {
     return {
       logs: result.logs.map((log) => {
         return {
+          id: log._id,
           createdAt: log.createdAt,
           ip: log.ip,
           username: log.username,

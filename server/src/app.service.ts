@@ -1,11 +1,11 @@
 import { Injectable, OnModuleInit } from "@nestjs/common";
 import { Config } from "./config";
 import { Section } from "./user/schemas/user.schema";
-import { UsersService } from "./user/users.service";
+import { UserService } from "./user/users.service";
 
 @Injectable()
 export class AppService implements OnModuleInit {
-  constructor(private userService: UsersService) {}
+  constructor(private userService: UserService) {}
 
   onModuleInit() {
     this.userService

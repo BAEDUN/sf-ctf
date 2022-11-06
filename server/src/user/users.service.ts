@@ -6,7 +6,7 @@ import hashPassword from "./util/hashPassword";
 import validateToken from "./util/validateToken";
 
 @Injectable()
-export class UsersService {
+export class UserService {
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<UserDocument>
   ) {}
@@ -36,6 +36,25 @@ export class UsersService {
 
   async findOne(query: FilterQuery<UserDocument>): Promise<User | null> {
     return this.userModel.findOne(query);
+  }
+
+  async status(username: string) {
+    const user = await this.userModel
+      .findOne({
+        username,
+      })
+      .populate("solvedChallengeList.title")!;
+    if (!user) {
+      throw new Error("User not found");
+    }
+    const { nickname, score, solvedChallengeList } = user;
+    return {
+      nickname,
+      score,
+      solvedChallengeTitles: solvedChallengeList.map(
+        (challenge) => challenge.title
+      ),
+    };
   }
 
   async getUserFromToken(token: string) {

@@ -27,6 +27,7 @@ export class GetLogResponseDto {
     items: {
       type: "object",
       properties: {
+        id: { type: "string" },
         createdAt: { type: "string" },
         ip: { type: "string" },
         username: { type: "string" },
@@ -41,6 +42,7 @@ export class GetLogResponseDto {
     },
   })
   readonly logs!: {
+    id: string;
     createdAt: Date;
     ip: string;
     username: string;
