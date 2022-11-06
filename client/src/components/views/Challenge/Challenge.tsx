@@ -79,25 +79,25 @@ export default function Challenge(props: { challenge: GetAllChallengesResponseDt
     //     modalBodyRef.current.scrollTop = 0
     // }, [problem.id, toast])
 
-    // // const onSolvesClick = useCallback(async (e) => {
-    // //     e.preventDefault()
-    // //     if (solvesPending) {
-    // //         return
-    // //     }
-    // //     setSolvesPending(true)
-    // //     const { kind, message, data } = await getSolves({
-    // //         challId: problem.id,
-    // //         limit: solvesPageSize,
-    // //         offset: 0
-    // //     })
-    // //     setSolvesPending(false)
-    // //     if (kind !== 'goodChallengeSolves') {
-    // //         toast({ body: message, type: 'error' })
-    // //         return
-    // //     }
-    // //     setSolves(data.solves)
-    // //     setSolvesPage(1)
-    // // }, [challenge.title, toast, solvesPending]);
+    // const onSolvesClick = useCallback(async (e) => {
+    //     e.preventDefault()
+    //     if (solvesPending) {
+    //         return
+    //     }
+    //     setSolvesPending(true)
+    //     const { kind, message, data } = await getSolves({
+    //         challId: problem.id,
+    //         limit: solvesPageSize,
+    //         offset: 0
+    //     })
+    //     setSolvesPending(false)
+    //     if (kind !== 'goodChallengeSolves') {
+    //         toast({ body: message, type: 'error' })
+    //         return
+    //     }
+    //     setSolves(data.solves)
+    //     setSolvesPage(1)
+    // }, [challenge.title, toast, solvesPending]);
     // const onSolvesClose = useCallback(() => setSolves(null), []);
 
 
@@ -121,14 +121,14 @@ export default function Challenge(props: { challenge: GetAllChallengesResponseDt
     return (
         <div className="ChallFrame">
             <div className='frameBody'>
-                <div className='row u-no-padding'>
-                    <div className='col-6 u-no-padding'>
+                <div className='Row noPadding'>
+                    <div className='Col-2 noPadding'>
                         <div className='frameTitle'>{challenge.category}/{challenge.title}</div>
-                        {/* <div className='frameSubTitle u-no-margin'>{challenge.author}</div> */}
+                        {/* <div className='frameSubTitle noMargin'>{challenge.author}</div> */}
                     </div>
-                    <div className='col-6 u-no-padding u-text-right'>
+                    <div className='Col-2 noPadding textRight'>
                         {/* <a
-                            className={`points`}
+                            className={`solvesAndPoints`}
                         >
                             {challenge.solves}
                             {challenge.solves === 1 ? ' solve / ' : ' solves / '}
@@ -138,41 +138,42 @@ export default function Challenge(props: { challenge: GetAllChallengesResponseDt
                     </div>
                 </div>
 
-                <div className='content-no-padding u-center'><div className="divider" /></div>
+                <div className='Center'><div className="divider" /></div>
 
                 <div className="description frameSubTitle">
                     {/* <Markdown content={challenge.description} components={markdownComponents} /> */}
+                    {challenge.description}
                 </div>
-                <form className='form-section' onSubmit={handleSubmit}>
-                    <div className='form-group'>
+                <form className='formSection' onSubmit={handleSubmit}>
+                    <div className='formGroup'>
                         <input
                             autoComplete='off'
                             autoCorrect='off'
-                            className={`form-group-input input-small input ${hasError ? 'input-error' : ''} ${solved ? 'input-success' : ''}`}
+                            className={`formGroupInput input ${hasError ? 'inputError' : ''} ${solved ? 'inputSuccess' : ''}`}
                             placeholder={`Flag${solved ? ' (solved)' : ''}`}
                             value={value}
                             onChange={handleInputChange}
                         />
-                        <button className='form-group-btn btn-small submit'>Submit</button>
+                        <button className='formGroupBtn submit'>Submit</button>
                     </div>
                 </form>
                 {
                     hasDownloads &&
                     <div>
-                        <p className='frame__subtitle u-no-margin'>Downloads</p>
-                        <div className='tag-container'>
+                        <p className='frameSubTitle noMargin'>Downloads</p>
+                        <div className='tagContainer'>
                             {
                                 challenge.fileList!.map((filename) => {
                                     return (
-                                        <a href="#" onClick={() => { download(filename) }}></a>
+                                        <div className="tag" key={`file-download-${filename}`}><a href="#" onClick={() => { download(filename) }}>{filename}</a></div>
                                     )
                                 })
                             }
-
                         </div>
                     </div>
                 }
             </div>
+            <ToastContainer />
         </div>
     );
 }

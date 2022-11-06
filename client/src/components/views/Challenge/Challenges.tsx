@@ -75,7 +75,7 @@ export default function Challenges() {
     const challengesToDisplay = useMemo(() => {
         let filtered = challenges
         if (!showSolved) {
-            filtered = filtered.filter(challenge => !solvedChallengeTitles.includes(challenge.title!))
+            filtered = filtered.filter(challenge => !challenge.solved)
         }
         const shouldFilter = Object.values(categories).some(checked => checked);
         if (shouldFilter) {
@@ -125,6 +125,7 @@ export default function Challenges() {
 
     return (
         <div className='Challenges'>
+            <ToastContainer />
             <div className="Row">
                 <div className="Col-1">
                     <div className="ChallFrame">
