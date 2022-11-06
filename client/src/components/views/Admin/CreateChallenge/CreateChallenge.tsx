@@ -14,6 +14,8 @@ import {
   FileApi,
 } from "../../../../api";
 import { useAuthContext } from "../../../../context/AuthProvider";
+import handleNumberInput from "../../../../util/handleNumberInput";
+import handleStringInput from "../../../../util/handleStringInput";
 import CategorySelect from "./CategorySelect";
 
 export default function CreateChallenge() {
@@ -169,22 +171,4 @@ export default function CreateChallenge() {
       </MDBBtn>
     </>
   );
-}
-
-function handleStringInput(
-  setFunction: React.Dispatch<React.SetStateAction<string>>
-) {
-  return (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
-    setFunction(event.target.value);
-}
-
-function handleNumberInput(
-  setFunction: React.Dispatch<React.SetStateAction<number>>
-) {
-  return (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(event.target.value);
-    if (!isNaN(value) && isFinite(value)) {
-      setFunction(value);
-    }
-  };
 }
