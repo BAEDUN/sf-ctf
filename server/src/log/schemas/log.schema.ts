@@ -34,6 +34,9 @@ export class Log {
 
   @Prop({ default: false })
   solved!: boolean;
+
+  @Prop({ default: "" })
+  challengeTitle!: string;
 }
 
 export const LogSchema = SchemaFactory.createForClass(Log);

@@ -10,6 +10,10 @@ import {
 import { ApiResponse, ApiTags } from "@nestjs/swagger";
 import { UserService } from "../user/users.service";
 import { GetLogRequestDto, GetLogResponseDto } from "./dto/getLog.dto";
+import {
+  GetSolversRequestDto,
+  GetSolversResponseDto,
+} from "./dto/getSolvers.dto";
 import { LogService } from "./log.service";
 
 @ApiTags("log")
@@ -62,5 +66,37 @@ export class LogController {
       }),
       pages: result.pages,
     } as GetLogResponseDto;
+  }
+
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: "Unauthorized",
+  })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: "Successful",
+    type: GetSolversResponseDto,
+  })
+  @Post("getSolvers")
+  async getSolvers(@Body() body: GetSolversRequestDto) {
+    const user = await this.userService.getUserFromToken(body.accessToken);
+
+    if (!user) {
+      throw new HttpException("Unauthorized", HttpStatus.UNAUTHORIZED);
+    }
+
+    let result = await this.logService.getSolvers(
+      body.challengeTitle,
+      body.page
+    );
+    return {
+      logs: result.logs.map((log) => {
+        return {
+          solvedAt: log.createdAt,
+          username: log.username,
+        };
+      }),
+      pages: result.pages,
+    } as GetSolversResponseDto;
   }
 }

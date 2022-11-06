@@ -4,8 +4,6 @@ import { Log, LogDocument, LogType } from "./schemas/log.schema";
 import { Model } from "mongoose";
 import { query } from "express";
 
-const docPerPage = 25;
-
 @Injectable()
 export class LogService {
   constructor(
@@ -18,9 +16,33 @@ export class LogService {
     ip: string | null = null,
     page: number = 0
   ) {
+    const docPerPage = 25;
     const query = {
       ...(username ? { username: { $regex: username } } : {}),
       ...(ip ? { ip: { $regex: ip } } : {}),
+    };
+
+    const [count, logs] = await Promise.all([
+      this.logModel.find(query).sort({ createdAt: -1 }).count(),
+      this.logModel
+        .find(query)
+        .sort({ createdAt: -1 })
+        .skip(Math.max(page * docPerPage, 0))
+        .limit(docPerPage)
+        .exec(),
+    ]);
+    return {
+      pages: Math.ceil(count / docPerPage),
+      logs,
+    };
+  }
+
+  public async getSolvers(challengeTitle: string, page: number = 0) {
+    const docPerPage = 10;
+    const query = {
+      challengeTitle,
+      type: LogType.Submit,
+      solved: true,
     };
 
     const [count, logs] = await Promise.all([
@@ -61,7 +83,8 @@ export class LogService {
     ip: string,
     username: string,
     flag: string,
-    solved: boolean
+    solved: boolean,
+    challengeTitle: string
   ) {
     const createdLog = new this.logModel({
       ip,
@@ -69,6 +92,7 @@ export class LogService {
       type: LogType.Submit,
       flag,
       solved,
+      challengeTitle,
     });
     return await createdLog.save();
   }
