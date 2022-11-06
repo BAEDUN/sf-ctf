@@ -34,7 +34,7 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      const userApi = new UserApi(undefined, "http://" + location.host);
+      const userApi = new UserApi(undefined, location.origin);
       const response = await userApi.usersControllerLogin({
         username: user,
         password: pwd,
