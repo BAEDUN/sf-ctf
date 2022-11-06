@@ -11,9 +11,9 @@ export class AppService implements OnModuleInit {
     this.userService
       .create({
         username: Config.SERVER_ROOT_USER,
-        email: "never",
+        email: "sf.secu@gmail.com",
         password: Config.SERVER_ROOT_PASSWORD,
-        nickname: "root",
+        nickname: "SecurityFirst",
         isAdmin: true,
         section: Section.SecurityFirst,
       })

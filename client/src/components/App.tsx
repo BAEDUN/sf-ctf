@@ -5,7 +5,7 @@ import NavBar from "./views/NavBar/NavBar";
 import Login from "./views/Login/Login";
 import Footer from "./views/Footer/Footer";
 import Register from "./views/Register/Register";
-import Challenge from "./views/Challenge/Challenge";
+import Challenges from "./views/Challenge/Challenges";
 import ScoreBoard from "./views/ScoreBoard/ScoreBoard";
 import Admin from "./views/Admin/Admin";
 import {
@@ -36,7 +36,7 @@ export default function App() {
           <Route path="/" element={<Main />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/challenge" element={<Challenge />} />
+          <Route path="/challenge" element={<Challenges />} />
           <Route path="/ranking" element={<ScoreBoard />} />
           <Route path="/admin" element={<Admin />} />
         </Routes>
