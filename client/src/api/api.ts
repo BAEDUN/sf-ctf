@@ -174,6 +174,12 @@ export interface GetAllChallengesResponseDtoChallengesInner {
      * @memberof GetAllChallengesResponseDtoChallengesInner
      */
     'solved'?: boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetAllChallengesResponseDtoChallengesInner
+     */
+    'authorUsername'?: string;
 }
 
 export const GetAllChallengesResponseDtoChallengesInnerCategoryEnum = {
