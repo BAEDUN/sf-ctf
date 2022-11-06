@@ -6,7 +6,7 @@ import {
   MDBSpinner,
   MDBTextArea,
 } from "mdb-react-ui-kit";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   ChallengeApi,
