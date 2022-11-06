@@ -168,6 +168,12 @@ export interface GetAllChallengesResponseDtoChallengesInner {
      * @memberof GetAllChallengesResponseDtoChallengesInner
      */
     'score'?: number;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetAllChallengesResponseDtoChallengesInner
+     */
+    'solved'?: boolean;
 }
 
 export const GetAllChallengesResponseDtoChallengesInnerCategoryEnum = {
