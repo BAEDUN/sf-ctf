@@ -54,6 +54,9 @@ export class Challenge {
 
   @Prop({ type: [{ type: mongoose.Types.ObjectId, ref: "User" }], default: [] })
   solvedUserList!: User[];
+
+  @Prop({ required: true })
+  authorUsername!: string;
 }
 
 export const ChallengeSchema = SchemaFactory.createForClass(Challenge);

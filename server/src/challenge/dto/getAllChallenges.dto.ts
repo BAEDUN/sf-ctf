@@ -30,6 +30,7 @@ export class GetAllChallengesResponseDto {
         },
         score: { type: "number" },
         solved: { type: "boolean" },
+        authorUsername: { type: "string" },
       },
     },
   })
@@ -40,5 +41,6 @@ export class GetAllChallengesResponseDto {
     fileList: string[];
     score: number;
     solved: boolean;
+    authorUsername: string;
   }[];
 }
