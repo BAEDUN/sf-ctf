@@ -1,5 +1,4 @@
 import {
-  MDBCardFooter,
   MDBCardHeader,
   MDBInput,
   MDBPagination,
