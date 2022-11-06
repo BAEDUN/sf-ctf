@@ -29,6 +29,7 @@ export class GetAllChallengesResponseDto {
           items: { type: "string" },
         },
         score: { type: "number" },
+        solved: { type: "boolean" },
       },
     },
   })
@@ -38,5 +39,6 @@ export class GetAllChallengesResponseDto {
     category: Category;
     fileList: string[];
     score: number;
+    solved: boolean;
   }[];
 }

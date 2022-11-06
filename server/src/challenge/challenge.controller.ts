@@ -86,14 +86,19 @@ export class ChallengeController {
     let challenges = await this.challengeService.getAll();
     return {
       challenges: challenges.map((challenge) => {
-        const { title, description, category, fileList } = challenge;
+        const { title, description, category, fileList, solvedUserList } =
+          challenge;
         const score = calculateChallengeScore(challenge);
+        const solved = solvedUserList.some(
+          (solvedUser) => solvedUser.username === user.username
+        );
         return {
           title,
           description,
           category,
           fileList,
           score,
+          solved,
         };
       }),
     } as GetAllChallengesResponseDto;
