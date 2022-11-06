@@ -11,19 +11,20 @@ import {
 } from "@nestjs/common";
 import { RegisterRequestDto } from "./dto/register.dto";
 import { User } from "./schemas/user.schema";
-import { UsersService } from "./users.service";
+import { UserService } from "./users.service";
 import { ApiResponse, ApiTags } from "@nestjs/swagger";
 import { LoginRequestDto, LoginResponseDto } from "./dto/login.dto";
 import comparePassword from "./util/comparePassword";
 import issueToken from "./util/issueToken";
 import { LogService } from "../log/log.service";
 import { Request } from "express";
+import { StatusRequestDto, StatusResponseDto } from "./dto/status.dto";
 
 @ApiTags("user")
 @Controller("user")
 export class UsersController {
   constructor(
-    private readonly usersService: UsersService,
+    private readonly userService: UserService,
     @Inject(forwardRef(() => LogService))
     private readonly logService: LogService
   ) {}
@@ -39,21 +40,21 @@ export class UsersController {
   @Post("register")
   async register(@Body() body: RegisterRequestDto) {
     const { username, email, password, nickname, section } = body;
-    const idDuplicatedUsers = await this.usersService.findAll({
+    const idDuplicatedUsers = await this.userService.findAll({
       username: body.username,
     });
     if (idDuplicatedUsers.length > 0) {
       throw new HttpException("Duplicated username", HttpStatus.CONFLICT);
     }
 
-    const emailDuplicatedUsers = await this.usersService.findAll({
+    const emailDuplicatedUsers = await this.userService.findAll({
       email: body.email,
     });
     if (emailDuplicatedUsers.length > 0) {
       throw new HttpException("Duplicated email", HttpStatus.CONFLICT);
     }
 
-    await this.usersService.create({
+    await this.userService.create({
       username,
       email,
       password,
@@ -74,7 +75,7 @@ export class UsersController {
   })
   @Post("login")
   async login(@Req() request: Request, @Body() body: LoginRequestDto) {
-    const user = await this.usersService.findOne({
+    const user = await this.userService.findOne({
       username: body.username,
     });
     if (!user) {
@@ -105,8 +106,28 @@ export class UsersController {
     } as LoginResponseDto;
   }
 
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: "Unauthorized",
+  })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: "Successful",
+    type: StatusResponseDto,
+  })
+  @Post("status")
+  async status(@Body() body: StatusRequestDto) {
+    const user = await this.userService.getUserFromToken(body.accessToken);
+
+    if (!user) {
+      throw new HttpException("Unauthorized", HttpStatus.UNAUTHORIZED);
+    }
+
+    return (await this.userService.status(user.username)) as StatusResponseDto;
+  }
+
   @Get()
   async findAll(): Promise<User[]> {
-    return this.usersService.findAll({});
+    return this.userService.findAll({});
   }
 }

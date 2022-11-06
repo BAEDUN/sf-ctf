@@ -451,6 +451,44 @@ export type RegisterRequestDtoSectionEnum = typeof RegisterRequestDtoSectionEnum
 /**
  * 
  * @export
+ * @interface StatusRequestDto
+ */
+export interface StatusRequestDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof StatusRequestDto
+     */
+    'accessToken': string;
+}
+/**
+ * 
+ * @export
+ * @interface StatusResponseDto
+ */
+export interface StatusResponseDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof StatusResponseDto
+     */
+    'nickname': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof StatusResponseDto
+     */
+    'score': number;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof StatusResponseDto
+     */
+    'solvedChallengeTitles': Array<string>;
+}
+/**
+ * 
+ * @export
  * @interface SubmitRequestDto
  */
 export interface SubmitRequestDto {
@@ -1096,6 +1134,41 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @param {StatusRequestDto} statusRequestDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        usersControllerStatus: async (statusRequestDto: StatusRequestDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'statusRequestDto' is not null or undefined
+            assertParamExists('usersControllerStatus', 'statusRequestDto', statusRequestDto)
+            const localVarPath = `/api/user/status`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(statusRequestDto, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -1135,6 +1208,16 @@ export const UserApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.usersControllerRegister(registerRequestDto, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
+        /**
+         * 
+         * @param {StatusRequestDto} statusRequestDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async usersControllerStatus(statusRequestDto: StatusRequestDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<StatusResponseDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.usersControllerStatus(statusRequestDto, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
     }
 };
 
@@ -1170,6 +1253,15 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
          */
         usersControllerRegister(registerRequestDto: RegisterRequestDto, options?: any): AxiosPromise<void> {
             return localVarFp.usersControllerRegister(registerRequestDto, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {StatusRequestDto} statusRequestDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        usersControllerStatus(statusRequestDto: StatusRequestDto, options?: any): AxiosPromise<StatusResponseDto> {
+            return localVarFp.usersControllerStatus(statusRequestDto, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -1211,6 +1303,17 @@ export class UserApi extends BaseAPI {
      */
     public usersControllerRegister(registerRequestDto: RegisterRequestDto, options?: AxiosRequestConfig) {
         return UserApiFp(this.configuration).usersControllerRegister(registerRequestDto, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {StatusRequestDto} statusRequestDto 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserApi
+     */
+    public usersControllerStatus(statusRequestDto: StatusRequestDto, options?: AxiosRequestConfig) {
+        return UserApiFp(this.configuration).usersControllerStatus(statusRequestDto, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

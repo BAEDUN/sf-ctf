@@ -10,7 +10,7 @@ import { ApiResponse, ApiTags } from "@nestjs/swagger";
 import { FileService } from "./file.service";
 import { PutRequestDto, PutResponseDto } from "./dto/put.dto";
 import { v4 as uuid } from "uuid";
-import { UsersService } from "../user/users.service";
+import { UserService } from "../user/users.service";
 import { GetRequestDto, GetResponseDto } from "./dto/get.dto";
 import { LogService } from "../log/log.service";
 import { Request } from "express";
@@ -20,7 +20,7 @@ import { Request } from "express";
 export class FileController {
   constructor(
     private readonly fileService: FileService,
-    private readonly userService: UsersService,
+    private readonly userService: UserService,
     private readonly logService: LogService
   ) {}
 
