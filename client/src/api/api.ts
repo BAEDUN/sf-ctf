@@ -180,6 +180,12 @@ export interface GetAllChallengesResponseDtoChallengesInner {
      * @memberof GetAllChallengesResponseDtoChallengesInner
      */
     'authorUsername'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetAllChallengesResponseDtoChallengesInner
+     */
+    'solverCount'?: number;
 }
 
 export const GetAllChallengesResponseDtoChallengesInnerCategoryEnum = {
