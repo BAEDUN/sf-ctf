@@ -377,10 +377,10 @@ export interface GetSolversRequestDto {
 export interface GetSolversResponseDto {
     /**
      * 
-     * @type {Array<GetSolversResponseDtoLogsInner>}
+     * @type {Array<GetSolversResponseDtoSolversInner>}
      * @memberof GetSolversResponseDto
      */
-    'logs': Array<GetSolversResponseDtoLogsInner>;
+    'solvers': Array<GetSolversResponseDtoSolversInner>;
     /**
      * Total pages for submitted query
      * @type {number}
@@ -391,19 +391,19 @@ export interface GetSolversResponseDto {
 /**
  * 
  * @export
- * @interface GetSolversResponseDtoLogsInner
+ * @interface GetSolversResponseDtoSolversInner
  */
-export interface GetSolversResponseDtoLogsInner {
+export interface GetSolversResponseDtoSolversInner {
     /**
      * 
      * @type {string}
-     * @memberof GetSolversResponseDtoLogsInner
+     * @memberof GetSolversResponseDtoSolversInner
      */
     'solvedAt'?: string;
     /**
      * 
      * @type {string}
-     * @memberof GetSolversResponseDtoLogsInner
+     * @memberof GetSolversResponseDtoSolversInner
      */
     'username'?: string;
 }
