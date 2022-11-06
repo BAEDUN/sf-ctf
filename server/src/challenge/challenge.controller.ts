@@ -9,7 +9,7 @@ import {
 import { CreateChallengeRequestDto } from "./dto/createChallenge.dto";
 import { ApiResponse, ApiTags } from "@nestjs/swagger";
 import { ChallengeService } from "./challenge.service";
-import { UsersService } from "../user/users.service";
+import { UserService } from "../user/users.service";
 import calculateChallengeScore from "./util/calculateChallengeScore";
 import {
   GetAllChallengesRequestDto,
@@ -24,7 +24,7 @@ import { Request } from "express";
 export class ChallengeController {
   constructor(
     private readonly challengeService: ChallengeService,
-    private readonly userService: UsersService,
+    private readonly userService: UserService,
     private readonly logService: LogService
   ) {}
 
