@@ -1,7 +1,7 @@
 import { FilterQuery, Model } from "mongoose";
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { User, UserDocument } from "./schemas/user.schema";
+import { Section, User, UserDocument } from "./schemas/user.schema";
 import hashPassword from "./util/hashPassword";
 import validateToken from "./util/validateToken";
 
@@ -54,6 +54,37 @@ export class UserService {
       solvedChallengeTitles: solvedChallengeList.map(
         (challenge) => challenge.title
       ),
+    };
+  }
+
+  async getRanking(page: number, section?: Section) {
+    const docPerPage = 15;
+    const refinedPage = Math.max(page * docPerPage, 0);
+    const query = {
+      ...(section ? { section } : {}),
+    };
+    const [count, users] = await Promise.all([
+      this.userModel.find(query).count(),
+      this.userModel
+        .find(query)
+        .sort({
+          score: -1,
+        })
+        .skip(refinedPage)
+        .limit(docPerPage)
+        .exec(),
+    ]);
+    return {
+      count,
+      users: users.map((user, index) => {
+        const { username, score } = user;
+        const rank = refinedPage * docPerPage + index + 1;
+        return {
+          rank,
+          score,
+          username,
+        };
+      }),
     };
   }
 
