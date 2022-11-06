@@ -124,7 +124,7 @@ export default function Challenge(props: { challenge: GetAllChallengesResponseDt
                 <div className='Row noPadding'>
                     <div className='Col-2 noPadding'>
                         <div className='frameTitle'>{challenge.category}/{challenge.title}</div>
-                        {/* <div className='frameSubTitle noMargin'>{challenge.author}</div> */}
+                        <div className='frameSubTitle noMargin'>{challenge.authorUsername}</div>
                     </div>
                     <div className='Col-2 noPadding textRight'>
                         {/* <a
