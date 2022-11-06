@@ -21,7 +21,7 @@ export class User {
   @Prop({ required: true, type: Boolean })
   isAdmin!: boolean;
 
-  @Prop({ required: true, type: Boolean })
+  @Prop({ required: true, type: Boolean, default: false })
   isBanned!: boolean;
 
   @Prop({ required: true, enum: ["Security", "Software", "SecurityFirst"] })

@@ -2,7 +2,6 @@ import { FilterQuery, Model } from "mongoose";
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { User, UserDocument } from "./schemas/user.schema";
-import { RegisterRequestDto } from "./dto/register.dto";
 import hashPassword from "./util/hashPassword";
 import validateToken from "./util/validateToken";
 
@@ -12,11 +11,21 @@ export class UsersService {
     @InjectModel(User.name) private readonly userModel: Model<UserDocument>
   ) {}
 
-  public async create(createUserDto: RegisterRequestDto): Promise<User> {
-    const hashedPassword = await hashPassword(createUserDto.password);
+  public async create(
+    rawUser: Omit<
+      User,
+      "hashedPassword" | "isBanned" | "solvedChallengeList" | "score"
+    > & { password: string }
+  ): Promise<User> {
+    const { username, email, password, nickname, isAdmin, section } = rawUser;
+    const hashedPassword = await hashPassword(password);
     const createdCat = new this.userModel({
-      ...createUserDto,
+      username,
+      email,
       hashedPassword,
+      nickname,
+      isAdmin,
+      section,
     });
     return createdCat.save();
   }

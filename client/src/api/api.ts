@@ -416,18 +416,6 @@ export interface RegisterRequestDto {
     'nickname': string;
     /**
      * 
-     * @type {boolean}
-     * @memberof RegisterRequestDto
-     */
-    'isAdmin': boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof RegisterRequestDto
-     */
-    'isBanned': boolean;
-    /**
-     * 
      * @type {string}
      * @memberof RegisterRequestDto
      */

@@ -39,6 +39,12 @@ If you want install new package, you have to re-run docker-compose after install
 - MINIO_ROOT_PASSWORD
   - `string`
   - Password of minio root
+- SERVER_ROOT_USER
+  - `string`
+  - Username of server root
+- SERVER_ROOT_PASSWORD
+  - `string`
+  - Password of server root
 
 ## Example `.env` File
 
@@ -48,4 +54,6 @@ MONGO_ROOT_PASSWORD=password
 JWT_SECRET=anySecretKey
 MINIO_ROOT_USER=bigfood
 MINIO_ROOT_PASSWORD=password
+SERVER_ROOT_USER=bigfood
+SERVER_ROOT_PASSWORD=password
 ```

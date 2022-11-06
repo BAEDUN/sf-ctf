@@ -6,6 +6,8 @@ export const Config = {
   JWT_SECRET: stringEnv("JWT_SECRET"),
   MINIO_ROOT_USER: stringEnv("MINIO_ROOT_USER"),
   MINIO_ROOT_PASSWORD: stringEnv("MINIO_ROOT_PASSWORD"),
+  SERVER_ROOT_USER: stringEnv("SERVER_ROOT_USER"),
+  SERVER_ROOT_PASSWORD: stringEnv("SERVER_ROOT_PASSWORD"),
 };
 
 function stringEnv(name: string): string {
