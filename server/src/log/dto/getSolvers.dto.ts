@@ -24,7 +24,7 @@ export class GetSolversResponseDto {
       },
     },
   })
-  readonly logs!: {
+  readonly solvers!: {
     solvedAt: Date;
     username: string;
   }[];

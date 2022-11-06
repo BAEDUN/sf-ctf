@@ -90,7 +90,7 @@ export class LogController {
       body.page
     );
     return {
-      logs: result.logs.map((log) => {
+      solvers: result.logs.map((log) => {
         return {
           solvedAt: log.createdAt,
           username: log.username,
