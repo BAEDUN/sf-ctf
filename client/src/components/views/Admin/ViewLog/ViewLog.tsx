@@ -1,5 +1,6 @@
 import {
   MDBCardFooter,
+  MDBCardHeader,
   MDBInput,
   MDBPagination,
   MDBPaginationItem,
@@ -62,34 +63,7 @@ export default function ViewLog() {
 
   return (
     <>
-      <MDBTable color="dark" small>
-        <MDBTableHead>
-          <tr>
-            <th scope="col">Time</th>
-            <th scope="col">
-              <MDBInput
-                contrast
-                label="IP"
-                value={targetIp}
-                onChange={handleStringInput(setTargetIp)}
-              />
-            </th>
-            <th scope="col">
-              <MDBInput
-                contrast
-                label="Username"
-                value={targetUsername}
-                onChange={handleStringInput(setTargetUsername)}
-              />
-            </th>
-            <th scope="col">Type</th>
-            <th scope="col">Detail</th>
-          </tr>
-        </MDBTableHead>
-        {tableContent}
-      </MDBTable>
-
-      <MDBCardFooter className="text-muted">
+      <MDBCardHeader>
         <MDBPagination className="mb-0">
           <MDBPaginationItem>
             <MDBPaginationLink
@@ -118,7 +92,33 @@ export default function ViewLog() {
             </MDBPaginationLink>
           </MDBPaginationItem>
         </MDBPagination>
-      </MDBCardFooter>
+      </MDBCardHeader>
+      <MDBTable color="dark" small>
+        <MDBTableHead>
+          <tr>
+            <th scope="col">Time</th>
+            <th scope="col">
+              <MDBInput
+                contrast
+                label="IP"
+                value={targetIp}
+                onChange={handleStringInput(setTargetIp)}
+              />
+            </th>
+            <th scope="col">
+              <MDBInput
+                contrast
+                label="Username"
+                value={targetUsername}
+                onChange={handleStringInput(setTargetUsername)}
+              />
+            </th>
+            <th scope="col">Type</th>
+            <th scope="col">Detail</th>
+          </tr>
+        </MDBTableHead>
+        {tableContent}
+      </MDBTable>
     </>
   );
 }
