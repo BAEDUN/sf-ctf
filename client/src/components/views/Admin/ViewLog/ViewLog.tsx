@@ -132,10 +132,10 @@ function createRow(log: GetLogResponseDtoLogsInner) {
     case GetLogResponseDtoLogsInnerTypeEnum.Login: {
       return (
         <tr key={key}>
-          <td>{timeString}</td>
-          <td>{ipString}</td>
-          <td>{username}</td>
-          <td>{type}</td>
+          <td title={timeString}>{timeString}</td>
+          <td title={ipString}>{ipString}</td>
+          <td title={username}>{username}</td>
+          <td title={type}>{type}</td>
           <td></td>
         </tr>
       );
@@ -144,11 +144,11 @@ function createRow(log: GetLogResponseDtoLogsInner) {
     case GetLogResponseDtoLogsInnerTypeEnum.Download: {
       return (
         <tr key={key}>
-          <td>{timeString}</td>
-          <td>{ipString}</td>
-          <td>{username}</td>
-          <td>{type}</td>
-          <td>{log.filename!}</td>
+          <td title={timeString}>{timeString}</td>
+          <td title={ipString}>{ipString}</td>
+          <td title={username}>{username}</td>
+          <td title={type}>{type}</td>
+          <td title={log.filename!}>{log.filename!}</td>
         </tr>
       );
     }
@@ -156,11 +156,13 @@ function createRow(log: GetLogResponseDtoLogsInner) {
     case GetLogResponseDtoLogsInnerTypeEnum.Submit: {
       return (
         <tr key={key}>
-          <td>{timeString}</td>
-          <td>{ipString}</td>
-          <td>{username}</td>
-          <td>{type}</td>
-          <td>{`${log.solved ? "Correct" : "Incorrect"}: ${log.flag!}`}</td>
+          <td title={timeString}>{timeString}</td>
+          <td title={ipString}>{ipString}</td>
+          <td title={username}>{username}</td>
+          <td title={type}>{type}</td>
+          <td
+            title={`${log.solved ? "Correct" : "Incorrect"}: ${log.flag!}`}
+          >{`${log.solved ? "Correct" : "Incorrect"}: ${log.flag!}`}</td>
         </tr>
       );
     }
