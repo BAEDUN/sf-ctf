@@ -124,7 +124,7 @@ export default function ViewLog() {
 }
 
 function createRow(log: GetLogResponseDtoLogsInner) {
-  const timeString = new Date(log.createdAt!).toLocaleTimeString();
+  const timeString = new Date(log.createdAt!).toLocaleString();
   const ipString = log.ip!;
   const username = log.username!;
   const type = log.type!;
