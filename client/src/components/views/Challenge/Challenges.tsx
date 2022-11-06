@@ -5,6 +5,7 @@ import "./Challenges.css";
 import { ChallengeApi, GetAllChallengesResponseDtoChallengesInner } from "../../../api"
 import { AuthContext } from '../../../context/AuthProvider';
 import { useNavigate } from 'react-router-dom';
+import Challenge from './Challenge';
 
 const loadStates = {
     pending: 0,
@@ -46,7 +47,6 @@ export default function Challenges() {
 
     if (!auth) {
         navigate("/", { replace: true });
-        console.log("sex")
         return null;
     }
 
@@ -60,18 +60,11 @@ export default function Challenges() {
             const {
                 challenges
             } = response.data;
-            const newCategories = { ...categories };
-            challenges.forEach(challenge => {
-                if (newCategories[challenge.category!] === undefined) {
-                    newCategories[challenge.category!] = false
-                }
-            });
 
             setChallenges(challenges);
-            setCategories(newCategories);
         }
         action();
-    }, [toast, categories, challenges]);
+    }, []);
 
     // useEffect(() => {
     //     const action = async () => {
@@ -175,9 +168,9 @@ export default function Challenges() {
                 {
                     challengesToDisplay.map(challenge => {
                         return (
-                            <Problem
-                                key={challenge}
-                                problem={challenge}
+                            <Challenge
+                                key={Math.random()}
+                                challenge={challenge}
                                 solved={solvedChallengeTitles.includes(challenge.title!)}
                                 setSolved={setSolved}
                             />
