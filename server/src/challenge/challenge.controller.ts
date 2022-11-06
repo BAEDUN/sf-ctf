@@ -56,14 +56,16 @@ export class ChallengeController {
       throw new HttpException("Forbidden", HttpStatus.FORBIDDEN);
     }
 
-    await this.challengeService.create(request).catch((error) => {
-      switch (error.code) {
-        case 11000:
-          throw new HttpException("Duplicated Title", HttpStatus.CONFLICT);
-        default:
-          throw error;
-      }
-    });
+    await this.challengeService
+      .create(request, user.username)
+      .catch((error) => {
+        switch (error.code) {
+          case 11000:
+            throw new HttpException("Duplicated Title", HttpStatus.CONFLICT);
+          default:
+            throw error;
+        }
+      });
   }
 
   @ApiResponse({

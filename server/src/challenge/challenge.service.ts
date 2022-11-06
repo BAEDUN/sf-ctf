@@ -17,8 +17,14 @@ export class ChallengeService {
     private readonly connection: Connection
   ) {}
 
-  public async create(request: CreateChallengeRequestDto): Promise<Challenge> {
-    const createdChallenge = new this.challengeModel(request);
+  public async create(
+    request: CreateChallengeRequestDto,
+    authorUsername: string
+  ): Promise<Challenge> {
+    const createdChallenge = new this.challengeModel({
+      ...request,
+      authorUsername,
+    });
     return createdChallenge.save();
   }
 
