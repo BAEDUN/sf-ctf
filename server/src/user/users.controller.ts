@@ -19,6 +19,7 @@ import issueToken from "./util/issueToken";
 import { LogService } from "../log/log.service";
 import { Request } from "express";
 import { StatusRequestDto, StatusResponseDto } from "./dto/status.dto";
+import { RankingRequestDto, RankingResponseDto } from "./dto/ranking.dto";
 
 @ApiTags("user")
 @Controller("user")
@@ -124,6 +125,34 @@ export class UsersController {
     }
 
     return (await this.userService.status(user.username)) as StatusResponseDto;
+  }
+
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: "Unauthorized",
+  })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: "Successful",
+    type: RankingResponseDto,
+  })
+  @Post("ranking")
+  async ranking(@Body() body: RankingRequestDto) {
+    const user = await this.userService.getUserFromToken(body.accessToken);
+
+    if (!user) {
+      throw new HttpException("Unauthorized", HttpStatus.UNAUTHORIZED);
+    }
+
+    const { count, users } = await this.userService.getRanking(
+      body.page,
+      body.section
+    );
+
+    return {
+      pages: count,
+      users,
+    } as RankingResponseDto;
   }
 
   @Get()
