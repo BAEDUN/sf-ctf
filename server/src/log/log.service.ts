@@ -62,6 +62,7 @@ export class LogService {
 
   public async logLogin(ip: string, username: string) {
     const createdLog = new this.logModel({
+      createdAt: Date.now(),
       ip,
       username,
       type: LogType.Login,
@@ -71,6 +72,7 @@ export class LogService {
 
   public async logDownload(ip: string, username: string, filename: string) {
     const createdLog = new this.logModel({
+      createdAt: Date.now(),
       ip,
       username,
       type: LogType.Download,
@@ -87,6 +89,7 @@ export class LogService {
     challengeTitle: string
   ) {
     const createdLog = new this.logModel({
+      createdAt: Date.now(),
       ip,
       username,
       type: LogType.Submit,
