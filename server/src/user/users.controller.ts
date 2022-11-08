@@ -98,7 +98,7 @@ export class UsersController {
     }
 
     const ip = request.header("x-real-ip") || request.ip;
-    await this.logService.logLogin(ip, user.username);
+    await this.logService.logLogin(ip, user.username, user.nickname);
 
     const accessToken = await issueToken(user);
 

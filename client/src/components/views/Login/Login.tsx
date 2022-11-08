@@ -12,7 +12,6 @@ import {
 export default function Login() {
     const navigate = useNavigate();
     const { auth, setAuth } = useContext(AuthContext);
-    setAuth(null);
 
     const userRef = useRef<any>(null);
     const errRef = useRef<any>(null);
@@ -29,6 +28,13 @@ export default function Login() {
     useEffect(() => {
         setErrMsg("");
     }, [user, pwd]);
+
+    useEffect(() => {
+        if (!auth) {
+            return;
+        }
+        navigate("/", { replace: true });
+    }, [auth]);
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
@@ -49,8 +55,6 @@ export default function Login() {
             setPwd("");
             setSuccess(true);
             saveAuthContextFromLocalStorage(auth);
-
-            navigate("/", { replace: true });
         } catch (err: any) {
             if (!err?.response) {
                 setErrMsg("No Server Response");

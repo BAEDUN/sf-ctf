@@ -31,6 +31,7 @@ export class GetLogResponseDto {
         createdAt: { type: "string" },
         ip: { type: "string" },
         username: { type: "string" },
+        nickname: { type: "string" },
         type: {
           type: "enum",
           enum: [LogType.Login, LogType.Download, LogType.Submit],
@@ -46,6 +47,7 @@ export class GetLogResponseDto {
     createdAt: Date;
     ip: string;
     username: string;
+    nickname: string;
     type: LogType;
     filename: string;
     flag: string;

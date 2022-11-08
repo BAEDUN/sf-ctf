@@ -47,9 +47,9 @@ export function tryLoadAuthContextFromLocalStorage(): IAuthContext | null {
     return null;
   }
 }
-// export function removeAuthContextFromLocalStorage() {
-//   localStorage.removeItem(AUTH_CONTEXT_KEY);
-// }
+export function removeAuthContextFromLocalStorage() {
+  localStorage.removeItem(AUTH_CONTEXT_KEY);
+}
 export function saveAuthContextFromLocalStorage(auth: IAuthContext) {
   localStorage.setItem(AUTH_CONTEXT_KEY, JSON.stringify(auth));
 }

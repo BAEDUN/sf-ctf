@@ -87,7 +87,7 @@
 }
 
 input[type="checkbox"] {
-  margin-right: 0.625em;
+  margin-right: 0.425em;
   width: 17px;
   height: 17px;
   background: #fff;
@@ -121,7 +121,7 @@ input[type="checkbox"] + label {
   text-align: right;
 }
 
-.solveAndPoints {
+.solvesAndPoints {
   margin-top: 0.75rem !important;
   margin-bottom: 0 !important;
   cursor: pointer;
@@ -258,4 +258,115 @@ code:before {
   font-weight: 600;
   padding: 2px;
   text-decoration: none;
+}
+
+@keyframes modalAni {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalCont {
+  from {
+    transform: scale(0.8);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.ReactModalPortal {
+  display: flex;
+  z-index: 999;
+  pointer-events: auto;
+  animation: modalAni 150ms ease-out;
+  position: fixed;
+  padding: 1rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.ReactModal__Overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: block;
+  background-color: rgba(54, 59, 68, 0.5) !important;
+}
+
+.ReactModal__Content {
+  animation: modalCont 150ms ease-out;
+  background: #222 !important;
+  color: #fff;
+  max-width: initial;
+  padding: 0;
+  display: block;
+  border-radius: 3px;
+  box-shadow: 0 0.4rem 1rem rgb(54 59 68 / 30%);
+  z-index: 1;
+  max-width: 40rem;
+  margin: auto;
+}
+
+.modal-header {
+  padding: 1rem 3rem;
+}
+
+.modal-title {
+  font-weight: bolder;
+  font-size: 1.4rem;
+}
+
+.modal-body {
+  padding: 1rem 3rem;
+  overflow-y: auto;
+  position: relative;
+  max-height: 60vh !important;
+}
+
+.modal-form {
+  display: grid;
+  grid-template-columns: repeat(3, max-content);
+}
+
+.modal-form div {
+  margin: auto;
+  padding: 5px 10px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.modal-row {
+  border-bottom: 1px solid #fff;
+  width: 100%;
+  text-align: center;
+}
+
+.modal-col {
+  display: none;
+  overflow: hidden;
+  width: 300px;
+}
+
+.modal-footer {
+  padding: 1rem 3rem;
+  text-align: right;
+}
+
+.outline {
+  background-color: transparent;
+  color: #fefefe;
+  border-radius: 0.25rem;
+  border: 1px solid #d9d9d9;
+}
+
+.btn-small {
+  line-height: 2.4rem;
+  padding: 0 0.5rem;
+  font-size: 70%;
 }

@@ -20,6 +20,9 @@ export class Log {
   @Prop({ required: true, index: true })
   username!: string;
 
+  @Prop({ required: true })
+  nickname!: string;
+
   @Prop({
     required: true,
     enum: [LogType.Login, LogType.Download, LogType.Submit],

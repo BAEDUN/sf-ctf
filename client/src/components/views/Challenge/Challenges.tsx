@@ -125,7 +125,6 @@ export default function Challenges() {
 
     return (
         <div className='Challenges'>
-            <ToastContainer />
             <div className="Row">
                 <div className="Col-1">
                     <div className="ChallFrame">
@@ -165,6 +164,7 @@ export default function Challenges() {
                     }
                 </div>
             </div>
+            <ToastContainer />
         </div>
     );
 }

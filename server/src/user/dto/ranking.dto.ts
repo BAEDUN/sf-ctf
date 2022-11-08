@@ -6,10 +6,11 @@ export class RankingRequestDto {
   readonly accessToken!: string;
 
   @ApiProperty({
+    required: false,
     type: "enum",
     enum: [Section.Security, Section.SecurityFirst, Section.Software],
   })
-  readonly section?: Section;
+  readonly section?: Section | undefined;
 
   @ApiProperty({
     description: "Zero based page index. 15 users per page",

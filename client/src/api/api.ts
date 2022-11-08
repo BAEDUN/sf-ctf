@@ -280,6 +280,12 @@ export interface GetLogResponseDtoLogsInner {
     'username'?: string;
     /**
      * 
+     * @type {string}
+     * @memberof GetLogResponseDtoLogsInner
+     */
+    'nickname'?: string;
+    /**
+     * 
      * @type {Enum}
      * @memberof GetLogResponseDtoLogsInner
      */
@@ -488,7 +494,7 @@ export interface RankingRequestDto {
      * @type {string}
      * @memberof RankingRequestDto
      */
-    'section': RankingRequestDtoSectionEnum;
+    'section'?: RankingRequestDtoSectionEnum;
     /**
      * Zero based page index. 15 users per page
      * @type {number}

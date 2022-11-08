@@ -1,17 +1,32 @@
-import React, { useState, useCallback, useRef, useContext } from 'react';
+import React, { useState, useCallback, useRef, useContext, useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
-import { ChallengeApi, FileApi, GetAllChallengesResponseDtoChallengesInner } from "../../../api";
+import { ChallengeApi, FileApi, GetAllChallengesResponseDtoChallengesInner, GetSolversResponseDtoSolversInner, LogApi, RankingRequestDtoSectionEnum, RankingResponseDtoUsersInner, UserApi } from "../../../api";
 import { AuthContext } from '../../../context/AuthProvider';
+import 'react-toastify/dist/ReactToastify.css';
+import Modal from './Modal';
+import { useNavigate } from 'react-router-dom';
+
+const solvesPageSize = 10
 
 export default function Challenge(props: { challenge: GetAllChallengesResponseDtoChallengesInner, solved: boolean, setSolved: (title: string) => void }) {
     const { challenge, solved, setSolved } = props;
     const hasDownloads = challenge.fileList!.length !== 0;
-
+    const [isOpen, setIsOpen] = useState(false);
     const [error, setError] = useState(undefined);
     const hasError = error !== undefined;
+    const navigate = useNavigate();
+
+    const [section, _setSection] = useState<RankingRequestDtoSectionEnum | undefined>(undefined);
+    const [page, setPage] = useState<number>(1);
+    const [totalPages, setTotalPages] = useState<number>(0);
+    const [pageSize, _setPageSize] = useState<number>(100);
+    const [users, setUsers] = useState<RankingResponseDtoUsersInner[]>([]);
+    const numPages = Math.ceil(totalPages / pageSize);
+    const [solvers, setSolvers] = useState<GetSolversResponseDtoSolversInner[]>([]);
+    const [pages, setPages] = useState<number>(0)
 
     const [value, setValue] = useState('');
-    const handleInputChange = useCallback((e: any) => setValue(e.target.value), []);
+    const handleInputChange = useCallback((event: React.FormEvent<HTMLInputElement>) => setValue(event.currentTarget.value), []);
     const { auth } = useContext(AuthContext);
 
     const handleSubmit = useCallback(async (event: React.FormEvent<HTMLFormElement>) => {
@@ -28,10 +43,22 @@ export default function Challenge(props: { challenge: GetAllChallengesResponseDt
         })
             .then((response) => {
                 const {
-                    success,
+                    success
                 } = response.data;
                 if (success === true) {
-                    toast.success('플래그가 제출되었습니다!', {
+                    toast.success('정답입니다!', {
+                        position: "top-center",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                    });
+                    setSolved(challenge.title!)
+                } else {
+                    toast.error('땡!! 다시!', {
                         position: "top-center",
                         autoClose: 5000,
                         hideProgressBar: false,
@@ -42,9 +69,11 @@ export default function Challenge(props: { challenge: GetAllChallengesResponseDt
                         theme: "light",
                     });
 
-                    setSolved(challenge.title!)
-                } else {
-                    toast.error('플래그가 제출되지 않았습니다!', {
+                    setError(error);
+                }
+            }).catch((err) => {
+                if (err.response.status === 409) {
+                    toast.error('이미 맞추신 문제입니다!', {
                         position: "top-center",
                         autoClose: 5000,
                         hideProgressBar: false,
@@ -57,48 +86,77 @@ export default function Challenge(props: { challenge: GetAllChallengesResponseDt
                     setError(error);
                 }
             })
-    }, [auth, toast, setSolved, challenge, value]);
+    }, [auth, setSolved, challenge, value]);
 
     const [solves, setSolves] = useState(null)
     const [solvesPending, setSolvesPending] = useState(false)
     const [solvesPage, setSolvesPage] = useState(1)
-    const modalBodyRef = useRef(null)
+    const modalBodyRef = useRef<any>(null)
 
-    // const handleSetSolvesPage = useCallback(async (newPage: any) => {
-    //     const { kind, message, data } = await getSolves({
-    //         challId: problem.id,
-    //         limit: solvesPageSize,
-    //         offset: (newPage - 1) * solvesPageSize
+    // const handleSetSolvesPage = useCallback(async (newPage: number) => {
+    //     if (!auth || !challenge.title) {
+    //         console.log("no auth or title")
+    //         return;
+    //     }
+
+    //     const response = await new LogApi().logControllerGetSolvers({
+    //         accessToken: auth?.token,
+    //         challengeTitle: challenge.title,
+    //         page: (newPage - 1) * solvesPageSize
     //     })
-    //     if (kind !== 'goodChallengeSolves') {
-    //         toast({ body: message, type: 'error' })
+    //     if (!response) {
+    //         toast.error('error!!', {
+    //             position: "top-center",
+    //             autoClose: 5000,
+    //             hideProgressBar: false,
+    //             closeOnClick: true,
+    //             pauseOnHover: true,
+    //             draggable: true,
+    //             progress: undefined,
+    //             theme: "light",
+    //         });
     //         return
     //     }
-    //     setSolves(data.solves)
+    //     // setSolves(challenge.solverCount)
     //     setSolvesPage(newPage)
     //     modalBodyRef.current.scrollTop = 0
-    // }, [problem.id, toast])
+    // }, [challenge.title])
 
-    // const onSolvesClick = useCallback(async (e) => {
-    //     e.preventDefault()
+    // const onSolvesClick = useCallback(async (event: React.MouseEvent<HTMLElement>) => {
+    //     event.preventDefault();
     //     if (solvesPending) {
     //         return
     //     }
+
+    //     if (!auth || !challenge.title) {
+    //         console.log("no auth or title")
+    //         return;
+    //     }
+
     //     setSolvesPending(true)
-    //     const { kind, message, data } = await getSolves({
-    //         challId: problem.id,
-    //         limit: solvesPageSize,
-    //         offset: 0
+    //     const logApi = new LogApi();
+    //     const response = await logApi.logControllerGetSolvers({
+    //         accessToken: auth?.token,
+    //         challengeTitle: challenge.title,
+    //         page: 0
     //     })
     //     setSolvesPending(false)
-    //     if (kind !== 'goodChallengeSolves') {
-    //         toast({ body: message, type: 'error' })
+    //     if (!response) {
+    //         toast.error('error!!', {
+    //             position: "top-center",
+    //             autoClose: 5000,
+    //             hideProgressBar: false,
+    //             closeOnClick: true,
+    //             pauseOnHover: true,
+    //             draggable: true,
+    //             progress: undefined,
+    //             theme: "light",
+    //         });
     //         return
     //     }
-    //     setSolves(data.solves)
-    //     setSolvesPage(1)
+    //     // setSolves(data.solves)
+    //     setSolvesPage(1);
     // }, [challenge.title, toast, solvesPending]);
-    // const onSolvesClose = useCallback(() => setSolves(null), []);
 
 
 
@@ -118,6 +176,42 @@ export default function Challenge(props: { challenge: GetAllChallengesResponseDt
         a.click();
     }, [auth]);
 
+    const clickSolvesModal = useCallback(async (event: React.MouseEvent<HTMLElement>) => {
+        setIsOpen(true);
+
+        if (!auth || !challenge.title) {
+            return;
+        }
+        const logApi = new LogApi();
+        const response = await logApi.logControllerGetSolvers({
+            accessToken: auth?.token,
+            challengeTitle: challenge.title,
+            page: 0
+        })
+        setSolvesPending(false)
+        if (!response) {
+            toast.error('error!!', {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+            return
+        }
+        const { solvers, pages } = response.data;
+        setSolvers(solvers);
+        setPages(pages);
+    }, [challenge.title]);
+
+
+
+
+    const clickSolvesClose = useCallback(() => setIsOpen(false), []);
+
     return (
         <div className="ChallFrame">
             <div className='frameBody'>
@@ -127,14 +221,15 @@ export default function Challenge(props: { challenge: GetAllChallengesResponseDt
                         <div className='frameSubTitle noMargin'>{challenge.authorUsername}</div>
                     </div>
                     <div className='Col-2 noPadding textRight'>
-                        {/* <a
-                            className={`solvesAndPoints`}
+                        <a
+                            className="solvesAndPoints"
+                            onClick={clickSolvesModal}
                         >
-                            {challenge.solves}
-                            {challenge.solves === 1 ? ' solve / ' : ' solves / '}
-                            {challenge.points}
-                            {challenge.points === 1 ? ' point' : ' points'}
-                        </a> */}
+                            {challenge.solverCount}
+                            {challenge.solverCount === 1 ? ' solve / ' : ' solves / '}
+                            {challenge.score}
+                            {challenge.score === 1 ? ' score' : ' scores'}
+                        </a>
                     </div>
                 </div>
 
@@ -174,10 +269,10 @@ export default function Challenge(props: { challenge: GetAllChallengesResponseDt
                         </div>
                     </div>
                 }
+
             </div>
-            <ToastContainer />
+            <Modal challengeTitle={challenge.title!} isOpen={isOpen} setIsOpen={setIsOpen} modalBodyRef={modalBodyRef} solvers={solvers} pages={pages} />
         </div>
     );
 }
-
 
