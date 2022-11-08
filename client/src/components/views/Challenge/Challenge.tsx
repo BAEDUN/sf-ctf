@@ -140,7 +140,9 @@ export default function Challenge(props: { challenge: GetAllChallengesResponseDt
 
                 <div className='Center'><div className="divider" /></div>
 
-                <div className="description frameSubTitle">
+                <div className="description frameSubTitle" style={{
+                    whiteSpace: "pre-line",
+                }}>
                     {/* <Markdown content={challenge.description} components={markdownComponents} /> */}
                     {challenge.description}
                 </div>
