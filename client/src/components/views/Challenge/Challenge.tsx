@@ -8,8 +8,8 @@ import { useNavigate } from 'react-router-dom';
 
 const solvesPageSize = 10
 
-export default function Challenge(props: { challenge: GetAllChallengesResponseDtoChallengesInner, solved: boolean, setSolved: (title: string) => void }) {
-    const { challenge, solved, setSolved } = props;
+export default function Challenge(props: { challenge: GetAllChallengesResponseDtoChallengesInner, solved: boolean, onSolved: (title: string) => void }) {
+    const { challenge, solved, onSolved } = props;
     const hasDownloads = challenge.fileList!.length !== 0;
     const [isOpen, setIsOpen] = useState(false);
     const [error, setError] = useState(undefined);
@@ -28,6 +28,7 @@ export default function Challenge(props: { challenge: GetAllChallengesResponseDt
     const [value, setValue] = useState('');
     const handleInputChange = useCallback((event: React.FormEvent<HTMLInputElement>) => setValue(event.currentTarget.value), []);
     const { auth } = useContext(AuthContext);
+    const modalBodyRef = useRef<any>(null);
 
     const handleSubmit = useCallback(async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -56,7 +57,7 @@ export default function Challenge(props: { challenge: GetAllChallengesResponseDt
                         progress: undefined,
                         theme: "light",
                     });
-                    setSolved(challenge.title!)
+                    onSolved(challenge.title!)
                 } else {
                     toast.error('땡!! 다시!', {
                         position: "top-center",
@@ -86,12 +87,8 @@ export default function Challenge(props: { challenge: GetAllChallengesResponseDt
                     setError(error);
                 }
             })
-    }, [auth, setSolved, challenge, value]);
+    }, [auth, onSolved, challenge, value]);
 
-    const [solves, setSolves] = useState(null)
-    const [solvesPending, setSolvesPending] = useState(false)
-    const [solvesPage, setSolvesPage] = useState(1)
-    const modalBodyRef = useRef<any>(null)
 
     // const handleSetSolvesPage = useCallback(async (newPage: number) => {
     //     if (!auth || !challenge.title) {
@@ -188,7 +185,6 @@ export default function Challenge(props: { challenge: GetAllChallengesResponseDt
             challengeTitle: challenge.title,
             page: 0
         })
-        setSolvesPending(false)
         if (!response) {
             toast.error('error!!', {
                 position: "top-center",
