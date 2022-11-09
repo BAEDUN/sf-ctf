@@ -88,7 +88,8 @@ export default function Challenge(props: { challenge: GetAllChallengesResponseDt
             })
     }, [auth, onSolved, challenge, value]);
 
-    const download = useCallback(async (filename: string) => {
+    const download = useCallback(async (event: React.MouseEvent<HTMLElement>, filename: string) => {
+        event.preventDefault();
         if (!auth) {
             console.log('no auth');
             return null;
@@ -184,7 +185,7 @@ export default function Challenge(props: { challenge: GetAllChallengesResponseDt
                             {
                                 challenge.fileList!.map((filename) => {
                                     return (
-                                        <div className="tag" key={`file-download-${filename}`}><a href="#" onClick={() => { download(filename) }}>{filename}</a></div>
+                                        <div className="tag" key={`file-download-${filename}`}><a href="#" onClick={(event) => { download(event, filename) }}>{filename}</a></div>
                                     )
                                 })
                             }

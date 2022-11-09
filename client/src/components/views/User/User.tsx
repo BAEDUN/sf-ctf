@@ -111,7 +111,7 @@ function UpdateCard() {
                         <div className="oldPasswordWrap">
                             <div className="oldPasswordTitle">이전 비밀번호</div>
                             <MDBInput
-                                label="Password"
+                                label="Old Password"
                                 type="password"
                                 onChange={(e) => setOldPassword(e.target.value)}
                                 value={oldPassword}
@@ -123,7 +123,7 @@ function UpdateCard() {
                         <div className="newPasswordWrap">
                             <div className="newPasswordTitle">새 비밀번호</div>
                             <MDBInput
-                                label="Password"
+                                label="New Password"
                                 type="password"
                                 onChange={(e) => setNewPassword(e.target.value)}
                                 value={newPassword}
@@ -132,16 +132,10 @@ function UpdateCard() {
                                 contrast
                             />
                         </div>
-                        {solvedChallenges.map((solvedChallenge) => (
-                            <Fragment key={solvedChallenge.title}>
-                                <div className="inlineLabel category">Category</div>
-                                <div className="category">{solvedChallenge.category}</div>
-                                <div className="inlineLabel">Title</div>
-                                <div>{solvedChallenge.title}</div>
-                                <div className="inlineLabel">Solve time</div>
-                                <div>{new Date(solvedChallenge.solvedAt!).toLocaleString()}</div>
-                            </Fragment>
-                        ))}
+                        <div className="belongWrap">
+                            <div className="belongTitle">소속</div>
+                            <div className="belongData">{belong}</div>
+                        </div>
                     </Fragment>
                 )}
             </div>
