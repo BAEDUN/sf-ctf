@@ -41,4 +41,7 @@ export class StatusResponseDto {
     category: Category;
     solvedAt: string;
   }[];
+
+  @ApiProperty()
+  readonly email!: string;
 }
