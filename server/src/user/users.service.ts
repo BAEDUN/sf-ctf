@@ -88,6 +88,15 @@ export class UserService {
     };
   }
 
+  async changePassword(username: string, password: string) {
+    const user = await this.userModel.findOne({ username });
+    if (!user) {
+      throw new Error("User Not Found");
+    }
+    user.hashedPassword = await hashPassword(password);
+    await user.save();
+  }
+
   async getUserFromToken(token: string) {
     const userId = await validateToken(token);
     if (!userId) {
