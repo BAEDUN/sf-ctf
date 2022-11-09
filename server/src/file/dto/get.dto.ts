@@ -6,10 +6,10 @@ export class GetRequestDto {
 
   @ApiProperty()
   readonly filename!: string;
+}
 
-  public validate() {
-    return this.accessToken && this.filename;
-  }
+export function validateGetRequestDto(body: GetRequestDto) {
+  return body.accessToken && body.filename;
 }
 
 export class GetResponseDto {

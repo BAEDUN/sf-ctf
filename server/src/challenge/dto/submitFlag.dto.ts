@@ -9,10 +9,10 @@ export class SubmitRequestDto {
 
   @ApiProperty()
   readonly flag!: string;
+}
 
-  public validate() {
-    return this.accessToken && this.title && this.flag;
-  }
+export function validateSubmitRequestDto(body: SubmitRequestDto) {
+  return body.accessToken && body.title && body.flag;
 }
 
 export class SubmitResponseDto {

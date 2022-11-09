@@ -23,36 +23,36 @@ export class RegisterRequestDto {
     enum: ["Security", "Software", "SecurityFirst"],
   })
   readonly section!: Section;
+}
 
-  public validate() {
-    if (
-      !this.username ||
-      !this.email ||
-      !this.password ||
-      !this.nickname ||
-      !this.section
-    ) {
+export function validateRegisterRequestDto(body: RegisterRequestDto) {
+  if (
+    !body.username ||
+    !body.email ||
+    !body.password ||
+    !body.nickname ||
+    !body.section
+  ) {
+    return false;
+  }
+
+  if (
+    !USER_REGEX.test(body.username) ||
+    !EMAIL_REGEX.test(body.email) ||
+    !validatePassword(body.password) ||
+    !NICK_REGEX.test(body.nickname)
+  ) {
+    return false;
+  }
+
+  switch (body.section) {
+    case Section.Security:
+    case Section.SecurityFirst:
+    case Section.Software:
+    case undefined:
+      return true;
+
+    default:
       return false;
-    }
-
-    if (
-      !USER_REGEX.test(this.username) ||
-      !EMAIL_REGEX.test(this.email) ||
-      !validatePassword(this.password) ||
-      !NICK_REGEX.test(this.nickname)
-    ) {
-      return false;
-    }
-
-    switch (this.section) {
-      case Section.Security:
-      case Section.SecurityFirst:
-      case Section.Software:
-      case undefined:
-        return true;
-
-      default:
-        return false;
-    }
   }
 }

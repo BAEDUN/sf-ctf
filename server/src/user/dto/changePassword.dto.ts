@@ -10,12 +10,14 @@ export class ChangePasswordRequestDto {
 
   @ApiProperty()
   readonly newPassword!: string;
+}
 
-  public validate() {
-    if (!this.accessToken || !this.oldPassword || !this.newPassword) {
-      return false;
-    }
-
-    return validatePassword(this.newPassword);
+export function validateChangePasswordRequestDto(
+  body: ChangePasswordRequestDto
+) {
+  if (!body.accessToken || !body.oldPassword || !body.newPassword) {
+    return false;
   }
+
+  return validatePassword(body.newPassword);
 }

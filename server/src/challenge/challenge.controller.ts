@@ -14,8 +14,13 @@ import calculateChallengeScore from "./util/calculateChallengeScore";
 import {
   GetAllChallengesRequestDto,
   GetAllChallengesResponseDto,
+  validateGetAllChallengesRequestDto,
 } from "./dto/getAllChallenges.dto";
-import { SubmitRequestDto, SubmitResponseDto } from "./dto/submitFlag.dto";
+import {
+  SubmitRequestDto,
+  SubmitResponseDto,
+  validateSubmitRequestDto,
+} from "./dto/submitFlag.dto";
 import { LogService } from "../log/log.service";
 import { Request } from "express";
 import isServerEnded from "../util/isServerEnded";
@@ -84,7 +89,7 @@ export class ChallengeController {
   })
   @Post("getAll")
   async getAll(@Body() request: GetAllChallengesRequestDto) {
-    if (!request.validate()) {
+    if (!validateGetAllChallengesRequestDto(request)) {
       throw new HttpException("Bad Request", HttpStatus.BAD_REQUEST);
     }
     const user = await this.userService.getUserFromToken(request.accessToken);
@@ -149,7 +154,7 @@ export class ChallengeController {
   })
   @Post("submitFlag")
   async submitFlag(@Req() request: Request, @Body() body: SubmitRequestDto) {
-    if (!body.validate()) {
+    if (!validateSubmitRequestDto(body)) {
       throw new HttpException("Bad Request", HttpStatus.BAD_REQUEST);
     }
     const user = await this.userService.getUserFromToken(body.accessToken);

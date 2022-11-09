@@ -13,6 +13,7 @@ import { GetLogRequestDto, GetLogResponseDto } from "./dto/getLog.dto";
 import {
   GetSolversRequestDto,
   GetSolversResponseDto,
+  validateGetSolversRequestDto,
 } from "./dto/getSolvers.dto";
 import { LogService } from "./log.service";
 
@@ -89,7 +90,7 @@ export class LogController {
   })
   @Post("getSolvers")
   async getSolvers(@Body() body: GetSolversRequestDto) {
-    if (!body.validate()) {
+    if (!validateGetSolversRequestDto(body)) {
       throw new HttpException("Bad Request", HttpStatus.BAD_REQUEST);
     }
     const user = await this.userService.getUserFromToken(body.accessToken);
