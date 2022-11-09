@@ -19,7 +19,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.2.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@openapitools/openapi-generator-cli": "^2.5.2",
-    "@types/node": "^18.11.3",
+    "@types/node": "^18.11.9",
     "@types/react": "^18.0.21",
     "@types/react-bootstrap": "^0.32.31",
     "@types/react-dom": "^18.0.6",
