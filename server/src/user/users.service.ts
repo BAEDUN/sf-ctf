@@ -129,7 +129,10 @@ export class UserService {
     if (!userId) {
       return null;
     }
-
-    return await this.findOne({ username: userId });
+    const user = await this.findOne({ username: userId });
+    if (user?.isBanned) {
+      return null;
+    }
+    return user;
   }
 }

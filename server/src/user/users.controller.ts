@@ -92,7 +92,7 @@ export class UsersController {
       );
     }
 
-    if (!isServerStarted() && !user.isAdmin) {
+    if (user.isBanned || (!isServerStarted() && !user.isAdmin)) {
       throw new HttpException(
         "Didn't start and has no permission",
         HttpStatus.FORBIDDEN
