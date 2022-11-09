@@ -6,7 +6,7 @@ export default function calculateChallengeScore(challenge: Challenge) {
     challenge.grading;
   const solveProgress = Math.min(
     1,
-    solvedUserCount / maximumSolvedUserCount || 1
+    solvedUserCount / (maximumSolvedUserCount || 1)
   );
   return Math.round(
     maximumScore + (minimumScore - maximumScore) * solveProgress ** 2
