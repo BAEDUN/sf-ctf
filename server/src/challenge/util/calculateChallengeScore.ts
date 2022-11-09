@@ -9,6 +9,6 @@ export default function calculateChallengeScore(challenge: Challenge) {
     solvedUserCount / maximumSolvedUserCount || 1
   );
   return Math.round(
-    minimumScore + (maximumScore - minimumScore) * (1 - solveProgress) ** 2
+    maximumScore + (minimumScore - maximumScore) * solveProgress ** 2
   );
 }

@@ -162,6 +162,7 @@ export class ChallengeController {
       await this.logService.logSubmitFlag(
         ip,
         user.username,
+        user.nickname,
         body.flag,
         false,
         challenge.title
@@ -187,6 +188,7 @@ export class ChallengeController {
     await this.logService.logSubmitFlag(
       ip,
       user.username,
+      user.nickname,
       body.flag,
       true,
       challenge.title

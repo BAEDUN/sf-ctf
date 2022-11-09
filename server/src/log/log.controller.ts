@@ -58,6 +58,7 @@ export class LogController {
           createdAt: log.createdAt,
           ip: log.ip,
           username: log.username,
+          nickname: log.nickname,
           type: log.type,
           filename: log.filename,
           flag: log.flag,

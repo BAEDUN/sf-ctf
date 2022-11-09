@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect, useCallback, useContext } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import "./Challenges.css";
 import { ChallengeApi, GetAllChallengesResponseDtoChallengesInner, CreateChallengeRequestDtoCategoryEnum } from "../../../api"
 import { AuthContext } from '../../../context/AuthProvider';
@@ -24,53 +24,34 @@ export default function Challenges() {
     const [challenges, setChallenges] = useState<GetAllChallengesResponseDtoChallengesInner[]>([]);
     const [categories, setCategories] = useState<Categories>(defaultCategories);
     const [showSolved, setShowSolved] = useState(false);
-    const [solvedChallengeTitles, setSolvedChallengeTitles] = useState<string[]>([]);
     const { auth } = useContext(AuthContext);
-
-    const setSolved = useCallback((title: string) => {
-        setSolvedChallengeTitles(solvedChallengeTitles => {
-            if (!solvedChallengeTitles.includes(title)) {
-                return [...solvedChallengeTitles, title]
-            }
-            return solvedChallengeTitles
-        })
-    }, []);
 
     const handleShowSolvedChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         setShowSolved(e.target.checked)
     }, []);
 
-    useEffect(() => {
+    const loadChallenges = useCallback(() => {
         if (!auth) {
             return;
         }
-        const action = async () => {
-            const challengeApi = new ChallengeApi(undefined, location.origin)
-            const response = await challengeApi.challengeControllerGetAll({
-                accessToken: auth.token
-            });
-
+        const challengeApi = new ChallengeApi(undefined, location.origin)
+        challengeApi.challengeControllerGetAll({
+            accessToken: auth.token
+        }).then((response) => {
             const {
                 challenges
             } = response.data;
-
             setChallenges(challenges);
-        }
-        action();
+        });
+    }, []);
+
+    const onSolved = useCallback((title: string) => {
+        loadChallenges();
+    }, []);
+
+    useEffect(() => {
+        loadChallenges();
     }, [auth]);
-
-    // useEffect(() => {
-    //     const action = async () => {
-    //         const { data, error } = await getPrivateSolves();
-    //         if (error) {
-    //             toast({ body: error, type: 'error' });
-    //             return
-    //         }
-
-    //         setSolvedChallengeTitles(data.map(solve => solve.id));
-    //     }
-    //     action()
-    // }, [toast])
 
     const challengesToDisplay = useMemo(() => {
         let filtered = challenges
@@ -85,7 +66,7 @@ export default function Challenges() {
             return a.score! - b.score!;
         })
         return filtered;
-    }, [challenges, categories, showSolved, solvedChallengeTitles])
+    }, [challenges, categories, showSolved])
 
     const { categoryCounts, solvedCount } = useMemo(() => {
         const categoryCounts = new Map();
@@ -99,19 +80,16 @@ export default function Challenges() {
                     });
                 }
 
-                const solved = solvedChallengeTitles.includes(challenge.title!)
+                const solved = challenge.solved;
                 categoryCounts.get(challenge.category).total += 1
                 if (solved) {
                     categoryCounts.get(challenge.category).solved += 1
-                }
-
-                if (solved) {
                     solvedCount += 1
                 }
             }
         }
         return { categoryCounts, solvedCount }
-    }, [challenges, solvedChallengeTitles])
+    }, [challenges])
 
     const CategoryCheck = useCallback((props: { category: CreateChallengeRequestDtoCategoryEnum }) => {
         const { category } = props;
@@ -125,7 +103,6 @@ export default function Challenges() {
 
     return (
         <div className='Challenges'>
-            <ToastContainer />
             <div className="Row">
                 <div className="Col-1">
                     <div className="ChallFrame">
@@ -158,13 +135,14 @@ export default function Challenges() {
                                     key={Math.random()}
                                     challenge={challenge}
                                     solved={challenge.solved!}
-                                    setSolved={setSolved}
+                                    onSolved={onSolved}
                                 />
                             )
                         })
                     }
                 </div>
             </div>
+            <ToastContainer />
         </div>
     );
 }

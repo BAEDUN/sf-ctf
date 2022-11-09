@@ -112,6 +112,7 @@ export default function ViewLog() {
                 onChange={handleStringInput(setTargetUsername)}
               />
             </th>
+            <th scope="col">Nickname</th>
             <th scope="col">Type</th>
             <th scope="col">Detail</th>
           </tr>
@@ -126,6 +127,7 @@ function createRow(log: GetLogResponseDtoLogsInner) {
   const timeString = new Date(log.createdAt!).toLocaleString();
   const ipString = log.ip!;
   const username = log.username!;
+  const nickname = log.nickname!;
   const type = log.type!;
   const key = log.id!;
   switch (log.type!) {
@@ -135,6 +137,7 @@ function createRow(log: GetLogResponseDtoLogsInner) {
           <td title={timeString}>{timeString}</td>
           <td title={ipString}>{ipString}</td>
           <td title={username}>{username}</td>
+          <td title={nickname}>{nickname}</td>
           <td title={type}>{type}</td>
           <td></td>
         </tr>
@@ -147,6 +150,7 @@ function createRow(log: GetLogResponseDtoLogsInner) {
           <td title={timeString}>{timeString}</td>
           <td title={ipString}>{ipString}</td>
           <td title={username}>{username}</td>
+          <td title={nickname}>{nickname}</td>
           <td title={type}>{type}</td>
           <td title={log.filename!}>{log.filename!}</td>
         </tr>
@@ -159,6 +163,7 @@ function createRow(log: GetLogResponseDtoLogsInner) {
           <td title={timeString}>{timeString}</td>
           <td title={ipString}>{ipString}</td>
           <td title={username}>{username}</td>
+          <td title={nickname}>{nickname}</td>
           <td title={type}>{type}</td>
           <td
             title={`${log.solved ? "Correct" : "Incorrect"}: ${log.flag!}`}

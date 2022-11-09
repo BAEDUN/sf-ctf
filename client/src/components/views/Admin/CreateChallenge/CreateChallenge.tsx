@@ -22,7 +22,7 @@ export default function CreateChallenge() {
   const { auth } = useAuthContext();
   const [category, setCategory] =
     useState<CreateChallengeRequestDtoCategoryEnum>(
-      CreateChallengeRequestDtoCategoryEnum.Misc
+      CreateChallengeRequestDtoCategoryEnum.Forensic
     );
   const [description, setDescription] = useState<string>("description");
   const [flag, setFlag] = useState<string>("flag");

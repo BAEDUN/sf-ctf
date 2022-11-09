@@ -12,13 +12,13 @@ export class LogService {
   ) {}
 
   public async get(
-    username: string | null = null,
+    nickname: string | null = null,
     ip: string | null = null,
     page: number = 0
   ) {
     const docPerPage = 25;
     const query = {
-      ...(username ? { username: { $regex: username } } : {}),
+      ...(nickname ? { nickname: { $regex: nickname } } : {}),
       ...(ip ? { ip: { $regex: ip } } : {}),
     };
 
@@ -60,19 +60,28 @@ export class LogService {
     };
   }
 
-  public async logLogin(ip: string, username: string) {
+  public async logLogin(ip: string, username: string, nickname: string) {
     const createdLog = new this.logModel({
+      createdAt: Date.now(),
       ip,
       username,
+      nickname,
       type: LogType.Login,
     });
     return await createdLog.save();
   }
 
-  public async logDownload(ip: string, username: string, filename: string) {
+  public async logDownload(
+    ip: string,
+    nickname: string,
+    username: string,
+    filename: string
+  ) {
     const createdLog = new this.logModel({
+      createdAt: Date.now(),
       ip,
       username,
+      nickname,
       type: LogType.Download,
       filename,
     });
@@ -82,13 +91,16 @@ export class LogService {
   public async logSubmitFlag(
     ip: string,
     username: string,
+    nickname: string,
     flag: string,
     solved: boolean,
     challengeTitle: string
   ) {
     const createdLog = new this.logModel({
+      createdAt: Date.now(),
       ip,
       username,
+      nickname,
       type: LogType.Submit,
       flag,
       solved,

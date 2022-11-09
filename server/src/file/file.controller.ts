@@ -98,7 +98,12 @@ export class FileController {
     const presignedUrl = await this.fileService.presignedGetUrl(body.filename);
 
     const ip = request.header("x-real-ip") || request.ip;
-    this.logService.logDownload(ip, user.username, body.filename);
+    this.logService.logDownload(
+      ip,
+      user.username,
+      user.nickname,
+      body.filename
+    );
     return {
       presignedUrl,
     } as GetResponseDto;

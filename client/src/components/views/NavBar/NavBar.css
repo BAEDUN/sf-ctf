@@ -1,5 +1,6 @@
 .MainNavBar {
   z-index: 1;
+  cursor: default;
 }
 
 .MainTitle {

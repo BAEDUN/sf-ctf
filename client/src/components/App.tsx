@@ -12,6 +12,7 @@ import {
   tryLoadAuthContextFromLocalStorage,
   useAuthContext,
 } from "../context/AuthProvider";
+import User from "./views/User/User";
 
 export default function App() {
   const { auth, setAuth } = useAuthContext();
@@ -39,6 +40,7 @@ export default function App() {
           <Route path="/challenge" element={<Challenges />} />
           <Route path="/ranking" element={<ScoreBoard />} />
           <Route path="/admin" element={<Admin />} />
+          <Route path="/users" element={<User />} />
         </Routes>
         <Footer />
       </Router>

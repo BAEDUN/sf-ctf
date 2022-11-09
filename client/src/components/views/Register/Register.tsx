@@ -9,6 +9,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { UserApi, RegisterRequestDtoSectionEnum } from "../../../api";
+import { toast, ToastContainer } from "react-toastify";
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
@@ -19,7 +20,6 @@ export default function Register() {
   const navigate = useNavigate();
 
   const userRef = useRef<any>(null);
-  const errRef = useRef<any>(null);
 
   const [user, setUser] = useState("");
   const [validName, setValidName] = useState(false);
@@ -47,7 +47,6 @@ export default function Register() {
   const [validBelong, setValidBelong] = useState(false);
   const [belongFocus, setBelongFocus] = useState(false);
 
-  const [errMsg, setErrMsg] = useState("");
   const [success, setSuccess] = useState(false);
 
   useEffect(() => {
@@ -75,10 +74,6 @@ export default function Register() {
     setValidBelong(!!belong);
   }, [belong]);
 
-  useEffect(() => {
-    setErrMsg("");
-  }, [user, pwd, matchPwd, email, nick, belong]);
-
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     const v1 = USER_REGEX.test(user);
@@ -87,7 +82,16 @@ export default function Register() {
     const v4 = NICK_REGEX.test(nick);
     const v5 = !!belong;
     if (!v1 || !v2 || !v3 || !v4 || !v5) {
-      setErrMsg("Invalid Entry");
+      toast.error("Invalid Entry", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
       return;
     }
     try {
@@ -112,19 +116,45 @@ export default function Register() {
       navigate("/login", { replace: true });
     } catch (err: any) {
       if (!err?.response) {
-        setErrMsg("No Server Response");
+        toast.error("No Server Response", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
       } else if (err.response?.status === 409) {
-        setErrMsg("Duplicated id or email");
+        toast.error("Duplicated id or email", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
       } else {
-        console.log(err.response);
-        setErrMsg("Registration Failed");
+        toast.error("Registration Failed", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
       }
-      errRef.current.focus();
     }
   };
 
   return (
-    <>
+    <div className="RegisterWrap">
+      <ToastContainer />
       {success ? (
         <section>
           <h1>Success!</h1>
@@ -134,13 +164,6 @@ export default function Register() {
         </section>
       ) : (
         <form className="Register mt-3" onSubmit={handleSubmit}>
-          <p
-            ref={errRef}
-            className={errMsg ? "errmsg" : "offscreen"}
-            aria-live="assertive"
-          >
-            {errMsg}
-          </p>
           <div className="Title">
             <h1>REGISTER</h1>
           </div>
@@ -370,11 +393,11 @@ export default function Register() {
               color="light"
               disabled={
                 !validName ||
-                !validPwd ||
-                !validMatch ||
-                !validEmail ||
-                !validNick ||
-                !validBelong
+                  !validPwd ||
+                  !validMatch ||
+                  !validEmail ||
+                  !validNick ||
+                  !validBelong
                   ? true
                   : false
               }
@@ -384,6 +407,6 @@ export default function Register() {
           </div>
         </form>
       )}
-    </>
+    </div>
   );
 }

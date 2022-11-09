@@ -35,10 +35,7 @@ export class ChallengeService {
   }
 
   public async getAll(): Promise<Challenge[]> {
-    return this.challengeModel
-      .find()
-      .populate("solvedUserList.username")
-      .exec();
+    return this.challengeModel.find().populate("solvedUserList").exec();
   }
 
   public async addSolvedUser(user: User, challenge: ChallengeDocument) {

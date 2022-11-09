@@ -4,11 +4,19 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Section, User, UserDocument } from "./schemas/user.schema";
 import hashPassword from "./util/hashPassword";
 import validateToken from "./util/validateToken";
+import { Log, LogDocument, LogType } from "../log/schemas/log.schema";
+import {
+  Challenge,
+  ChallengeDocument,
+} from "../challenge/schemas/challenge.schema";
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectModel(User.name) private readonly userModel: Model<UserDocument>
+    @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
+    @InjectModel(Log.name) private readonly logModel: Model<LogDocument>,
+    @InjectModel(Challenge.name)
+    private readonly challengeModel: Model<ChallengeDocument>
   ) {}
 
   public async create(
@@ -39,21 +47,40 @@ export class UserService {
   }
 
   async status(username: string) {
-    const user = await this.userModel
-      .findOne({
-        username,
-      })
-      .populate("solvedChallengeList.title")!;
+    const user = await this.userModel.findOne({
+      username,
+    });
     if (!user) {
       throw new Error("User not found");
     }
-    const { nickname, score, solvedChallengeList } = user;
+    const { nickname, score } = user;
+    const solvedLogs = await this.logModel
+      .find({
+        username,
+        type: LogType.Submit,
+        solved: true,
+      })
+      .exec();
+    const solvedChallenges = await Promise.all(
+      solvedLogs.map((log) =>
+        this.challengeModel
+          .findOne({
+            title: log.challengeTitle,
+          })
+          .then((challenge) => {
+            return {
+              title: log.challengeTitle,
+              category: challenge!.category,
+              solvedAt: log.createdAt.toString(),
+            };
+          })
+      )
+    );
     return {
+      username,
       nickname,
       score,
-      solvedChallengeTitles: solvedChallengeList.map(
-        (challenge) => challenge.title
-      ),
+      solvedChallenges,
     };
   }
 

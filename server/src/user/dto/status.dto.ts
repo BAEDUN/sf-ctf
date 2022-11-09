@@ -1,4 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
+import { Category } from "../../challenge/schemas/challenge.schema";
 
 export class StatusRequestDto {
   @ApiProperty()
@@ -7,11 +8,37 @@ export class StatusRequestDto {
 
 export class StatusResponseDto {
   @ApiProperty()
+  readonly username!: string;
+
+  @ApiProperty()
   readonly nickname!: string;
 
   @ApiProperty()
   readonly score!: number;
 
-  @ApiProperty()
-  readonly solvedChallengeTitles!: string[];
+  @ApiProperty({
+    type: "array",
+    items: {
+      type: "object",
+      properties: {
+        title: { type: "string" },
+        category: {
+          type: "enum",
+          enum: [
+            Category.Forensic,
+            Category.Misc,
+            Category.Pwnable,
+            Category.Reversing,
+            Category.Web,
+          ],
+        },
+        solvedAt: { type: "string" },
+      },
+    },
+  })
+  readonly solvedChallenges!: {
+    title: string;
+    category: Category;
+    solvedAt: string;
+  }[];
 }
