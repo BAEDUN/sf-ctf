@@ -8,26 +8,17 @@ import {
     IAuthContext,
     saveAuthContextFromLocalStorage,
 } from "../../../context/AuthProvider";
+import { toast, ToastContainer } from "react-toastify";
 
 export default function Login() {
     const navigate = useNavigate();
     const { auth, setAuth } = useContext(AuthContext);
 
     const userRef = useRef<any>(null);
-    const errRef = useRef<any>(null);
 
     const [user, setUser] = useState("");
     const [pwd, setPwd] = useState("");
-    const [errMsg, setErrMsg] = useState("");
     const [success, setSuccess] = useState(false);
-
-    useEffect(() => {
-        userRef.current?.focus();
-    }, []);
-
-    useEffect(() => {
-        setErrMsg("");
-    }, [user, pwd]);
 
     useEffect(() => {
         if (!auth) {
@@ -57,18 +48,45 @@ export default function Login() {
             saveAuthContextFromLocalStorage(auth);
         } catch (err: any) {
             if (!err?.response) {
-                setErrMsg("No Server Response");
+                toast.error("No Server Response", {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                })
             } else if (err.response?.status === 401) {
-                setErrMsg("Invalid username or password");
+                toast.error("Invalid username or password", {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                });
             } else {
-                setErrMsg("Login Failed");
+                toast.error("Login Failed", {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                });
             }
-            errRef.current.focus();
         }
     };
 
     return (
-        <>
+        <div className="LoginWrap">
+            <ToastContainer />
             {success ? (
                 <section>
                     <h1>You are logged in!</h1>
@@ -79,13 +97,6 @@ export default function Login() {
                 </section>
             ) : (
                 <form className="Login mt-3" onSubmit={handleSubmit}>
-                    <p
-                        ref={errRef}
-                        className={errMsg ? "errmsg" : "offscreen"}
-                        aria-live="assertive"
-                    >
-                        {errMsg}
-                    </p>
                     <div className="Title">
                         <h1>LOGIN</h1>
                     </div>
@@ -119,6 +130,6 @@ export default function Login() {
                     </div>
                 </form>
             )}
-        </>
+        </div>
     );
 }
