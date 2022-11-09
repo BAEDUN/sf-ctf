@@ -22,6 +22,7 @@ export default function ViewLog() {
   const { auth } = useAuthContext();
   const [targetIp, setTargetIp] = useState<string>("");
   const [targetUsername, setTargetUsername] = useState<string>("");
+  const [targetNickname, setTargetNickname] = useState<string>("");
   const [page, setPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(0);
   const [logs, setLogs] = useState<GetLogResponseDtoLogsInner[]>([]);
@@ -37,6 +38,7 @@ export default function ViewLog() {
       accessToken: auth.token,
       ip: targetIp,
       username: targetUsername,
+      nickname: targetNickname,
       page: page - 1,
     });
 
@@ -55,7 +57,7 @@ export default function ViewLog() {
 
   useEffect(() => {
     getLog();
-  }, [auth, targetIp, targetUsername, page]);
+  }, [auth, targetIp, targetUsername, targetNickname, page]);
   const tableContent = useMemo(() => {
     return <MDBTableBody>{logs.map((log) => createRow(log))}</MDBTableBody>;
   }, [logs]);
@@ -112,7 +114,14 @@ export default function ViewLog() {
                 onChange={handleStringInput(setTargetUsername)}
               />
             </th>
-            <th scope="col">Nickname</th>
+            <th scope="col">
+              <MDBInput
+                contrast
+                label="Nickname"
+                value={targetNickname}
+                onChange={handleStringInput(setTargetNickname)}
+              />
+            </th>
             <th scope="col">Type</th>
             <th scope="col">Detail</th>
           </tr>

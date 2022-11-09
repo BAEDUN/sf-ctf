@@ -13,6 +13,11 @@ export class GetLogRequestDto {
   @ApiProperty({
     required: false,
   })
+  readonly nickname?: string;
+
+  @ApiProperty({
+    required: false,
+  })
   readonly ip?: string;
 
   @ApiProperty({
