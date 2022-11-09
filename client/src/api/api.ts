@@ -625,6 +625,12 @@ export interface StatusResponseDto {
      * @type {string}
      * @memberof StatusResponseDto
      */
+    'username': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof StatusResponseDto
+     */
     'nickname': string;
     /**
      * 
@@ -634,11 +640,47 @@ export interface StatusResponseDto {
     'score': number;
     /**
      * 
-     * @type {Array<string>}
+     * @type {Array<StatusResponseDtoSolvedChallengesInner>}
      * @memberof StatusResponseDto
      */
-    'solvedChallengeTitles': Array<string>;
+    'solvedChallenges': Array<StatusResponseDtoSolvedChallengesInner>;
 }
+/**
+ * 
+ * @export
+ * @interface StatusResponseDtoSolvedChallengesInner
+ */
+export interface StatusResponseDtoSolvedChallengesInner {
+    /**
+     * 
+     * @type {string}
+     * @memberof StatusResponseDtoSolvedChallengesInner
+     */
+    'title'?: string;
+    /**
+     * 
+     * @type {Enum}
+     * @memberof StatusResponseDtoSolvedChallengesInner
+     */
+    'category'?: StatusResponseDtoSolvedChallengesInnerCategoryEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof StatusResponseDtoSolvedChallengesInner
+     */
+    'solvedAt'?: string;
+}
+
+export const StatusResponseDtoSolvedChallengesInnerCategoryEnum = {
+    Forensic: 'Forensic',
+    Misc: 'Misc',
+    Pwnable: 'Pwnable',
+    Reversing: 'Reversing',
+    Web: 'Web'
+} as const;
+
+export type StatusResponseDtoSolvedChallengesInnerCategoryEnum = typeof StatusResponseDtoSolvedChallengesInnerCategoryEnum[keyof typeof StatusResponseDtoSolvedChallengesInnerCategoryEnum];
+
 /**
  * 
  * @export
