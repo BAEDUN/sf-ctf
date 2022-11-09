@@ -4,6 +4,10 @@ import { Category } from "../schemas/challenge.schema";
 export class GetAllChallengesRequestDto {
   @ApiProperty()
   readonly accessToken!: string;
+
+  public validate() {
+    return !!this.accessToken;
+  }
 }
 
 export class GetAllChallengesResponseDto {

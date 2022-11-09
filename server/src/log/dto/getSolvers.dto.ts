@@ -11,6 +11,10 @@ export class GetSolversRequestDto {
     description: "Zero based page index. 10 per page",
   })
   readonly page!: number;
+
+  public validate() {
+    return this.accessToken && this.challengeTitle && this.page >= 0;
+  }
 }
 
 export class GetSolversResponseDto {

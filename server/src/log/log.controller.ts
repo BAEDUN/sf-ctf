@@ -75,6 +75,10 @@ export class LogController {
   }
 
   @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: "Bad Request",
+  })
+  @ApiResponse({
     status: HttpStatus.UNAUTHORIZED,
     description: "Unauthorized",
   })
@@ -85,6 +89,9 @@ export class LogController {
   })
   @Post("getSolvers")
   async getSolvers(@Body() body: GetSolversRequestDto) {
+    if (!body.validate()) {
+      throw new HttpException("Bad Request", HttpStatus.BAD_REQUEST);
+    }
     const user = await this.userService.getUserFromToken(body.accessToken);
 
     if (!user) {

@@ -35,6 +35,10 @@ export class UsersController {
   ) {}
 
   @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: "Bad Request",
+  })
+  @ApiResponse({
     status: HttpStatus.CREATED,
     description: "Successful registration",
   })
@@ -44,6 +48,9 @@ export class UsersController {
   })
   @Post("register")
   async register(@Body() body: RegisterRequestDto) {
+    if (!body.validate()) {
+      throw new HttpException("Bad Request", HttpStatus.BAD_REQUEST);
+    }
     const { username, email, password, nickname, section } = body;
     const idDuplicatedUsers = await this.userService.findAll({
       username: body.username,
@@ -70,6 +77,10 @@ export class UsersController {
   }
 
   @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: "Bad Request",
+  })
+  @ApiResponse({
     status: 200,
     description: "Successful login",
     type: LoginResponseDto,
@@ -84,6 +95,9 @@ export class UsersController {
   })
   @Post("login")
   async login(@Req() request: Request, @Body() body: LoginRequestDto) {
+    if (!body.validate()) {
+      throw new HttpException("Bad Request", HttpStatus.BAD_REQUEST);
+    }
     const user = await this.userService.findOne({
       username: body.username,
     });
@@ -123,6 +137,10 @@ export class UsersController {
   }
 
   @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: "Bad Request",
+  })
+  @ApiResponse({
     status: HttpStatus.UNAUTHORIZED,
     description: "Unauthorized",
   })
@@ -133,6 +151,9 @@ export class UsersController {
   })
   @Post("status")
   async status(@Body() body: StatusRequestDto) {
+    if (!body.validate()) {
+      throw new HttpException("Bad Request", HttpStatus.BAD_REQUEST);
+    }
     const user = await this.userService.getUserFromToken(body.accessToken);
 
     if (!user) {
@@ -142,6 +163,10 @@ export class UsersController {
     return (await this.userService.status(user.username)) as StatusResponseDto;
   }
 
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: "Bad Request",
+  })
   @ApiResponse({
     status: HttpStatus.UNAUTHORIZED,
     description: "Unauthorized",
@@ -153,6 +178,9 @@ export class UsersController {
   })
   @Post("ranking")
   async ranking(@Body() body: RankingRequestDto) {
+    if (!body.validate()) {
+      throw new HttpException("Bad Request", HttpStatus.BAD_REQUEST);
+    }
     const user = await this.userService.getUserFromToken(body.accessToken);
 
     if (!user) {
@@ -171,6 +199,10 @@ export class UsersController {
   }
 
   @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: "Bad Request",
+  })
+  @ApiResponse({
     status: HttpStatus.UNAUTHORIZED,
     description: "Unauthorized",
   })
@@ -181,6 +213,9 @@ export class UsersController {
   })
   @Post("changePassword")
   async changePassword(@Body() body: ChangePasswordRequestDto) {
+    if (!body.validate()) {
+      throw new HttpException("Bad Request", HttpStatus.BAD_REQUEST);
+    }
     const user = await this.userService.getUserFromToken(body.accessToken);
 
     if (!user) {
