@@ -560,6 +560,37 @@ export interface LoginResponseDto {
 /**
  * 
  * @export
+ * @interface ManageUserRequestDto
+ */
+export interface ManageUserRequestDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof ManageUserRequestDto
+     */
+    'accessToken': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ManageUserRequestDto
+     */
+    'username': string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ManageUserRequestDto
+     */
+    'ban': boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ManageUserRequestDto
+     */
+    'admin': boolean;
+}
+/**
+ * 
+ * @export
  * @interface PutRequestDto
  */
 export interface PutRequestDto {
@@ -1520,6 +1551,41 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
         },
         /**
          * 
+         * @param {ManageUserRequestDto} manageUserRequestDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        usersControllerManage: async (manageUserRequestDto: ManageUserRequestDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'manageUserRequestDto' is not null or undefined
+            assertParamExists('usersControllerManage', 'manageUserRequestDto', manageUserRequestDto)
+            const localVarPath = `/api/user/manage`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(manageUserRequestDto, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {RankingRequestDto} rankingRequestDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -1665,6 +1731,16 @@ export const UserApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @param {ManageUserRequestDto} manageUserRequestDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async usersControllerManage(manageUserRequestDto: ManageUserRequestDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetUsersResponseDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.usersControllerManage(manageUserRequestDto, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @param {RankingRequestDto} rankingRequestDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -1729,6 +1805,15 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
          */
         usersControllerLogin(loginRequestDto: LoginRequestDto, options?: any): AxiosPromise<LoginResponseDto> {
             return localVarFp.usersControllerLogin(loginRequestDto, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {ManageUserRequestDto} manageUserRequestDto 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        usersControllerManage(manageUserRequestDto: ManageUserRequestDto, options?: any): AxiosPromise<GetUsersResponseDto> {
+            return localVarFp.usersControllerManage(manageUserRequestDto, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1798,6 +1883,17 @@ export class UserApi extends BaseAPI {
      */
     public usersControllerLogin(loginRequestDto: LoginRequestDto, options?: AxiosRequestConfig) {
         return UserApiFp(this.configuration).usersControllerLogin(loginRequestDto, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {ManageUserRequestDto} manageUserRequestDto 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserApi
+     */
+    public usersControllerManage(manageUserRequestDto: ManageUserRequestDto, options?: AxiosRequestConfig) {
+        return UserApiFp(this.configuration).usersControllerManage(manageUserRequestDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

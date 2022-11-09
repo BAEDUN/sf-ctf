@@ -146,4 +146,11 @@ export class UserService {
 
     return await this.findOne({ username: userId });
   }
+
+  async manage(username: string, admin: boolean, ban: boolean) {
+    const user = await this.userModel.findOne({ username });
+    user!.isAdmin = admin;
+    user!.isBanned = ban;
+    await user!.save();
+  }
 }

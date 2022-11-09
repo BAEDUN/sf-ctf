@@ -23,6 +23,7 @@ import { RankingRequestDto, RankingResponseDto } from "./dto/ranking.dto";
 import { ChangePasswordRequestDto } from "./dto/changePassword.dto";
 import isServerStarted from "../util/isServerOpen";
 import { GetUsersRequestDto, GetUsersResponseDto } from "./dto/getUsers.dto";
+import { ManageUserRequestDto } from "./dto/manageUser.dto";
 
 @ApiTags("user")
 @Controller("user")
@@ -242,5 +243,33 @@ export class UsersController {
         };
       }),
     } as GetUsersResponseDto;
+  }
+
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: "Unauthorized",
+  })
+  @ApiResponse({
+    status: HttpStatus.FORBIDDEN,
+    description: "Forbidden",
+  })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: "Successful",
+    type: GetUsersResponseDto,
+  })
+  @Post("manage")
+  async manage(@Body() body: ManageUserRequestDto) {
+    const user = await this.userService.getUserFromToken(body.accessToken);
+
+    if (!user) {
+      throw new HttpException("Unauthorized", HttpStatus.UNAUTHORIZED);
+    }
+
+    if (!user.isAdmin) {
+      throw new HttpException("Forbidden", HttpStatus.FORBIDDEN);
+    }
+
+    await this.userService.manage(body.username, body.admin, body.ban);
   }
 }

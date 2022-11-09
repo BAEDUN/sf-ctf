@@ -1,4 +1,5 @@
 import {
+  MDBBtn,
   MDBCardHeader,
   MDBInput,
   MDBPagination,
@@ -54,7 +55,56 @@ export default function User() {
   }, [auth, targetUsername, targetNickname, page]);
 
   const tableContent = useMemo(
-    () => <MDBTableBody>{users.map((user) => createRow(user))}</MDBTableBody>,
+    () => (
+      <MDBTableBody>
+        {users.map((user) => {
+          const username = user.username!;
+          const nickname = user.nickname!;
+          const isAdmin = user.isAdmin!;
+          const isBanned = user.isBanned!;
+          const key = `user-row-${username}`;
+
+          return (
+            <tr key={key}>
+              <td title={username}>{username}</td>
+              <td title={nickname}>{nickname}</td>
+              <td>
+                <MDBBtn
+                  onClick={() => {
+                    new UserApi(undefined, location.origin)
+                      .usersControllerManage({
+                        accessToken: auth!.token,
+                        username,
+                        admin: !isAdmin,
+                        ban: isBanned,
+                      })
+                      .then(() => getUsers());
+                  }}
+                >
+                  {isAdmin ? "Revoke" : "Grant"}
+                </MDBBtn>
+              </td>
+              <td>
+                <MDBBtn
+                  onClick={() => {
+                    new UserApi(undefined, location.origin)
+                      .usersControllerManage({
+                        accessToken: auth!.token,
+                        username,
+                        admin: isAdmin,
+                        ban: !isBanned,
+                      })
+                      .then(() => getUsers());
+                  }}
+                >
+                  {isBanned ? "Allow" : "Ban"}
+                </MDBBtn>
+              </td>
+            </tr>
+          );
+        })}
+      </MDBTableBody>
+    ),
     [users]
   );
 
@@ -116,22 +166,5 @@ export default function User() {
         {tableContent}
       </MDBTable>
     </>
-  );
-}
-
-function createRow(user: GetUsersResponseDtoUsersInner) {
-  const username = user.username!;
-  const nickname = user.nickname!;
-  const isAdmin = user.isAdmin!;
-  const isBanned = user.isBanned!;
-  const key = `user-row-${username}`;
-
-  return (
-    <tr key={key}>
-      <td title={username}>{username}</td>
-      <td title={nickname}>{nickname}</td>
-      <td>{isAdmin ? "true" : "false"}</td>
-      <td>{isBanned ? "true" : "false"}</td>
-    </tr>
   );
 }
