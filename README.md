@@ -51,6 +51,10 @@ If you want install new package, you have to re-run docker-compose after install
 - END_AT
   - `string`
   - Time that CTF end
+- PORT
+  - `number`
+  - Port to run nginx
+  - Only affects in prod mod
 
 ## Example `.env` File
 
@@ -64,4 +68,6 @@ SERVER_ROOT_USER=bigfood
 SERVER_ROOT_PASSWORD=password
 START_AT=Wed Nov 01 2022 15:29:59 GMT+0900
 END_AT=Wed Nov 02 2022 15:29:59 GMT+0900
+
+PORT=2345
 ```
