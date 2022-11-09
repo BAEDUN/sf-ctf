@@ -9,18 +9,36 @@ import {
   Post,
   Req,
 } from "@nestjs/common";
-import { RegisterRequestDto } from "./dto/register.dto";
+import {
+  RegisterRequestDto,
+  validateRegisterRequestDto,
+} from "./dto/register.dto";
 import { User } from "./schemas/user.schema";
 import { UserService } from "./users.service";
 import { ApiResponse, ApiTags } from "@nestjs/swagger";
-import { LoginRequestDto, LoginResponseDto } from "./dto/login.dto";
+import {
+  LoginRequestDto,
+  LoginResponseDto,
+  validateLoginRequestDto,
+} from "./dto/login.dto";
 import comparePassword from "./util/comparePassword";
 import issueToken from "./util/issueToken";
 import { LogService } from "../log/log.service";
 import { Request } from "express";
-import { StatusRequestDto, StatusResponseDto } from "./dto/status.dto";
-import { RankingRequestDto, RankingResponseDto } from "./dto/ranking.dto";
-import { ChangePasswordRequestDto } from "./dto/changePassword.dto";
+import {
+  StatusRequestDto,
+  StatusResponseDto,
+  validateStatusRequestDto,
+} from "./dto/status.dto";
+import {
+  RankingRequestDto,
+  RankingResponseDto,
+  validateRankingRequestDto,
+} from "./dto/ranking.dto";
+import {
+  ChangePasswordRequestDto,
+  validateChangePasswordRequestDto,
+} from "./dto/changePassword.dto";
 import isServerStarted from "../util/isServerOpen";
 import { GetUsersRequestDto, GetUsersResponseDto } from "./dto/getUsers.dto";
 import { ManageUserRequestDto } from "./dto/manageUser.dto";
@@ -48,7 +66,7 @@ export class UsersController {
   })
   @Post("register")
   async register(@Body() body: RegisterRequestDto) {
-    if (!body.validate()) {
+    if (!validateRegisterRequestDto(body)) {
       throw new HttpException("Bad Request", HttpStatus.BAD_REQUEST);
     }
     const { username, email, password, nickname, section } = body;
@@ -95,7 +113,7 @@ export class UsersController {
   })
   @Post("login")
   async login(@Req() request: Request, @Body() body: LoginRequestDto) {
-    if (!body.validate()) {
+    if (!validateLoginRequestDto(body)) {
       throw new HttpException("Bad Request", HttpStatus.BAD_REQUEST);
     }
     const user = await this.userService.findOne({
@@ -151,7 +169,7 @@ export class UsersController {
   })
   @Post("status")
   async status(@Body() body: StatusRequestDto) {
-    if (!body.validate()) {
+    if (!validateStatusRequestDto(body)) {
       throw new HttpException("Bad Request", HttpStatus.BAD_REQUEST);
     }
     const user = await this.userService.getUserFromToken(body.accessToken);
@@ -178,7 +196,7 @@ export class UsersController {
   })
   @Post("ranking")
   async ranking(@Body() body: RankingRequestDto) {
-    if (!body.validate()) {
+    if (!validateRankingRequestDto(body)) {
       throw new HttpException("Bad Request", HttpStatus.BAD_REQUEST);
     }
     const user = await this.userService.getUserFromToken(body.accessToken);
@@ -213,7 +231,7 @@ export class UsersController {
   })
   @Post("changePassword")
   async changePassword(@Body() body: ChangePasswordRequestDto) {
-    if (!body.validate()) {
+    if (!validateChangePasswordRequestDto(body)) {
       throw new HttpException("Bad Request", HttpStatus.BAD_REQUEST);
     }
     const user = await this.userService.getUserFromToken(body.accessToken);

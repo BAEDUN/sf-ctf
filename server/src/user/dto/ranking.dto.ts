@@ -16,21 +16,21 @@ export class RankingRequestDto {
     description: "Zero based page index. 15 users per page",
   })
   readonly page!: number;
+}
 
-  public validate() {
-    if (!this.accessToken || this.page < 0) {
+export function validateRankingRequestDto(body: RankingRequestDto) {
+  if (!body.accessToken || body.page < 0) {
+    return false;
+  }
+  switch (body.section) {
+    case Section.Security:
+    case Section.SecurityFirst:
+    case Section.Software:
+    case undefined:
+      return true;
+
+    default:
       return false;
-    }
-    switch (this.section) {
-      case Section.Security:
-      case Section.SecurityFirst:
-      case Section.Software:
-      case undefined:
-        return true;
-
-      default:
-        return false;
-    }
   }
 }
 

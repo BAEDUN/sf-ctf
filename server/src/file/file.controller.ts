@@ -11,7 +11,11 @@ import { FileService } from "./file.service";
 import { PutRequestDto, PutResponseDto } from "./dto/put.dto";
 import { v4 as uuid } from "uuid";
 import { UserService } from "../user/users.service";
-import { GetRequestDto, GetResponseDto } from "./dto/get.dto";
+import {
+  GetRequestDto,
+  GetResponseDto,
+  validateGetRequestDto,
+} from "./dto/get.dto";
 import { LogService } from "../log/log.service";
 import { Request } from "express";
 
@@ -89,7 +93,7 @@ export class FileController {
   })
   @Post("get")
   async get(@Req() request: Request, @Body() body: GetRequestDto) {
-    if (!body.validate()) {
+    if (!validateGetRequestDto(body)) {
       throw new HttpException("Bad Request", HttpStatus.BAD_REQUEST);
     }
     const user = await this.userService.getUserFromToken(body.accessToken);
