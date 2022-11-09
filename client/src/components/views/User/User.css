@@ -32,13 +32,6 @@
   transition: 0.3s;
 }
 
-.card input,
-.card select,
-.card option {
-  background: #111;
-  color: #111 !important;
-}
-
 .card div {
   margin: auto;
   padding: 10px;
