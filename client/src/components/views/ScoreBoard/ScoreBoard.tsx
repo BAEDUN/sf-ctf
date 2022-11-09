@@ -1,35 +1,18 @@
+import { MDBPagination, MDBPaginationItem, MDBPaginationLink } from 'mdb-react-ui-kit';
 import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserApi, RankingRequestDtoSectionEnum, RankingResponseDtoUsersInner } from '../../../api';
 import { useAuthContext } from '../../../context/AuthProvider';
 import './ScoreBoard.css';
-import {
-    MDBPagination,
-    MDBPaginationItem,
-    MDBPaginationLink,
-} from "mdb-react-ui-kit";
 
-const PAGESIZE_OPTIONS = [10, 30, 60];
 
 export default function ScoreBoard() {
     const [section, setSection] = useState<RankingRequestDtoSectionEnum | undefined>(undefined);
-    const [page, setPage] = useState<number>(1);
-    const [totalPages, setTotalPages] = useState<number>(0);
-    const [pageSize, _setPageSize] = useState<number>(100);
     const { auth } = useAuthContext();
     const navigate = useNavigate();
     const [users, setUsers] = useState<RankingResponseDtoUsersInner[]>([]);
-    const numPages = Math.ceil(totalPages / pageSize);
-
-    // const setSection = useCallback((newSection: RankingRequestDtoSectionEnum) => {
-    //     _setSection(newSection)
-    //     setPage(1)
-    // }, [_setSection, setPage]);
-
-    const setPageSize = useCallback((newPageSize: number) => {
-        _setPageSize(newPageSize)
-        setPage(Math.floor((page - 1) * pageSize / newPageSize) + 1)
-    }, [pageSize, _setPageSize, page, setPage]);
+    const [page, setPage] = useState<number>(1);
+    const [totalPages, setTotalPages] = useState<number>(0);
 
     const sectionChangeHandler = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
         switch (event.target.value) {
@@ -43,7 +26,14 @@ export default function ScoreBoard() {
                 return setSection(undefined);
         }
     }, [setSection]);
-    const pageSizeChangeHandler = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => setPageSize(parseInt(event.target.value)), [setPageSize]);
+
+    function checkedMovePage(newPage: number) {
+        const outRange = newPage < 1 || newPage > totalPages;
+        if (outRange) {
+            return;
+        }
+        setPage(newPage);
+    }
 
     useEffect(() => {
         if (!auth) {
@@ -54,23 +44,16 @@ export default function ScoreBoard() {
             section,
             page: page - 1,
         }).then((response) => {
-            const { pages, users } = response.data;
-            setTotalPages(pages);
+            const { users, pages } = response.data;
+            console.log(response.data.users);
             setUsers(users);
+            setTotalPages(pages);
         }).catch((error) => {
             if (error.status === 401) {
                 navigate("/login");
             }
         });
     }, [auth, section, page]);
-
-    function checkedMovePage(newPage: number) {
-        const outRange = newPage < 1 || newPage > totalPages;
-        if (outRange) {
-            return;
-        }
-        setPage(newPage);
-    }
 
     return (
         <div className="ScoreBoard">
@@ -93,12 +76,12 @@ export default function ScoreBoard() {
                                     </option>
                                 </select>
                             </div>
-                            <div className='frameSubTitle'>Users per page</div>
+                            {/* <div className='frameSubTitle'>Users per page</div>
                             <div className='input-control'>
                                 <select required className='select' name='pagesize' value={pageSize} onChange={pageSizeChangeHandler}>
                                     {PAGESIZE_OPTIONS.map(sz => <option value={sz}>{sz}</option>)}
                                 </select>
-                            </div>
+                            </div> */}
                             {/* {loggedIn &&
                                 <div className='btn-container u-center'>
                                     <button disabled={!isUserOnCurrentScoreboard} onClick={goToSelfPage}>
@@ -133,26 +116,26 @@ export default function ScoreBoard() {
                                 </tbody>
                             </table>
                         </div>
-                        {totalPages > pageSize && <nav className='Center'>
-                            <MDBPagination className='mb-0'>
+                        <nav className='Center'>
+                            <MDBPagination className='mb-0 Pagination'>
                                 <MDBPaginationItem>
-                                    <MDBPaginationLink href='#' onClick={() => checkedMovePage(page - 1)} aria-label='Previous' aria-disabled={page === 0}>
+                                    <MDBPaginationLink href='#' onClick={() => checkedMovePage(page - 1)} aria-label='Previous'>
                                         <span aria-hidden='true'>«</span>
                                     </MDBPaginationLink>
                                 </MDBPaginationItem>
-                                {Array(numPages)
+                                {Array(totalPages)
                                     .map((_, i) => (
                                         <MDBPaginationItem>
                                             <MDBPaginationLink key={i + 1} href='#' onClick={() => setPage(i + 1)}>{i + 1}</MDBPaginationLink>
                                         </MDBPaginationItem>
                                     ))}
                                 <MDBPaginationItem>
-                                    <MDBPaginationLink href='#' onClick={() => checkedMovePage(page + 1)} aria-label='Next' aria-disabled={page === numPages}>
+                                    <MDBPaginationLink href='#' onClick={() => checkedMovePage(page + 1)} aria-label='Next'>
                                         <span aria-hidden='true'>»</span>
                                     </MDBPaginationLink>
                                 </MDBPaginationItem>
                             </MDBPagination>
-                        </nav>}
+                        </nav>
                     </div>
                 </div>
             </div>
