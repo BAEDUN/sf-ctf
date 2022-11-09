@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect, useCallback, useContext } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import "./Challenges.css";
 import { ChallengeApi, GetAllChallengesResponseDtoChallengesInner, CreateChallengeRequestDtoCategoryEnum } from "../../../api"
 import { AuthContext } from '../../../context/AuthProvider';
@@ -52,19 +52,6 @@ export default function Challenges() {
     useEffect(() => {
         loadChallenges();
     }, [auth]);
-
-    // useEffect(() => {
-    //     const action = async () => {
-    //         const { data, error } = await getPrivateSolves();
-    //         if (error) {
-    //             toast({ body: error, type: 'error' });
-    //             return
-    //         }
-
-    //         setSolvedChallengeTitles(data.map(solve => solve.id));
-    //     }
-    //     action()
-    // }, [toast])
 
     const challengesToDisplay = useMemo(() => {
         let filtered = challenges

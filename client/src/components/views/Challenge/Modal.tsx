@@ -1,14 +1,33 @@
-import React, { Dispatch, Fragment, SetStateAction, useCallback } from 'react';
+import React, { Dispatch, Fragment, SetStateAction, useCallback, useEffect, useState } from 'react';
 import ReactModal from 'react-modal';
-import { GetSolversResponseDtoSolversInner } from '../../../api';
+import { GetSolversResponseDtoSolversInner, LogApi } from '../../../api';
+import { useAuthContext } from '../../../context/AuthProvider';
 
 const solvesPageSize = 10;
 
-const Modal = ({ challengeTitle, isOpen, setIsOpen, modalBodyRef, solvers, pages }: { challengeTitle: string, isOpen: boolean, setIsOpen: Dispatch<SetStateAction<boolean>>, modalBodyRef: any, solvers: GetSolversResponseDtoSolversInner[], pages: number }) => {
+const Modal = ({ challengeTitle, isOpen, setIsOpen, modalBodyRef }: { challengeTitle: string, isOpen: boolean, setIsOpen: Dispatch<SetStateAction<boolean>>, modalBodyRef: any }) => {
     const wrappedOnClose = useCallback((event: React.MouseEvent<HTMLElement>) => {
         event.preventDefault();
         setIsOpen(false);
     }, [setIsOpen])
+    const [solvers, setSolvers] = useState<GetSolversResponseDtoSolversInner[]>([]);
+    const [pages, setPages] = useState<number>(0);
+    const { auth } = useAuthContext();
+    useEffect(() => {
+        if (!auth || !challengeTitle) {
+            return;
+        }
+        new LogApi().logControllerGetSolvers({
+            accessToken: auth.token,
+            challengeTitle: challengeTitle,
+            page: pages! - 1
+        }).then((response) => {
+            const { solvers, pages } = response.data;
+            setSolvers(solvers);
+            setPages(pages);
+            console.log(solvers, pages);
+        })
+    }, [auth]);
     return (
         <ReactModal isOpen={isOpen} aria-label="Close">
             <div className='modal-header'>
