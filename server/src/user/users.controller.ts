@@ -20,6 +20,7 @@ import { LogService } from "../log/log.service";
 import { Request } from "express";
 import { StatusRequestDto, StatusResponseDto } from "./dto/status.dto";
 import { RankingRequestDto, RankingResponseDto } from "./dto/ranking.dto";
+import { ChangePasswordRequestDto } from "./dto/changePassword.dto";
 import isServerStarted from "../util/isServerOpen";
 
 @ApiTags("user")
@@ -165,6 +166,34 @@ export class UsersController {
       pages: count,
       users,
     } as RankingResponseDto;
+  }
+
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: "Unauthorized",
+  })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: "Password Changed",
+    type: LoginResponseDto,
+  })
+  @Post("changePassword")
+  async changePassword(@Body() body: ChangePasswordRequestDto) {
+    const user = await this.userService.getUserFromToken(body.accessToken);
+
+    if (!user) {
+      throw new HttpException("Unauthorized", HttpStatus.UNAUTHORIZED);
+    }
+
+    const passwordMatched = await comparePassword(
+      body.oldPassword,
+      user.hashedPassword
+    );
+    if (!passwordMatched) {
+      throw new HttpException("Unauthorized", HttpStatus.UNAUTHORIZED);
+    }
+
+    await this.userService.changePassword(user.username, body.newPassword);
   }
 
   @Get()
