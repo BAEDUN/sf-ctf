@@ -100,7 +100,7 @@ export class UserService {
 
   async getRanking(page: number, section?: Section) {
     const docPerPage = 15;
-    const refinedPage = Math.max(page * docPerPage, 0);
+    const refinedPage = Math.max(page, 0);
     const query = {
       ...(section ? { section } : {}),
     };
@@ -111,7 +111,7 @@ export class UserService {
         .sort({
           score: -1,
         })
-        .skip(refinedPage)
+        .skip(refinedPage * docPerPage)
         .limit(docPerPage)
         .exec(),
     ]);
