@@ -3,7 +3,9 @@ import { Config } from "../../config";
 
 export default function validateToken(token: string) {
   try {
-    const payload = jwt.verify(token, Config.JWT_SECRET, {});
+    const payload = jwt.verify(token, Config.JWT_SECRET, {
+      algorithms: ["HS256"],
+    });
     let userId = (payload as any)["userId"];
     if (typeof userId === "string") {
       return userId;

@@ -8,6 +8,7 @@ export default async function issueToken(user: User) {
   };
   const accessToken = jwt.sign(payload, Config.JWT_SECRET, {
     expiresIn: Config.ACCESS_TOKEN_EXPIRES_IN,
+    algorithm: "HS256",
   });
   return accessToken;
 }
