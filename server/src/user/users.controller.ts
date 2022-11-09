@@ -205,13 +205,13 @@ export class UsersController {
       throw new HttpException("Unauthorized", HttpStatus.UNAUTHORIZED);
     }
 
-    const { count, users } = await this.userService.getRanking(
+    const { pages, users } = await this.userService.getRanking(
       body.page,
       body.section
     );
 
     return {
-      pages: count,
+      pages,
       users,
     } as RankingResponseDto;
   }
