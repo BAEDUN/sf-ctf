@@ -675,6 +675,12 @@ export interface StatusResponseDto {
      * @memberof StatusResponseDto
      */
     'solvedChallenges': Array<StatusResponseDtoSolvedChallengesInner>;
+    /**
+     * 
+     * @type {string}
+     * @memberof StatusResponseDto
+     */
+    'email': string;
 }
 /**
  * 
