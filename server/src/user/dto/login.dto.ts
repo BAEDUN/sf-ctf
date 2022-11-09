@@ -5,6 +5,10 @@ export class LoginRequestDto {
   readonly username!: string;
   @ApiProperty()
   readonly password!: string;
+
+  public validate() {
+    return this.username && this.password;
+  }
 }
 
 export class LoginResponseDto {

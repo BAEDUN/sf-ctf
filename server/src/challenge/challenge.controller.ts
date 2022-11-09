@@ -70,6 +70,10 @@ export class ChallengeController {
   }
 
   @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: "Bad Request",
+  })
+  @ApiResponse({
     status: HttpStatus.UNAUTHORIZED,
     description: "Unauthorized",
   })
@@ -80,6 +84,9 @@ export class ChallengeController {
   })
   @Post("getAll")
   async getAll(@Body() request: GetAllChallengesRequestDto) {
+    if (!request.validate()) {
+      throw new HttpException("Bad Request", HttpStatus.BAD_REQUEST);
+    }
     const user = await this.userService.getUserFromToken(request.accessToken);
 
     if (!user) {
@@ -116,6 +123,10 @@ export class ChallengeController {
   }
 
   @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: "Bad Request",
+  })
+  @ApiResponse({
     status: HttpStatus.UNAUTHORIZED,
     description: "Unauthorized",
   })
@@ -138,6 +149,9 @@ export class ChallengeController {
   })
   @Post("submitFlag")
   async submitFlag(@Req() request: Request, @Body() body: SubmitRequestDto) {
+    if (!body.validate()) {
+      throw new HttpException("Bad Request", HttpStatus.BAD_REQUEST);
+    }
     const user = await this.userService.getUserFromToken(body.accessToken);
 
     if (!user) {
