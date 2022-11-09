@@ -73,8 +73,8 @@ export class LogService {
 
   public async logDownload(
     ip: string,
-    nickname: string,
     username: string,
+    nickname: string,
     filename: string
   ) {
     const createdLog = new this.logModel({
