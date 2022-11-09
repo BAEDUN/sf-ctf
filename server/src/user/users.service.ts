@@ -125,7 +125,7 @@ export class UserService {
   }
 
   async getUserFromToken(token: string) {
-    const userId = await validateToken(token);
+    const userId = validateToken(token);
     if (!userId) {
       return null;
     }
