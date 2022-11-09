@@ -369,3 +369,37 @@ code:before {
   padding: 0 0.5rem;
   font-size: 70%;
 }
+
+.Pagination .page-item,
+.Pagination .page-link {
+  transition: 0.3s;
+  border-radius: 0.1rem;
+  margin: 0.2rem 0;
+  flex: 0;
+  background-color: #222 !important;
+  color: #5d6c7b;
+}
+
+.Pagination .pagination-item.selected {
+  background-color: #76ff03;
+  color: #fff;
+}
+
+.Pagination .pagination-item:hover,
+.Pagination .pagination-link:hover {
+  color: #76ff03 !important;
+}
+
+.Pagination a {
+  color: #5d6c7b;
+  text-decoration: none;
+  font-weight: 600;
+  display: inline-block;
+  line-height: 1.25;
+  padding: 0.5rem 0.75rem;
+}
+
+.Pagination a,
+a:hover {
+  transition: 0.3s;
+}

@@ -103,8 +103,6 @@ export default function Register() {
         nickname: nick,
         section: belong,
       });
-      console.log(response?.data);
-      console.log(JSON.stringify(response));
       setSuccess(true);
       setUser("");
       setPwd("");

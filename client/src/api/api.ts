@@ -793,6 +793,12 @@ export interface StatusResponseDto {
      * @memberof StatusResponseDto
      */
     'email': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof StatusResponseDto
+     */
+    'section': string;
 }
 /**
  * 
