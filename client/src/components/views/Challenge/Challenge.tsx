@@ -33,7 +33,6 @@ export default function Challenge(props: { challenge: GetAllChallengesResponseDt
     const handleSubmit = useCallback(async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (!auth) {
-            console.log("no auth")
             return;
         }
         const challengeApi = new ChallengeApi();
@@ -55,7 +54,7 @@ export default function Challenge(props: { challenge: GetAllChallengesResponseDt
                         pauseOnHover: true,
                         draggable: true,
                         progress: undefined,
-                        theme: "light",
+                        theme: "colored",
                     });
                     onSolved(challenge.title!)
                 } else {
@@ -67,7 +66,7 @@ export default function Challenge(props: { challenge: GetAllChallengesResponseDt
                         pauseOnHover: true,
                         draggable: true,
                         progress: undefined,
-                        theme: "light",
+                        theme: "colored",
                     });
 
                     setError(error);
@@ -82,80 +81,12 @@ export default function Challenge(props: { challenge: GetAllChallengesResponseDt
                         pauseOnHover: true,
                         draggable: true,
                         progress: undefined,
-                        theme: "light",
+                        theme: "colored",
                     });
                     setError(error);
                 }
             })
     }, [auth, onSolved, challenge, value]);
-
-
-    // const handleSetSolvesPage = useCallback(async (newPage: number) => {
-    //     if (!auth || !challenge.title) {
-    //         console.log("no auth or title")
-    //         return;
-    //     }
-
-    //     const response = await new LogApi().logControllerGetSolvers({
-    //         accessToken: auth?.token,
-    //         challengeTitle: challenge.title,
-    //         page: (newPage - 1) * solvesPageSize
-    //     })
-    //     if (!response) {
-    //         toast.error('error!!', {
-    //             position: "top-center",
-    //             autoClose: 5000,
-    //             hideProgressBar: false,
-    //             closeOnClick: true,
-    //             pauseOnHover: true,
-    //             draggable: true,
-    //             progress: undefined,
-    //             theme: "light",
-    //         });
-    //         return
-    //     }
-    //     // setSolves(challenge.solverCount)
-    //     setSolvesPage(newPage)
-    //     modalBodyRef.current.scrollTop = 0
-    // }, [challenge.title])
-
-    // const onSolvesClick = useCallback(async (event: React.MouseEvent<HTMLElement>) => {
-    //     event.preventDefault();
-    //     if (solvesPending) {
-    //         return
-    //     }
-
-    //     if (!auth || !challenge.title) {
-    //         console.log("no auth or title")
-    //         return;
-    //     }
-
-    //     setSolvesPending(true)
-    //     const logApi = new LogApi();
-    //     const response = await logApi.logControllerGetSolvers({
-    //         accessToken: auth?.token,
-    //         challengeTitle: challenge.title,
-    //         page: 0
-    //     })
-    //     setSolvesPending(false)
-    //     if (!response) {
-    //         toast.error('error!!', {
-    //             position: "top-center",
-    //             autoClose: 5000,
-    //             hideProgressBar: false,
-    //             closeOnClick: true,
-    //             pauseOnHover: true,
-    //             draggable: true,
-    //             progress: undefined,
-    //             theme: "light",
-    //         });
-    //         return
-    //     }
-    //     // setSolves(data.solves)
-    //     setSolvesPage(1);
-    // }, [challenge.title, toast, solvesPending]);
-
-
 
     const download = useCallback(async (filename: string) => {
         if (!auth) {
@@ -194,7 +125,7 @@ export default function Challenge(props: { challenge: GetAllChallengesResponseDt
                 pauseOnHover: true,
                 draggable: true,
                 progress: undefined,
-                theme: "light",
+                theme: "colored",
             });
             return
         }
@@ -202,11 +133,6 @@ export default function Challenge(props: { challenge: GetAllChallengesResponseDt
         setSolvers(solvers);
         setPages(pages);
     }, [challenge.title]);
-
-
-
-
-    const clickSolvesClose = useCallback(() => setIsOpen(false), []);
 
     return (
         <div className="ChallFrame">
@@ -267,7 +193,7 @@ export default function Challenge(props: { challenge: GetAllChallengesResponseDt
                 }
 
             </div>
-            <Modal challengeTitle={challenge.title!} isOpen={isOpen} setIsOpen={setIsOpen} modalBodyRef={modalBodyRef} solvers={solvers} pages={pages} />
+            <Modal challengeTitle={challenge.title!} isOpen={isOpen} setIsOpen={setIsOpen} modalBodyRef={modalBodyRef} />
         </div>
     );
 }
