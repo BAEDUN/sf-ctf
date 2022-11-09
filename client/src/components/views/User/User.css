@@ -7,3 +7,82 @@
   min-height: 100vh;
   padding-top: 0.5rem;
 }
+
+.InformCard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(384px, 1fr));
+  width: 100%;
+  max-width: 1500px;
+  margin: auto;
+}
+
+.InformCard .card {
+  display: grid;
+  background: #222;
+  margin-bottom: 20px;
+  color: #fff;
+  padding: 20px;
+  padding-top: 0;
+  grid-template-columns: repeat(3, minmax(max-content, 1fr));
+  backface-visibility: hidden;
+  box-shadow: 0 5px 12px 0 rgb(42 51 83 / 12%), 0 0 5px rgb(0 0 0 / 6%);
+  border-radius: 5px;
+  position: relative;
+  overflow: hidden;
+  transition: 0.3s;
+}
+
+.card input,
+.card select,
+.card option {
+  background: #111;
+  color: #111 !important;
+}
+
+.card div {
+  margin: auto;
+  padding: 10px;
+}
+
+.title {
+  grid-column: 1 / -1;
+  margin: 20px auto !important;
+  font-weight: bolder;
+}
+
+.title h5 {
+  font-size: 1.5rem;
+  line-height: 1.2;
+}
+
+.label {
+  border-bottom: 1px solid #fff;
+  width: 100%;
+  text-align: center;
+}
+
+.inlineLabel {
+  display: none;
+}
+
+/* @media screen and (max-width: 1500px) {
+  .card {
+    grid-template-columns: repeat(2, minmax(max-content, 1fr));
+  }
+
+  .card div {
+    margin: 0;
+  }
+
+  .label {
+    display: none;
+  }
+
+  .inlineLabel {
+    border-right: 1px solid #fff;
+  }
+
+  .category {
+    border-top: 1px solid #fff;
+  }
+} */
