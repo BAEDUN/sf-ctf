@@ -84,9 +84,6 @@ export default function Challenges() {
                 categoryCounts.get(challenge.category).total += 1
                 if (solved) {
                     categoryCounts.get(challenge.category).solved += 1
-                }
-
-                if (solved) {
                     solvedCount += 1
                 }
             }
