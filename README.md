@@ -45,6 +45,12 @@ If you want install new package, you have to re-run docker-compose after install
 - SERVER_ROOT_PASSWORD
   - `string`
   - Password of server root
+- START_AT
+  - `string`
+  - Time that CTF start
+- END_AT
+  - `string`
+  - Time that CTF end
 
 ## Example `.env` File
 
@@ -56,4 +62,6 @@ MINIO_ROOT_USER=bigfood
 MINIO_ROOT_PASSWORD=password
 SERVER_ROOT_USER=bigfood
 SERVER_ROOT_PASSWORD=password
+START_AT=Wed Nov 01 2022 15:29:59 GMT+0900
+END_AT=Wed Nov 02 2022 15:29:59 GMT+0900
 ```

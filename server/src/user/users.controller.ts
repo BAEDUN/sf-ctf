@@ -21,6 +21,7 @@ import { Request } from "express";
 import { StatusRequestDto, StatusResponseDto } from "./dto/status.dto";
 import { RankingRequestDto, RankingResponseDto } from "./dto/ranking.dto";
 import { ChangePasswordRequestDto } from "./dto/changePassword.dto";
+import isServerStarted from "../util/isServerOpen";
 
 @ApiTags("user")
 @Controller("user")
@@ -75,6 +76,10 @@ export class UsersController {
     status: HttpStatus.UNAUTHORIZED,
     description: "Invalid id or password",
   })
+  @ApiResponse({
+    status: HttpStatus.FORBIDDEN,
+    description: "Didn't start and has no permission",
+  })
   @Post("login")
   async login(@Req() request: Request, @Body() body: LoginRequestDto) {
     const user = await this.userService.findOne({
@@ -84,6 +89,13 @@ export class UsersController {
       throw new HttpException(
         "Invalid id or password",
         HttpStatus.UNAUTHORIZED
+      );
+    }
+
+    if (!isServerStarted() && !user.isAdmin) {
+      throw new HttpException(
+        "Didn't start and has no permission",
+        HttpStatus.FORBIDDEN
       );
     }
 
