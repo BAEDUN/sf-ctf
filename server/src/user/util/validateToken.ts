@@ -8,8 +8,13 @@ export default function validateToken(token: string) {
     if (typeof userId === "string") {
       return userId;
     }
-  } catch (error) {
-    console.error(error);
+  } catch (error: any) {
+    switch (error.message) {
+      case "jwt expired":
+        return null;
+      default:
+        console.error(error);
+    }
   }
   return null;
 }
