@@ -27,7 +27,9 @@ export default function NavBar() {
                             <Nav.Link onClick={() => navigate("/users")}>Users</Nav.Link>
                             <Nav.Link onClick={() => navigate("/ranking")}>Scoreboard</Nav.Link>
                             <Nav.Link onClick={() => navigate("/challenge")}>Challenge</Nav.Link>
-                            <Nav.Link onClick={() => navigate("#")}>Discord</Nav.Link>
+                            <Nav.Link onClick={() => navigate("/discord")} href="https://discord.gg/MqkHmwz5">
+                                Discord
+                            </Nav.Link>
                         </Nav>
                         <Nav>
                             {auth ? "" : <Nav.Link onClick={() => navigate("/register")}>
