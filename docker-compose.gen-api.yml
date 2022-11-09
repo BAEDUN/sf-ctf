@@ -1,6 +1,5 @@
 services:
   server:
-    user: ${USER_ID}
     build:
       context: .
       dockerfile: ./server/dockerfile.dev
@@ -31,7 +30,6 @@ services:
       - db
 
   db:
-    user: ${USER_ID}
     image: mongo:6.0.1
     restart: unless-stopped
     environment:

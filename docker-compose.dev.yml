@@ -1,6 +1,5 @@
 services:
   client:
-    user: ${USER_ID}
     build:
       context: .
       dockerfile: ./client/dockerfile.dev
@@ -16,7 +15,6 @@ services:
       - server
 
   server:
-    user: ${USER_ID}
     build:
       context: .
       dockerfile: ./server/dockerfile.dev
@@ -43,7 +41,6 @@ services:
       - storage
 
   nginx:
-    user: ${USER_ID}
     image: nginx:1.23.1-alpine
     restart: unless-stopped
     ports:
@@ -57,7 +54,6 @@ services:
       - server
 
   storage:
-    user: ${USER_ID}
     image: minio/minio:RELEASE.2022-09-22T18-57-27Z
     restart: unless-stopped
     environment:
@@ -71,7 +67,6 @@ services:
     command: server /data
 
   initStorage:
-    user: ${USER_ID}
     image: minio/mc:RELEASE.2022-10-09T21-10-59Z
     depends_on:
       - storage
@@ -82,7 +77,6 @@ services:
       "
 
   db:
-    user: ${USER_ID}
     image: mongo:6.0.1
     restart: unless-stopped
     environment:
