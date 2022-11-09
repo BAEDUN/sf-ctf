@@ -24,7 +24,7 @@ const Main = () => {
         particlesLoaded={particlesLoaded}
       />
       <div className="Logo"><img src={logo} /></div>
-      <div className="Logo">대회 이름 자리</div>
+      <div className="Time">2022년 11월 11일 21시 </div>
     </div>
   );
 };

@@ -14,8 +14,12 @@
 }
 
 .Logo {
-  padding: 7%;
-  width: 30%;
+  padding: 4%;
+  width: 50%;
   margin-left: 35%;
   margin-top: 5%;
+}
+
+.Notice {
+  color: #fff;
 }
