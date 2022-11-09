@@ -3,31 +3,11 @@ import { Form, useNavigate } from 'react-router-dom';
 import { StatusResponseDtoSolvedChallengesInner, UserApi } from '../../../api';
 import "./User.css";
 import { useAuthContext } from '../../../context/AuthProvider';
+import { toast } from 'react-toastify';
+import { MDBInput } from 'mdb-react-ui-kit';
 
-// function InformCard() {
-
-//     return (
-//         <div className='InformCard'>
-//             <div className='card'>
-//                 <div className='content'>
-//                     <div className="wrapper">
-//                         <h5 className="title">{nickname}</h5>
-//                     </div>
-//                     <div className='action-bar'>
-//                         {solvedChallengeTitles}
-//                     </div>
-//                     <div className='action-bar'>
-//                         {score}
-//                     </div>
-//                 </div>
-//             </div>
-//         </div>
-//     );
-// }
-
-function InformCard() {
+function loadUserStatus() {
     const { auth } = useAuthContext();
-    const navigate = useNavigate();
     const [username, setUsername] = useState<string>("");
     const [nickname, setNickname] = useState<string>("");
     const [score, setScore] = useState<number>(0);
@@ -48,15 +28,136 @@ function InformCard() {
             setUsername(username);
         }).catch((error) => {
             if (error.status === 401) {
-                navigate("/login");
+                return;
+            }
+        });
+
+    }, [auth]);
+}
+
+function UpdateCard() {
+    const { auth } = useAuthContext();
+    const [oldPassword, setOldPassword] = useState("");
+    const [newPassword, setNewPassword] = useState("");
+    const [username, setUsername] = useState<string>("");
+    const [nickname, setNickname] = useState<string>("");
+    const [score, setScore] = useState<number>(0);
+
+    loadUserStatus();
+
+    const oldPasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setOldPassword(event.target.value);
+    }
+
+
+
+    useEffect(() => {
+        if (!auth) {
+            return;
+        }
+        new UserApi().usersControllerChangePassword({
+            accessToken: auth.token,
+            oldPassword: oldPassword,
+            newPassword: newPassword
+        }).then((response) => {
+            const { accessToken } = response.data;
+            if (accessToken) {
+                toast.success('정상적으로 변경되었습니다!', {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                });
+            }
+        }).catch((error) => {
+            if (error.status === 401) {
+                toast.error('비밀번호를 다시 입력해주세요!', {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored",
+                });
             }
         });
 
     }, [auth]);
 
     return (
+        <div className='UpdateCard'>
+            <div className="Card">
+                {!auth ? (
+                    <div className="title">
+                        <h5>회원이 아닙니다.</h5>
+                    </div>
+                ) : (
+                    <Fragment>
+                        <h5 className="title">{username}</h5>
+                        <div className="nickWrap">
+                            <div className="nickTitle">닉네임</div>
+                            <div className="nickData">{nickname}</div>
+                        </div>
+                        <div className="emailWrap">
+                            <div className="emailTitle">이메일</div>
+                            <div className="emailData">{email}</div>
+                        </div>
+                        <div className="oldPasswordWrap">
+                            <div className="oldPasswordTitle">이전 비밀번호</div>
+                            <MDBInput
+                                label="Password"
+                                type="password"
+                                onChange={(e) => setOldPassword(e.target.value)}
+                                value={oldPassword}
+                                required
+                                className="mt-3 oldPasswordData"
+                                contrast
+                            />
+                        </div>
+                        <div className="newPasswordWrap">
+                            <div className="newPasswordTitle">새 비밀번호</div>
+                            <MDBInput
+                                label="Password"
+                                type="password"
+                                onChange={(e) => setNewPassword(e.target.value)}
+                                value={newPassword}
+                                required
+                                className="mt-3 newPasswordData"
+                                contrast
+                            />
+                        </div>
+                        {solvedChallenges.map((solvedChallenge) => (
+                            <Fragment key={solvedChallenge.title}>
+                                <div className="inlineLabel category">Category</div>
+                                <div className="category">{solvedChallenge.category}</div>
+                                <div className="inlineLabel">Title</div>
+                                <div>{solvedChallenge.title}</div>
+                                <div className="inlineLabel">Solve time</div>
+                                <div>{new Date(solvedChallenge.solvedAt!).toLocaleString()}</div>
+                            </Fragment>
+                        ))}
+                    </Fragment>
+                )}
+            </div>
+        </div>
+    );
+}
+
+function InformCard() {
+    const [solvedChallenges, setSolvedChallenges] = useState<StatusResponseDtoSolvedChallengesInner[]>([]);
+    loadUserStatus();
+
+
+
+    return (
         <div className='InformCard'>
-            <div className="card">
+            <div className="Card">
                 {solvedChallenges.length === 0 ? (
                     <div className="title">
                         <h5>아직 해결한 문제가 없습니다.</h5>
@@ -87,8 +188,8 @@ function InformCard() {
 export default function User() {
     return (
         <div className='User'>
+            <UpdateCard />
             <InformCard />
-            <div className="SummaryCard"></div>
         </div>
     );
 }

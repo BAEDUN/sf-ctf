@@ -16,7 +16,7 @@
   margin: auto;
 }
 
-.InformCard .card {
+.InformCard .Card {
   display: grid;
   background: #222;
   margin-bottom: 20px;
@@ -32,7 +32,7 @@
   transition: 0.3s;
 }
 
-.card div {
+.Card div {
   margin: auto;
   padding: 10px;
 }
@@ -59,11 +59,11 @@
 }
 
 /* @media screen and (max-width: 1500px) {
-  .card {
+  .Card {
     grid-template-columns: repeat(2, minmax(max-content, 1fr));
   }
 
-  .card div {
+  .Card div {
     margin: 0;
   }
 

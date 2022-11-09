@@ -123,12 +123,12 @@ export default function ScoreBoard() {
                                         <span aria-hidden='true'>«</span>
                                     </MDBPaginationLink>
                                 </MDBPaginationItem>
-                                {Array(totalPages)
+                                {/* {Array(totalPages)
                                     .map((_, i) => (
                                         <MDBPaginationItem>
                                             <MDBPaginationLink key={i + 1} href='#' onClick={() => setPage(i + 1)}>{i + 1}</MDBPaginationLink>
                                         </MDBPaginationItem>
-                                    ))}
+                                    ))} */}
                                 <MDBPaginationItem>
                                     <MDBPaginationLink href='#' onClick={() => checkedMovePage(page + 1)} aria-label='Next'>
                                         <span aria-hidden='true'>»</span>

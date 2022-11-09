@@ -329,11 +329,6 @@ code:before {
   max-height: 60vh !important;
 }
 
-.modal-form {
-  display: grid;
-  grid-template-columns: repeat(3, max-content);
-}
-
 .modal-form div {
   margin: auto;
   padding: 5px 10px;
@@ -341,16 +336,20 @@ code:before {
   white-space: nowrap;
 }
 
-.modal-row {
+.modal-row-wrap {
   border-bottom: 1px solid #fff;
   width: 100%;
   text-align: center;
+  display: flex;
 }
 
-.modal-col {
-  display: none;
+.modal-col-wrap {
   overflow: hidden;
   width: 300px;
+}
+
+.solverList {
+  display: flex;
 }
 
 .modal-footer {

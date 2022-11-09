@@ -43,7 +43,7 @@ export default function Challenges() {
             } = response.data;
             setChallenges(challenges);
         });
-    }, []);
+    }, [auth]);
 
     const onSolved = useCallback((title: string) => {
         loadChallenges();
