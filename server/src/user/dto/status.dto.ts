@@ -48,4 +48,7 @@ export class StatusResponseDto {
 
   @ApiProperty()
   readonly email!: string;
+
+  @ApiProperty()
+  readonly section!: string;
 }
