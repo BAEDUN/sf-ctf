@@ -447,6 +447,87 @@ export interface GetSolversResponseDtoSolversInner {
 /**
  * 
  * @export
+ * @interface GetUsersRequestDto
+ */
+export interface GetUsersRequestDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof GetUsersRequestDto
+     */
+    'accessToken': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetUsersRequestDto
+     */
+    'username'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetUsersRequestDto
+     */
+    'nickname'?: string;
+    /**
+     * Zero based page index. 15 users per page
+     * @type {number}
+     * @memberof GetUsersRequestDto
+     */
+    'page': number;
+}
+/**
+ * 
+ * @export
+ * @interface GetUsersResponseDto
+ */
+export interface GetUsersResponseDto {
+    /**
+     * 
+     * @type {Array<GetUsersResponseDtoUsersInner>}
+     * @memberof GetUsersResponseDto
+     */
+    'users': Array<GetUsersResponseDtoUsersInner>;
+    /**
+     * Total pages for requested query
+     * @type {number}
+     * @memberof GetUsersResponseDto
+     */
+    'pages': number;
+}
+/**
+ * 
+ * @export
+ * @interface GetUsersResponseDtoUsersInner
+ */
+export interface GetUsersResponseDtoUsersInner {
+    /**
+     * 
+     * @type {string}
+     * @memberof GetUsersResponseDtoUsersInner
+     */
+    'username'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetUsersResponseDtoUsersInner
+     */
+    'nickname'?: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetUsersResponseDtoUsersInner
+     */
+    'isAdmin'?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetUsersResponseDtoUsersInner
+     */
+    'isBanned'?: boolean;
+}
+/**
+ * 
+ * @export
  * @interface LoginRequestDto
  */
 export interface LoginRequestDto {
@@ -1369,11 +1450,14 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
         },
         /**
          * 
+         * @param {GetUsersRequestDto} getUsersRequestDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        usersControllerFindAll: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/user`;
+        usersControllerGetUsers: async (getUsersRequestDto: GetUsersRequestDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'getUsersRequestDto' is not null or undefined
+            assertParamExists('usersControllerGetUsers', 'getUsersRequestDto', getUsersRequestDto)
+            const localVarPath = `/api/user/getUsers`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -1381,15 +1465,18 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
 
     
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(getUsersRequestDto, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -1558,11 +1645,12 @@ export const UserApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @param {GetUsersRequestDto} getUsersRequestDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async usersControllerFindAll(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.usersControllerFindAll(options);
+        async usersControllerGetUsers(getUsersRequestDto: GetUsersRequestDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetUsersResponseDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.usersControllerGetUsers(getUsersRequestDto, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -1626,11 +1714,12 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
         },
         /**
          * 
+         * @param {GetUsersRequestDto} getUsersRequestDto 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        usersControllerFindAll(options?: any): AxiosPromise<void> {
-            return localVarFp.usersControllerFindAll(options).then((request) => request(axios, basePath));
+        usersControllerGetUsers(getUsersRequestDto: GetUsersRequestDto, options?: any): AxiosPromise<GetUsersResponseDto> {
+            return localVarFp.usersControllerGetUsers(getUsersRequestDto, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1691,12 +1780,13 @@ export class UserApi extends BaseAPI {
 
     /**
      * 
+     * @param {GetUsersRequestDto} getUsersRequestDto 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UserApi
      */
-    public usersControllerFindAll(options?: AxiosRequestConfig) {
-        return UserApiFp(this.configuration).usersControllerFindAll(options).then((request) => request(this.axios, this.basePath));
+    public usersControllerGetUsers(getUsersRequestDto: GetUsersRequestDto, options?: AxiosRequestConfig) {
+        return UserApiFp(this.configuration).usersControllerGetUsers(getUsersRequestDto, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

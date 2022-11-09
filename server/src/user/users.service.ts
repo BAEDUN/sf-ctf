@@ -46,6 +46,19 @@ export class UserService {
     return this.userModel.findOne(query);
   }
 
+  async findPaged(query: FilterQuery<UserDocument>, page: number = 0) {
+    const docPerPage = 15;
+    const refinedPage = Math.max(0, page);
+    const [count, users] = await Promise.all([
+      this.userModel.find(query).count(),
+      this.userModel.find(query).skip(refinedPage).limit(docPerPage).exec(),
+    ]);
+    return {
+      pages: Math.ceil(count / docPerPage),
+      users,
+    };
+  }
+
   async status(username: string) {
     const user = await this.userModel.findOne({
       username,
