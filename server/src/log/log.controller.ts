@@ -50,7 +50,12 @@ export class LogController {
       throw new HttpException("Forbidden", HttpStatus.FORBIDDEN);
     }
 
-    let result = await this.logService.get(body.username, body.ip, body.page);
+    let result = await this.logService.get(
+      body.username,
+      body.nickname,
+      body.ip,
+      body.page
+    );
     return {
       logs: result.logs.map((log) => {
         return {

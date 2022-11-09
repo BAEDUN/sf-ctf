@@ -12,12 +12,14 @@ export class LogService {
   ) {}
 
   public async get(
+    username: string | null = null,
     nickname: string | null = null,
     ip: string | null = null,
     page: number = 0
   ) {
     const docPerPage = 25;
     const query = {
+      ...(username ? { username: { $regex: username } } : {}),
       ...(nickname ? { nickname: { $regex: nickname } } : {}),
       ...(ip ? { ip: { $regex: ip } } : {}),
     };

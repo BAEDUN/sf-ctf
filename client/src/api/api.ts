@@ -246,6 +246,12 @@ export interface GetLogRequestDto {
      * @type {string}
      * @memberof GetLogRequestDto
      */
+    'nickname'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetLogRequestDto
+     */
     'ip'?: string;
     /**
      * Zero based page index. 25 logs per page
