@@ -10,11 +10,13 @@ import {
 } from "mdb-react-ui-kit";
 import React, { useState } from "react";
 import CreateChallenge from "./CreateChallenge/CreateChallenge";
+import User from "./User/User";
 import ViewLog from "./ViewLog/ViewLog";
 
 enum Tab {
   CreateChallenge = "CreateChallenge",
   ViewLog = "ViewLog",
+  User = "User",
 }
 
 export default function Admin() {
@@ -45,6 +47,14 @@ export default function Admin() {
                 View Log
               </MDBTabsLink>
             </MDBTabsItem>
+            <MDBTabsItem>
+              <MDBTabsLink
+                onClick={() => setTab(Tab.User)}
+                active={tab === Tab.User}
+              >
+                User
+              </MDBTabsLink>
+            </MDBTabsItem>
           </MDBTabs>
           <MDBTabsContent>
             <MDBTabsPane show={tab === Tab.CreateChallenge}>
@@ -52,6 +62,9 @@ export default function Admin() {
             </MDBTabsPane>
             <MDBTabsPane show={tab === Tab.ViewLog}>
               <ViewLog />
+            </MDBTabsPane>
+            <MDBTabsPane show={tab === Tab.User}>
+              <User />
             </MDBTabsPane>
           </MDBTabsContent>
         </MDBCardBody>

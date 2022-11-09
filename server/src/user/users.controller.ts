@@ -22,6 +22,8 @@ import { StatusRequestDto, StatusResponseDto } from "./dto/status.dto";
 import { RankingRequestDto, RankingResponseDto } from "./dto/ranking.dto";
 import { ChangePasswordRequestDto } from "./dto/changePassword.dto";
 import isServerStarted from "../util/isServerOpen";
+import { GetUsersRequestDto, GetUsersResponseDto } from "./dto/getUsers.dto";
+import { ManageUserRequestDto } from "./dto/manageUser.dto";
 
 @ApiTags("user")
 @Controller("user")
@@ -196,8 +198,78 @@ export class UsersController {
     await this.userService.changePassword(user.username, body.newPassword);
   }
 
-  @Get()
-  async findAll(): Promise<User[]> {
-    return this.userService.findAll({});
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: "Unauthorized",
+  })
+  @ApiResponse({
+    status: HttpStatus.FORBIDDEN,
+    description: "Forbidden",
+  })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: "Successful",
+    type: GetUsersResponseDto,
+  })
+  @Post("getUsers")
+  async getUsers(@Body() body: GetUsersRequestDto) {
+    const user = await this.userService.getUserFromToken(body.accessToken);
+
+    if (!user) {
+      throw new HttpException("Unauthorized", HttpStatus.UNAUTHORIZED);
+    }
+
+    if (!user.isAdmin) {
+      throw new HttpException("Forbidden", HttpStatus.FORBIDDEN);
+    }
+
+    const { pages, users } = await this.userService.findPaged(
+      {
+        ...(body.username ? { username: { $regex: body.username } } : {}),
+        ...(body.nickname ? { nickname: { $regex: body.nickname } } : {}),
+      },
+      body.page
+    );
+
+    return {
+      pages,
+      users: users.map((user) => {
+        const { username, nickname, isAdmin, isBanned } = user;
+        return {
+          username,
+          nickname,
+          isAdmin,
+          isBanned,
+        };
+      }),
+    } as GetUsersResponseDto;
+  }
+
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: "Unauthorized",
+  })
+  @ApiResponse({
+    status: HttpStatus.FORBIDDEN,
+    description: "Forbidden",
+  })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: "Successful",
+    type: GetUsersResponseDto,
+  })
+  @Post("manage")
+  async manage(@Body() body: ManageUserRequestDto) {
+    const user = await this.userService.getUserFromToken(body.accessToken);
+
+    if (!user) {
+      throw new HttpException("Unauthorized", HttpStatus.UNAUTHORIZED);
+    }
+
+    if (!user.isAdmin) {
+      throw new HttpException("Forbidden", HttpStatus.FORBIDDEN);
+    }
+
+    await this.userService.manage(body.username, body.admin, body.ban);
   }
 }
