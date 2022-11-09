@@ -5,6 +5,7 @@
   "scripts": {
     "start": "nest start --watch",
     "build": "nest build",
+    "serve": "nest start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
