@@ -116,7 +116,7 @@ export class UserService {
         .exec(),
     ]);
     return {
-      count,
+      pages: Math.ceil(count / docPerPage),
       users: users.map((user, index) => {
         const { username, score } = user;
         const rank = refinedPage * docPerPage + index + 1;
