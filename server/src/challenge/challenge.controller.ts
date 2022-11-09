@@ -18,7 +18,7 @@ import {
 import { SubmitRequestDto, SubmitResponseDto } from "./dto/submitFlag.dto";
 import { LogService } from "../log/log.service";
 import { Request } from "express";
-import isServerEnd from "../util/isServerEnd";
+import isServerEnded from "../util/isServerEnded";
 
 @ApiTags("challenge")
 @Controller("challenge")
@@ -144,7 +144,7 @@ export class ChallengeController {
       throw new HttpException("Unauthorized", HttpStatus.UNAUTHORIZED);
     }
 
-    if (isServerEnd() && !user.isAdmin) {
+    if (isServerEnded() && !user.isAdmin) {
       throw new HttpException(
         "Ended and has no permission",
         HttpStatus.FORBIDDEN
