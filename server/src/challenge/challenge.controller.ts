@@ -18,6 +18,7 @@ import {
 import { SubmitRequestDto, SubmitResponseDto } from "./dto/submitFlag.dto";
 import { LogService } from "../log/log.service";
 import { Request } from "express";
+import isServerEnd from "../util/isServerEnd";
 
 @ApiTags("challenge")
 @Controller("challenge")
@@ -119,6 +120,10 @@ export class ChallengeController {
     description: "Unauthorized",
   })
   @ApiResponse({
+    status: HttpStatus.FORBIDDEN,
+    description: "Ended and has no permission",
+  })
+  @ApiResponse({
     status: HttpStatus.NOT_FOUND,
     description: "Challenge Not Found",
   })
@@ -137,6 +142,13 @@ export class ChallengeController {
 
     if (!user) {
       throw new HttpException("Unauthorized", HttpStatus.UNAUTHORIZED);
+    }
+
+    if (isServerEnd() && !user.isAdmin) {
+      throw new HttpException(
+        "Ended and has no permission",
+        HttpStatus.FORBIDDEN
+      );
     }
 
     const challenge = await this.challengeService.get(body.title);

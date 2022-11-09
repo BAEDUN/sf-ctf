@@ -12,6 +12,8 @@ services:
       - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
       - SERVER_ROOT_USER=${SERVER_ROOT_USER}
       - SERVER_ROOT_PASSWORD=${SERVER_ROOT_PASSWORD}
+      - START_AT=${START_AT}
+      - END_AT=${END_AT}
     ports:
       - "3000:3000"
     volumes:
