@@ -1711,7 +1711,7 @@ export const UserApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async usersControllerChangePassword(changePasswordRequestDto: ChangePasswordRequestDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<LoginResponseDto>> {
+        async usersControllerChangePassword(changePasswordRequestDto: ChangePasswordRequestDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.usersControllerChangePassword(changePasswordRequestDto, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -1791,7 +1791,7 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        usersControllerChangePassword(changePasswordRequestDto: ChangePasswordRequestDto, options?: any): AxiosPromise<LoginResponseDto> {
+        usersControllerChangePassword(changePasswordRequestDto: ChangePasswordRequestDto, options?: any): AxiosPromise<void> {
             return localVarFp.usersControllerChangePassword(changePasswordRequestDto, options).then((request) => request(axios, basePath));
         },
         /**
