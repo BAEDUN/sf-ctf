@@ -39,7 +39,7 @@ export default function ScoreBoard() {
         if (!auth) {
             return;
         }
-        new UserApi().usersControllerRanking({
+        new UserApi(undefined, location.origin).usersControllerRanking({
             accessToken: auth.token,
             section,
             page: page - 1,

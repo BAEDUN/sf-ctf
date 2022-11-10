@@ -19,7 +19,7 @@ const Modal = ({ challengeTitle, isOpen, setIsOpen, modalBodyRef }: { challengeT
         if (!auth || !challengeTitle) {
             return;
         }
-        new LogApi().logControllerGetSolvers({
+        new LogApi(undefined, location.origin).logControllerGetSolvers({
             accessToken: auth.token,
             challengeTitle: challengeTitle,
             page: page! - 1

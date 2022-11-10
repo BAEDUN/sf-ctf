@@ -35,7 +35,7 @@ export default function Challenge(props: { challenge: GetAllChallengesResponseDt
         if (!auth) {
             return;
         }
-        const challengeApi = new ChallengeApi();
+        const challengeApi = new ChallengeApi(undefined, location.origin);
         await challengeApi.challengeControllerSubmitFlag({
             accessToken: auth.token,
             title: challenge.title!,
@@ -111,7 +111,7 @@ export default function Challenge(props: { challenge: GetAllChallengesResponseDt
         if (!auth || !challenge.title) {
             return;
         }
-        const logApi = new LogApi();
+        const logApi = new LogApi(undefined, location.origin);
         const response = await logApi.logControllerGetSolvers({
             accessToken: auth?.token,
             challengeTitle: challenge.title,
