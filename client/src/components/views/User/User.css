@@ -6,6 +6,15 @@
   min-width: 100vw;
   min-height: 100vh;
   padding-top: 0.5rem;
+  color: #fff;
+  flex: 1 0 auto;
+}
+
+.CardWrap {
+  display: grid;
+  width: 100%;
+  max-width: 1500px;
+  margin: auto;
 }
 
 .InformCard {
@@ -14,6 +23,17 @@
   width: 100%;
   max-width: 1500px;
   margin: auto;
+}
+
+.Card {
+  background: #222;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  position: relative;
+  overflow: hidden;
+  transition: 0.3s;
+  backface-visibility: hidden;
+  box-shadow: 0 5px 12px 0 rgb(42 51 83 / 12%), 0 0 5px rgb(0 0 0 / 6%);
 }
 
 .InformCard .Card {
@@ -37,10 +57,12 @@
   padding: 10px;
 }
 
-.title {
+.Card .title {
   grid-column: 1 / -1;
   margin: 20px auto !important;
   font-weight: bolder;
+  text-align: center;
+  font-size: 2.5rem;
 }
 
 .title h5 {
@@ -48,7 +70,7 @@
   line-height: 1.2;
 }
 
-.label {
+.informLabel {
   border-bottom: 1px solid #fff;
   width: 100%;
   text-align: center;
@@ -56,6 +78,24 @@
 
 .inlineLabel {
   display: none;
+}
+
+.UpdateCard {
+  width: calc(100% - 20px);
+  margin-left: 10px;
+}
+
+.UpdateForm .UpdateCont {
+  line-height: 1.5rem;
+  font-size: 1.5rem;
+  background-color: #222 !important;
+  color: #fff;
+  text-align: center !important;
+  border: 1px solid #fff;
+}
+
+.Card .text-dark {
+  padding: 10px;
 }
 
 /* @media screen and (max-width: 1500px) {

@@ -66,7 +66,7 @@ export class UserService {
     if (!user) {
       throw new Error("User not found");
     }
-    const { nickname, score, email } = user;
+    const { nickname, score, email, section } = user;
     const solvedLogs = await this.logModel
       .find({
         username,
@@ -95,6 +95,7 @@ export class UserService {
       score,
       solvedChallenges,
       email,
+      section,
     };
   }
 

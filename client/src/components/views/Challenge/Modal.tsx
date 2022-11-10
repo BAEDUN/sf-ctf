@@ -1,3 +1,4 @@
+import { MDBPagination, MDBPaginationItem, MDBPaginationLink } from 'mdb-react-ui-kit';
 import React, { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react';
 import ReactModal from 'react-modal';
 import { GetSolversResponseDtoSolversInner, LogApi } from '../../../api';
@@ -11,8 +12,9 @@ const Modal = ({ challengeTitle, isOpen, setIsOpen, modalBodyRef }: { challengeT
         setIsOpen(false);
     }, [setIsOpen])
     const [solvers, setSolvers] = useState<GetSolversResponseDtoSolversInner[]>([]);
-    const [pages, setPages] = useState<number>(0);
+    const [page, setPage] = useState<number>(1);
     const { auth } = useAuthContext();
+    const [totalPages, setTotalPages] = useState<number>(0);
     useEffect(() => {
         if (!auth || !challengeTitle) {
             return;
@@ -20,15 +22,25 @@ const Modal = ({ challengeTitle, isOpen, setIsOpen, modalBodyRef }: { challengeT
         new LogApi().logControllerGetSolvers({
             accessToken: auth.token,
             challengeTitle: challengeTitle,
-            page: pages! - 1
+            page: page! - 1
         }).then((response) => {
             const { solvers, pages } = response.data;
             setSolvers(solvers);
-            setPages(pages);
-            console.log(solvers, pages);
+            setTotalPages(pages);
+        }).catch((error) => {
+            console.log(error);
         })
-    }, [auth]);
+    }, [auth, page]);
+
     let i = 1;
+
+    function checkedMovePage(newPage: number) {
+        const outRange = newPage < 1 || newPage > totalPages;
+        if (outRange) {
+            return;
+        }
+        setPage(newPage);
+    }
     return (
         <ReactModal isOpen={isOpen} aria-label="Close">
             <div className='modal-header'>
@@ -74,6 +86,26 @@ const Modal = ({ challengeTitle, isOpen, setIsOpen, modalBodyRef }: { challengeT
                     </table>
                 </div >
             </div >
+            <nav className='Center'>
+                <MDBPagination className='mb-0 Pagination'>
+                    <MDBPaginationItem>
+                        <MDBPaginationLink href='#' onClick={() => checkedMovePage(page - 1)} aria-label='Previous'>
+                            <span aria-hidden='true'>«</span>
+                        </MDBPaginationLink>
+                    </MDBPaginationItem>
+                    {/* {Array(totalPages)
+                                    .map((_, i) => (
+                                        <MDBPaginationItem>
+                                            <MDBPaginationLink key={i + 1} href='#' onClick={() => setPage(i + 1)}>{i + 1}</MDBPaginationLink>
+                                        </MDBPaginationItem>
+                                    ))} */}
+                    <MDBPaginationItem>
+                        <MDBPaginationLink href='#' onClick={() => checkedMovePage(page + 1)} aria-label='Next'>
+                            <span aria-hidden='true'>»</span>
+                        </MDBPaginationLink>
+                    </MDBPaginationItem>
+                </MDBPagination>
+            </nav>
             <div className='modal-footer'>
                 <div className='btn-container u-inline-block'>
                     <button className="btn-small outline" onClick={wrappedOnClose}>Close</button>

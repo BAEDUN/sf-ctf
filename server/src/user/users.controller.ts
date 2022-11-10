@@ -227,7 +227,6 @@ export class UsersController {
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: "Password Changed",
-    type: LoginResponseDto,
   })
   @Post("changePassword")
   async changePassword(@Body() body: ChangePasswordRequestDto) {
