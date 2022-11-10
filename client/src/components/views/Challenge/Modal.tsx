@@ -30,7 +30,7 @@ const Modal = ({ challengeTitle, isOpen, setIsOpen, modalBodyRef }: { challengeT
         }).catch((error) => {
             console.log(error);
         })
-    }, [auth]);
+    }, [auth, page]);
 
     let i = 1;
 

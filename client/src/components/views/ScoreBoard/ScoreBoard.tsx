@@ -45,7 +45,6 @@ export default function ScoreBoard() {
             page: page - 1,
         }).then((response) => {
             const { users, pages } = response.data;
-            console.log(response.data.users);
             setUsers(users);
             setTotalPages(pages);
         }).catch((error) => {
