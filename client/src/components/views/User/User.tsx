@@ -24,7 +24,7 @@ export default function User() {
         if (!auth) {
             return;
         }
-        new UserApi().usersControllerStatus({
+        new UserApi(undefined, location.origin).usersControllerStatus({
             accessToken: auth.token
         }).then((response) => {
             const { nickname, score, solvedChallenges, username, email, section } = response.data;
@@ -62,7 +62,7 @@ export default function User() {
         if (!auth) {
             return;
         }
-        new UserApi().usersControllerChangePassword({
+        new UserApi(undefined, location.origin).usersControllerChangePassword({
             accessToken: auth.token,
             oldPassword: oldPassword,
             newPassword: newPassword
