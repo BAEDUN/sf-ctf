@@ -1,5 +1,5 @@
 import React from "react";
-import { CreateChallengeRequestDtoCategoryEnum } from "../../../../api";
+import { CreateChallengeRequestDtoCategoryEnum } from "../../../../../api";
 
 export default function CategorySelect(props: {
   setCategory: React.Dispatch<
@@ -7,10 +7,10 @@ export default function CategorySelect(props: {
   >;
 }) {
   return (
-    <div className="form-floating mb-4">
+    <div className="form-floating mb-4 w-50">
       <select
         id="category-select"
-        className="mb-4 form-select"
+        className="form-select"
         onChange={handleCategorySelect(props.setCategory)}
       >
         <option
