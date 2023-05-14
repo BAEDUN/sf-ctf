@@ -7,6 +7,7 @@ import {
   Req,
 } from "@nestjs/common";
 import { CreateChallengeRequestDto } from "./dto/createChallenge.dto";
+import { UpdateChallengeRequestDto } from "./dto/updateChallenge.dto";
 import { ApiResponse, ApiTags } from "@nestjs/swagger";
 import { ChallengeService } from "./challenge.service";
 import { UserService } from "../user/users.service";
