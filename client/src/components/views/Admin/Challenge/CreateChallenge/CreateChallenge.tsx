@@ -17,7 +17,7 @@ import {
 import { useAuthContext } from "../../../../../context/AuthProvider";
 import handleNumberInput from "../../../../../util/handleNumberInput";
 import handleStringInput from "../../../../../util/handleStringInput";
-import CategorySelect from "./CategorySelect";
+import CategorySelect from "../CategorySelect";
 
 export default function CreateChallenge() {
   const { auth } = useAuthContext();

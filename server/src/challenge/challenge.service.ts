@@ -107,21 +107,16 @@ export class ChallengeService {
         throw new Error("Challenge not found");
       }
 
-      const {
-        title,
-        description,
-        category,
-        fileList,
-        grading,
-        flag,
-      } = request;
+      {
+        const {title, description, category, fileList, grading, flag} = request;
 
-      if (title) challenge.title = title;
-      if (description) challenge.description = description;
-      if (category) challenge.category = category;
-      if (fileList) challenge.fileList = fileList;
-      if (grading) challenge.grading = grading;
-      if (flag) challenge.flag = flag;
+        if (title) challenge.title = title;
+        if (description) challenge.description = description;
+        if (category) challenge.category = category;
+        if (fileList) challenge.fileList = fileList;
+        if (grading) challenge.grading = grading;
+        if (flag) challenge.flag = flag;
+      }
 
       await challenge.save();
       await session.commitTransaction();
@@ -133,5 +128,9 @@ export class ChallengeService {
     } finally {
       await session.endSession();
     }
+  }
+
+  public async delete(title: string): Promise<Challenge | null> {
+    return this.challengeModel.findOneAndDelete({ title });
   }
 }
