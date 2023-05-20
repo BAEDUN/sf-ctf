@@ -65,7 +65,7 @@ export default function User() {
           const key = `user-row-${username}`;
 
           return (
-            <tr key={key} className='table-dark'>
+            <tr key={key} className="table-dark">
               <td title={username}>{username}</td>
               <td title={nickname}>{nickname}</td>
               <td>
@@ -110,7 +110,7 @@ export default function User() {
 
   return (
     <>
-      <MDBCardHeader className='text-white bg-dark'>
+      <MDBCardHeader className="text-white bg-dark">
         <MDBPagination className="mb-0">
           <MDBPaginationItem>
             <MDBPaginationLink
@@ -125,25 +125,29 @@ export default function User() {
               label="Page"
               value={page}
               onChange={handleNumberInput(setPage)}
-              style={{ color: '#fff' }}
+              style={{ color: "#fff" }}
             />
           </MDBPaginationItem>
           <MDBPaginationItem>
-            <MDBPaginationLink style={{ color: '#fff' }}>/ {totalPages}</MDBPaginationLink>
+            <MDBPaginationLink style={{ color: "#fff" }}>
+              / {totalPages}
+            </MDBPaginationLink>
           </MDBPaginationItem>
           <MDBPaginationItem>
             <MDBPaginationLink
               href="#"
               onClick={() => checkedMovePage(page + 1)}
             >
-              <span aria-hidden="true" style={{ color: '#fff' }}>»</span>
+              <span aria-hidden="true" style={{ color: "#fff" }}>
+                »
+              </span>
             </MDBPaginationLink>
           </MDBPaginationItem>
         </MDBPagination>
       </MDBCardHeader>
       <MDBTable small>
         <MDBTableHead>
-          <tr className='table-dark'>
+          <tr className="table-dark">
             <th scope="col">
               <MDBInput
                 contrast

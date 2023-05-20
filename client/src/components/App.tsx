@@ -1,5 +1,10 @@
 import React, { useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
 import Main from "./views/Main/Main";
 import NavBar from "./views/NavBar/NavBar";
 import Login from "./views/Login/Login";
@@ -19,7 +24,6 @@ import User from "./views/User/User";
 import CreateChallenge from "./views/Admin/Challenge/CreateChallenge/CreateChallenge";
 import { UpdateChallenge } from "./views/Admin/Challenge/UpdateChallenge/UpdateChallenge";
 import UpdateAction from "./views/Admin/Challenge/UpdateChallenge/UpdateAction";
-
 
 export default function App() {
   const { auth, setAuth } = useAuthContext();
@@ -50,9 +54,18 @@ export default function App() {
           <Route path="/users" element={<User />} />
           <Route path="/admin" element={<Admin />} />
           <Route path={adminChallenge} element={<AdminChallenge />} />
-          <Route path={`${adminChallenge}/create`} element={<CreateChallenge />} />
-          <Route path={`${adminChallenge}/update`} element={<UpdateChallenge />} />
-          <Route path={`${adminChallenge}/update/:title`} element={<UpdateAction />} />
+          <Route
+            path={`${adminChallenge}/create`}
+            element={<CreateChallenge />}
+          />
+          <Route
+            path={`${adminChallenge}/update`}
+            element={<UpdateChallenge />}
+          />
+          <Route
+            path={`${adminChallenge}/update/:title`}
+            element={<UpdateAction />}
+          />
           <Route path="/admin/user" element={<AdminUser />} />
           <Route path="/admin/log" element={<Log />} />
         </Routes>

@@ -64,7 +64,7 @@ export default function ViewLog() {
 
   return (
     <>
-      <MDBCardHeader className='text-white bg-dark'>
+      <MDBCardHeader className="text-white bg-dark">
         <MDBPagination className="mb-0">
           <MDBPaginationItem>
             <MDBPaginationLink
@@ -79,18 +79,22 @@ export default function ViewLog() {
               label="Page"
               value={page}
               onChange={handleNumberInput(setPage)}
-              style={{ color: '#fff' }}
+              style={{ color: "#fff" }}
             />
           </MDBPaginationItem>
           <MDBPaginationItem>
-            <MDBPaginationLink style={{ color: '#fff' }}>/ {totalPages}</MDBPaginationLink>
+            <MDBPaginationLink style={{ color: "#fff" }}>
+              / {totalPages}
+            </MDBPaginationLink>
           </MDBPaginationItem>
           <MDBPaginationItem>
             <MDBPaginationLink
               href="#"
               onClick={() => checkedMovePage(page + 1)}
             >
-              <span aria-hidden="true" style={{ color: '#fff' }}>»</span>
+              <span aria-hidden="true" style={{ color: "#fff" }}>
+                »
+              </span>
             </MDBPaginationLink>
           </MDBPaginationItem>
         </MDBPagination>

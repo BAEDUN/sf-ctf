@@ -108,7 +108,8 @@ export class ChallengeService {
       }
 
       {
-        const {title, description, category, fileList, grading, flag} = request;
+        const { title, description, category, fileList, grading, flag } =
+          request;
 
         if (title) challenge.title = title;
         if (description) challenge.description = description;
