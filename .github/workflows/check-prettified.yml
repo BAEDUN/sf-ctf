@@ -11,14 +11,24 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - uses: technote-space/get-diff-action@v6
+        id: get-diff
+        with:
+          PATTERNS: |
+            .github/**/*
+            ${{ matrix.path }}/**/*
+
       - uses: actions/setup-node@v3
         with:
           cache-dependency-path: ${{ matrix.path }}/package-lock.json
+        if: steps.get-diff.outputs.diff
 
       - run: npm ci
+        if: steps.get-diff.outputs.diff
         working-directory: ${{ matrix.path }}
 
       - run: npm run format
+        if: steps.get-diff.outputs.diff
         working-directory: ${{ matrix.path }}
 
       - run: |
@@ -26,3 +36,4 @@ jobs:
               echo "**'${{ matrix.path }}' is not formatted. Please run 'npm run format' before push**"
               exit 1
           fi
+        if: steps.get-diff.outputs.diff
