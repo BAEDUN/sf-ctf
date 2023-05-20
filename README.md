@@ -59,12 +59,12 @@ If you want install new package, you have to re-run docker-compose after install
 ## Example `.env` File
 
 ```
-MONGO_ROOT_USERNAME=bigfood
+MONGO_ROOT_USERNAME=username
 MONGO_ROOT_PASSWORD=password
 JWT_SECRET=anySecretKey
-MINIO_ROOT_USER=bigfood
+MINIO_ROOT_USER=user
 MINIO_ROOT_PASSWORD=password
-SERVER_ROOT_USER=bigfood
+SERVER_ROOT_USER=user
 SERVER_ROOT_PASSWORD=password
 START_AT=Wed Nov 01 2022 15:29:59 GMT+0900
 END_AT=Wed Nov 02 2022 15:29:59 GMT+0900

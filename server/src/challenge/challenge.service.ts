@@ -5,6 +5,7 @@ import { CreateChallengeRequestDto } from "./dto/createChallenge.dto";
 import { Challenge, ChallengeDocument } from "./schemas/challenge.schema";
 import { User, UserDocument } from "../user/schemas/user.schema";
 import calculateChallengeScore from "./util/calculateChallengeScore";
+import { UpdateChallengeRequestDto } from "./dto/updateChallenge.dto";
 
 @Injectable()
 export class ChallengeService {
@@ -88,5 +89,48 @@ export class ChallengeService {
     } finally {
       await session.endSession();
     }
+  }
+
+  public async update(
+    title: string,
+    request: UpdateChallengeRequestDto
+  ): Promise<Challenge> {
+    const session = await this.connection.startSession();
+    session.startTransaction();
+    try {
+      const challenge = await this.challengeModel
+        .findOne({ title })
+        .populate("solvedUserList")
+        .exec();
+
+      if (!challenge) {
+        throw new Error("Challenge not found");
+      }
+
+      {
+        const {title, description, category, fileList, grading, flag} = request;
+
+        if (title) challenge.title = title;
+        if (description) challenge.description = description;
+        if (category) challenge.category = category;
+        if (fileList) challenge.fileList = fileList;
+        if (grading) challenge.grading = grading;
+        if (flag) challenge.flag = flag;
+      }
+
+      await challenge.save();
+      await session.commitTransaction();
+
+      return challenge;
+    } catch (error) {
+      await session.abortTransaction();
+      throw error;
+    } finally {
+      await session.endSession();
+    }
+  }
+
+  public async delete(title: string): Promise<Challenge | null> {
+    return this.challengeModel.findOneAndDelete({ title });
   }
 }

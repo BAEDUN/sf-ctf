@@ -1,12 +1,16 @@
 import {
   Body,
   Controller,
+  Delete,
   HttpException,
   HttpStatus,
+  Param,
+  Patch,
   Post,
   Req,
 } from "@nestjs/common";
 import { CreateChallengeRequestDto } from "./dto/createChallenge.dto";
+import { UpdateChallengeRequestDto } from "./dto/updateChallenge.dto";
 import { ApiResponse, ApiTags } from "@nestjs/swagger";
 import { ChallengeService } from "./challenge.service";
 import { UserService } from "../user/users.service";
@@ -216,5 +220,49 @@ export class ChallengeController {
     return {
       success: true,
     } as SubmitResponseDto;
+  }
+
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: "Bad Request",
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: "Unauthorized",
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: "Challenge Not Found",
+  })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: "Successful",
+  })
+  @Patch("update/:title")
+  async update(@Param("title") title: string, @Body() request: UpdateChallengeRequestDto) {
+    const user = await this.userService.getUserFromToken(request.accessToken);
+
+    if (!user) {
+      throw new HttpException("Unauthorized", HttpStatus.UNAUTHORIZED);
+    }
+
+    if (!user.isAdmin) {
+      throw new HttpException("Forbidden", HttpStatus.FORBIDDEN);
+    }
+
+    const challenge = await this.challengeService.get(title);
+
+    if (!challenge) {
+      throw new HttpException("Challenge Not Found", HttpStatus.NOT_FOUND);
+    }
+
+    const updatedChallenge = await this.challengeService.update(title, request);
+
+    return updatedChallenge;
+  }
+
+  @Delete(':title')
+  async deleteChallenge(@Param('title') title: string): Promise<void> {
+    await this.challengeService.delete(title);
   }
 }
