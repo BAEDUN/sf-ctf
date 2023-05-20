@@ -1,10 +1,5 @@
-import React, { useEffect } from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  useLocation,
-} from "react-router-dom";
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Main from "./views/Main/Main";
 import NavBar from "./views/NavBar/NavBar";
 import Login from "./views/Login/Login";
@@ -16,31 +11,13 @@ import Admin from "./views/Admin/Admin";
 import Log from "./views/Admin/ViewLog/ViewLog";
 import AdminUser from "./views/Admin/User/User";
 import AdminChallenge from "./views/Admin/Challenge/Challenge";
-import {
-  tryLoadAuthContextFromLocalStorage,
-  useAuthContext,
-} from "../context/AuthProvider";
 import User from "./views/User/User";
 import CreateChallenge from "./views/Admin/Challenge/CreateChallenge/CreateChallenge";
 import { UpdateChallenge } from "./views/Admin/Challenge/UpdateChallenge/UpdateChallenge";
 import UpdateAction from "./views/Admin/Challenge/UpdateChallenge/UpdateAction";
 
 export default function App() {
-  const { auth, setAuth } = useAuthContext();
   const adminChallenge = "/admin/challenge";
-  useEffect(() => {
-    if (auth) {
-      return;
-    }
-
-    const authContext = tryLoadAuthContextFromLocalStorage();
-    if (!authContext) {
-      return;
-    }
-
-    setAuth(authContext);
-  }, []);
-
   return (
     <div className="App">
       <Router>

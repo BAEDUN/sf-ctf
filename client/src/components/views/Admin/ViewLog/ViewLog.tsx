@@ -14,12 +14,13 @@ import {
   GetLogResponseDtoLogsInnerTypeEnum,
   LogApi,
 } from "../../../../api";
-import { useAuthContext } from "../../../../context/AuthProvider";
 import handleNumberInput from "../../../../util/handleNumberInput";
 import handleStringInput from "../../../../util/handleStringInput";
+import { AuthState } from "../../../../state/AuthState";
+import { useRecoilValue } from "recoil";
 
 export default function ViewLog() {
-  const { auth } = useAuthContext();
+  const auth = useRecoilValue(AuthState.auth);
   const [targetIp, setTargetIp] = useState<string>("");
   const [targetUsername, setTargetUsername] = useState<string>("");
   const [targetNickname, setTargetNickname] = useState<string>("");

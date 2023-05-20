@@ -14,14 +14,14 @@ import { useLocation, useNavigate } from "react-router-dom";
 import {
   ChallengeApi,
   GetAllChallengesResponseDtoChallengesInner,
-  UserApi,
 } from "../../../../../api";
-import { useAuthContext } from "../../../../../context/AuthProvider";
 import handleNumberInput from "../../../../../util/handleNumberInput";
 import handleStringInput from "../../../../../util/handleStringInput";
+import { useRecoilValue } from "recoil";
+import { AuthState } from "../../../../../state/AuthState";
 
 export function UpdateChallenge() {
-  const { auth } = useAuthContext();
+  const auth = useRecoilValue(AuthState.auth);
   const navigate = useNavigate();
   const [challenges, setChallenges] = useState<
     GetAllChallengesResponseDtoChallengesInner[]

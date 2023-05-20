@@ -1,15 +1,15 @@
-import React, { Fragment, useCallback, useEffect, useState } from "react";
-import { Form, useNavigate } from "react-router-dom";
+import React, { Fragment, useEffect, useState } from "react";
 import { StatusResponseDtoSolvedChallengesInner, UserApi } from "../../../api";
 import "./User.css";
-import { useAuthContext } from "../../../context/AuthProvider";
 import { toast, ToastContainer } from "react-toastify";
-import { MDBBtn, MDBInput } from "mdb-react-ui-kit";
+import { MDBInput } from "mdb-react-ui-kit";
+import { AuthState } from "../../../state/AuthState";
+import { useRecoilValue } from "recoil";
 
 const PWD_REGEX = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
 export default function User() {
-  const { auth } = useAuthContext();
+  const auth = useRecoilValue(AuthState.auth);
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [username, setUsername] = useState<string>("");

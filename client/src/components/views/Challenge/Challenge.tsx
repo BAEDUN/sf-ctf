@@ -1,11 +1,5 @@
-import React, {
-  useState,
-  useCallback,
-  useRef,
-  useContext,
-  useEffect,
-} from "react";
-import { ToastContainer, toast } from "react-toastify";
+import React, { useState, useCallback, useRef } from "react";
+import { toast } from "react-toastify";
 import {
   ChallengeApi,
   FileApi,
@@ -14,12 +8,12 @@ import {
   LogApi,
   RankingRequestDtoSectionEnum,
   RankingResponseDtoUsersInner,
-  UserApi,
 } from "../../../api";
-import { AuthContext } from "../../../context/AuthProvider";
 import "react-toastify/dist/ReactToastify.css";
 import Modal from "./Modal";
 import { useNavigate } from "react-router-dom";
+import { AuthState } from "../../../state/AuthState";
+import { useRecoilValue } from "recoil";
 
 const solvesPageSize = 10;
 
@@ -54,7 +48,7 @@ export default function Challenge(props: {
       setValue(event.currentTarget.value),
     []
   );
-  const { auth } = useContext(AuthContext);
+  const auth = useRecoilValue(AuthState.auth);
   const modalBodyRef = useRef<any>(null);
 
   const handleSubmit = useCallback(

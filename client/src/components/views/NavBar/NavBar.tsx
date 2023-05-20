@@ -1,27 +1,25 @@
-import React, { useContext, useCallback } from "react";
+import React, { useCallback } from "react";
 import { Nav, Navbar, Container } from "react-bootstrap";
 import "./NavBar.css";
 // import "../../../styles/fonts/font.css";
 import { FaSignInAlt, FaUserPlus } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import {
-  AuthContext,
-  tryLoadAuthContextFromLocalStorage,
-  removeAuthContextFromLocalStorage,
-} from "../../../context/AuthProvider";
+import { AuthState } from "../../../state/AuthState";
+import { useRecoilValue } from "recoil";
+import { useAuthAction } from "../../../action/useAuthAction";
 
 export default function NavBar() {
   const navigate = useNavigate();
-  const { auth, setAuth } = useContext(AuthContext);
+  const auth = useRecoilValue(AuthState.auth);
+  const { logout } = useAuthAction();
 
   const handleLogout = useCallback(
     async (event: React.MouseEvent<HTMLElement>) => {
       event.preventDefault();
-      removeAuthContextFromLocalStorage();
-      setAuth(null);
+      logout();
       navigate("/");
     },
-    []
+    [logout]
   );
 
   return (

@@ -12,7 +12,8 @@ import React, {
 } from "react";
 import ReactModal from "react-modal";
 import { GetSolversResponseDtoSolversInner, LogApi } from "../../../api";
-import { useAuthContext } from "../../../context/AuthProvider";
+import { AuthState } from "../../../state/AuthState";
+import { useRecoilValue } from "recoil";
 
 const solvesPageSize = 10;
 
@@ -38,7 +39,7 @@ const Modal = ({
     []
   );
   const [page, setPage] = useState<number>(1);
-  const { auth } = useAuthContext();
+  const auth = useRecoilValue(AuthState.auth);
   const [totalPages, setTotalPages] = useState<number>(0);
   useEffect(() => {
     if (!auth || !challengeTitle) {

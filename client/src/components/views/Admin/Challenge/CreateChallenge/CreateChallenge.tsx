@@ -14,13 +14,14 @@ import {
   CreateChallengeRequestDtoCategoryEnum,
   FileApi,
 } from "../../../../../api";
-import { useAuthContext } from "../../../../../context/AuthProvider";
 import handleNumberInput from "../../../../../util/handleNumberInput";
 import handleStringInput from "../../../../../util/handleStringInput";
 import CategorySelect from "../CategorySelect";
+import { useRecoilValue } from "recoil";
+import { AuthState } from "../../../../../state/AuthState";
 
 export default function CreateChallenge() {
-  const { auth } = useAuthContext();
+  const auth = useRecoilValue(AuthState.auth);
   const [category, setCategory] =
     useState<CreateChallengeRequestDtoCategoryEnum>(
       CreateChallengeRequestDtoCategoryEnum.Forensic

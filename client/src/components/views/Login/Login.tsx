@@ -1,93 +1,41 @@
-import React, { useRef, useState, useEffect, useContext } from "react";
+import React, { useRef, useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
 import { MDBInput, MDBBtn } from "mdb-react-ui-kit";
-import { UserApi } from "../../../api";
-import {
-  AuthContext,
-  IAuthContext,
-  saveAuthContextFromLocalStorage,
-} from "../../../context/AuthProvider";
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
+import { useRecoilValue } from "recoil";
+import { AuthState } from "../../../state/AuthState";
+import { useAuthAction } from "../../../action/useAuthAction";
 
 export default function Login() {
   const navigate = useNavigate();
-  const { auth, setAuth } = useContext(AuthContext);
-
+  const auth = useRecoilValue(AuthState.auth);
+  const { login } = useAuthAction();
   const userRef = useRef<any>(null);
 
   const [user, setUser] = useState("");
   const [pwd, setPwd] = useState("");
-  const [success, setSuccess] = useState(false);
 
-  useEffect(() => {
-    if (!auth) {
-      return;
-    }
-    navigate("/", { replace: true });
-  }, [auth]);
-
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
-
-    try {
-      const userApi = new UserApi(undefined, location.origin);
-      const response = await userApi.usersControllerLogin({
-        username: user,
-        password: pwd,
-      });
-      console.log(JSON.stringify(response?.data));
-      const accessToken = response?.data?.accessToken;
-      const auth = {
-        token: accessToken,
-      } as IAuthContext;
-      setAuth(auth);
+  const handleSubmit = useCallback(
+    async (e: any) => {
+      e.preventDefault();
+      login(user, pwd);
       setUser("");
       setPwd("");
-      setSuccess(true);
-      saveAuthContextFromLocalStorage(auth);
-    } catch (err: any) {
-      if (!err?.response) {
-        toast.error("No Server Response", {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
-      } else if (err.response?.status === 401) {
-        toast.error("Invalid username or password", {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
-      } else {
-        toast.error("Login Failed", {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
-      }
+    },
+    [login, user, pwd, setUser, setPwd]
+  );
+
+  useEffect(() => {
+    if (auth) {
+      navigate("/", { replace: true });
     }
-  };
+  }, [auth]);
 
   return (
     <div className="LoginWrap">
       <ToastContainer />
-      {success ? (
+      {auth ? (
         <section>
           <h1>You are logged in!</h1>
           <br />

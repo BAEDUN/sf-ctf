@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useMemo,
-  useEffect,
-  useCallback,
-  useContext,
-} from "react";
+import React, { useState, useMemo, useEffect, useCallback } from "react";
 import { ToastContainer } from "react-toastify";
 import "./Challenges.css";
 import {
@@ -12,8 +6,9 @@ import {
   GetAllChallengesResponseDtoChallengesInner,
   CreateChallengeRequestDtoCategoryEnum,
 } from "../../../api";
-import { AuthContext } from "../../../context/AuthProvider";
 import Challenge from "./Challenge";
+import { AuthState } from "../../../state/AuthState";
+import { useRecoilValue } from "recoil";
 
 type Categories = {
   [CreateChallengeRequestDtoCategoryEnum.Forensic]: boolean;
@@ -36,7 +31,7 @@ export default function Challenges() {
   >([]);
   const [categories, setCategories] = useState<Categories>(defaultCategories);
   const [showSolved, setShowSolved] = useState(false);
-  const { auth } = useContext(AuthContext);
+  const auth = useRecoilValue(AuthState.auth);
 
   const handleShowSolvedChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {

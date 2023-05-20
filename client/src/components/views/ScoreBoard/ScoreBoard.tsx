@@ -3,27 +3,22 @@ import {
   MDBPaginationItem,
   MDBPaginationLink,
 } from "mdb-react-ui-kit";
-import React, {
-  useState,
-  useEffect,
-  useMemo,
-  useCallback,
-  useRef,
-} from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   UserApi,
   RankingRequestDtoSectionEnum,
   RankingResponseDtoUsersInner,
 } from "../../../api";
-import { useAuthContext } from "../../../context/AuthProvider";
 import "./ScoreBoard.css";
+import { AuthState } from "../../../state/AuthState";
+import { useRecoilValue } from "recoil";
 
 export default function ScoreBoard() {
   const [section, setSection] = useState<
     RankingRequestDtoSectionEnum | undefined
   >(undefined);
-  const { auth } = useAuthContext();
+  const auth = useRecoilValue(AuthState.auth);
   const navigate = useNavigate();
   const [users, setUsers] = useState<RankingResponseDtoUsersInner[]>([]);
   const [page, setPage] = useState<number>(1);

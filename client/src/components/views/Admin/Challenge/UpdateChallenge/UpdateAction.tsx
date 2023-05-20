@@ -1,6 +1,5 @@
 import {
   MDBBtn,
-  MDBContainer,
   MDBInput,
   MDBListGroup,
   MDBListGroupItem,
@@ -11,17 +10,17 @@ import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   ChallengeApi,
-  CreateChallengeRequestDtoCategoryEnum,
   FileApi,
   UpdateChallengeRequestDtoCategoryEnum,
 } from "../../../../../api";
-import { useAuthContext } from "../../../../../context/AuthProvider";
 import handleNumberInput from "../../../../../util/handleNumberInput";
 import handleStringInput from "../../../../../util/handleStringInput";
 import CategorySelect from "../CategorySelect";
+import { useRecoilValue } from "recoil";
+import { AuthState } from "../../../../../state/AuthState";
 
 export default function UpdateAction() {
-  const { auth } = useAuthContext();
+  const auth = useRecoilValue(AuthState.auth);
   const [category, setCategory] =
     useState<UpdateChallengeRequestDtoCategoryEnum>(
       UpdateChallengeRequestDtoCategoryEnum.Forensic

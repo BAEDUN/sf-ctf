@@ -11,12 +11,13 @@ import {
 } from "mdb-react-ui-kit";
 import React, { useEffect, useMemo, useState } from "react";
 import { GetUsersResponseDtoUsersInner, UserApi } from "../../../../api";
-import { useAuthContext } from "../../../../context/AuthProvider";
 import handleNumberInput from "../../../../util/handleNumberInput";
 import handleStringInput from "../../../../util/handleStringInput";
+import { useRecoilValue } from "recoil";
+import { AuthState } from "../../../../state/AuthState";
 
 export default function User() {
-  const { auth } = useAuthContext();
+  const auth = useRecoilValue(AuthState.auth);
   const [users, setUsers] = useState<GetUsersResponseDtoUsersInner[]>([]);
   const [targetUsername, setTargetUsername] = useState<string>("");
   const [targetNickname, setTargetNickname] = useState<string>("");
