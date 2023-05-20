@@ -15,7 +15,4 @@ export function validateGetRequestDto(body: GetRequestDto) {
 export class GetResponseDto {
   @ApiProperty()
   readonly presignedUrl!: string;
-
-  @ApiProperty()
-  readonly dummy!: string;
 }
