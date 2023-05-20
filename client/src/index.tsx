@@ -1,4 +1,3 @@
-import ReactDOM from "react-dom";
 import App from "./components/App";
 import React from "react";
 import "mdb-react-ui-kit/dist/css/mdb.min.css";
@@ -7,9 +6,11 @@ import ReactModal from "react-modal";
 
 ReactModal.setAppElement("#app");
 
-ReactDOM.render(
+import { createRoot } from "react-dom/client";
+const container = document.getElementById("app");
+const root = createRoot(container!);
+root.render(
   <AuthProvider>
     <App />
-  </AuthProvider>,
-  document.getElementById("app")
+  </AuthProvider>
 );
