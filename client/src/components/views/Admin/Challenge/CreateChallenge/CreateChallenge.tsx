@@ -106,17 +106,20 @@ export default function CreateChallenge() {
   }
 
   return (
-    <div className="bg-dark d-flex flex-column justify-content-center" style={{
-      height: "100%",
-      width: "100%",
-      position: "absolute",
-      top: "0",
-      left: "0",
-      zIndex: "-7",
-      minWidth: "100vw",
-      minHeight: "100vh",
-      alignItems: "center"
-    }}>
+    <div
+      className="bg-dark d-flex flex-column justify-content-center"
+      style={{
+        height: "100%",
+        width: "100%",
+        position: "absolute",
+        top: "0",
+        left: "0",
+        zIndex: "-7",
+        minWidth: "100vw",
+        minHeight: "100vh",
+        alignItems: "center",
+      }}
+    >
       <div className="Title">
         <h1>CREATE</h1>
       </div>
@@ -183,6 +186,6 @@ export default function CreateChallenge() {
       <MDBBtn className="mb-4 w-50" block onClick={() => createChallenge()}>
         Create
       </MDBBtn>
-    </div >
+    </div>
   );
 }

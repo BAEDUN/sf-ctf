@@ -391,11 +391,11 @@ export default function Register() {
               color="light"
               disabled={
                 !validName ||
-                  !validPwd ||
-                  !validMatch ||
-                  !validEmail ||
-                  !validNick ||
-                  !validBelong
+                !validPwd ||
+                !validMatch ||
+                !validEmail ||
+                !validNick ||
+                !validBelong
                   ? true
                   : false
               }

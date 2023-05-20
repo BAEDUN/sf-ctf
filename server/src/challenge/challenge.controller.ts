@@ -239,7 +239,10 @@ export class ChallengeController {
     description: "Successful",
   })
   @Patch("update/:title")
-  async update(@Param("title") title: string, @Body() request: UpdateChallengeRequestDto) {
+  async update(
+    @Param("title") title: string,
+    @Body() request: UpdateChallengeRequestDto
+  ) {
     const user = await this.userService.getUserFromToken(request.accessToken);
 
     if (!user) {
@@ -261,8 +264,8 @@ export class ChallengeController {
     return updatedChallenge;
   }
 
-  @Delete(':title')
-  async deleteChallenge(@Param('title') title: string): Promise<void> {
+  @Delete(":title")
+  async deleteChallenge(@Param("title") title: string): Promise<void> {
     await this.challengeService.delete(title);
   }
 }

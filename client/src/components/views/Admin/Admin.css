@@ -1,38 +1,38 @@
 .contain {
-    justify-content: center;
-    display: flex;
-    background-color: #111;
-    height: 100%;
-    width: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: -5;
-    padding-top: 13rem;
-    min-width: 100vw;
-    min-height: 100vh;
+  justify-content: center;
+  display: flex;
+  background-color: #111;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -5;
+  padding-top: 13rem;
+  min-width: 100vw;
+  min-height: 100vh;
 }
 
 .cardItem {
-    width: 250px;
-    height: 180px;
-    text-align: center;
-    border-radius: 30px;
-    margin-left: 20px;
-    margin-bottom: 5px;
-    transition: transform 0.3s;
+  width: 250px;
+  height: 180px;
+  text-align: center;
+  border-radius: 30px;
+  margin-left: 20px;
+  margin-bottom: 5px;
+  transition: transform 0.3s;
 }
 
 .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  }
+  transform: translateY(-5px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
 
 .card img {
-    width: 220px;
-    height: 180px;
+  width: 220px;
+  height: 180px;
 }
 
 .card-body {
-    background-color: #fff;
+  background-color: #fff;
 }
