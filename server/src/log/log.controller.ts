@@ -28,7 +28,7 @@ export class LogController {
 
   @ApiResponse({
     status: HttpStatus.UNAUTHORIZED,
-    description: "Unauthorizedaa",
+    description: "Unauthorized",
   })
   @ApiResponse({
     status: HttpStatus.FORBIDDEN,
