@@ -8,7 +8,17 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - uses: technote-space/get-diff-action@v6
+        id: get-diff
+        with:
+          PATTERNS: |
+            .github/**/*
+            server/**/*
+            docker-compose.gen-api.yml
+            gen-api.sh
+
       - run: ./gen-api.sh
+        if: steps.get-diff.outputs.diff
         shell: bash
         env:
           MONGO_ROOT_USERNAME: username
@@ -26,3 +36,4 @@ jobs:
               echo "**Api is not generated. Please run './gen-api.sh' before push**"
               exit 1
           fi
+        if: steps.get-diff.outputs.diff
