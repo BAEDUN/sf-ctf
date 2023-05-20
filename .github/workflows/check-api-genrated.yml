@@ -1,0 +1,19 @@
+name: check-api-genrated
+run-name: Checking api is generated
+on: [push]
+
+jobs:
+  check-api-genrated:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: npm ci
+
+      - run: ./gen-api.sh
+        shell: bash
+
+      - run: |
+          if [[ $(git diff --name-only) ]]; then
+              echo "**Api is not generated. Please run './gen-api.sh' before push**"
+              exit 1
+          fi
